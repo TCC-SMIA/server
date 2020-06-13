@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/TCC-SMIA/server.git",
-  "author": "gabrielrportugal <gabrielrportugal@outlook.com>",
   "license": "MIT",
   "scripts": {
-    "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts"
+    "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/shared/infra/http/server.ts"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^3.2.0",
