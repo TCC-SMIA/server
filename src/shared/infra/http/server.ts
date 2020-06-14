@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express, { Express } from 'express';
 import cors from 'cors';
 
-import routes from './routes';
+import routes from '@shared/infra/http/routes';
 
 class Server {
   private server: Express;
