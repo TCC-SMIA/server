@@ -1,8 +1,10 @@
 import 'dotenv/config';
+import 'reflect-metadata';
+import '../typeorm/index';
 import express, { Express } from 'express';
 import cors from 'cors';
 
-import routes from '@shared/infra/http/routes';
+import routes from './routes';
 
 class Server {
   private server: Express;
