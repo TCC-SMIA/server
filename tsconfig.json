@@ -3,7 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "strict": true,
     "strictPropertyInitialization": false,
     "baseUrl": "./src",
@@ -14,8 +14,8 @@
       "@shared/*":["shared/*"]
     },
     "esModuleInterop": true,
-    "experimentalDecorators": true, // TypeORM config
-    "emitDecoratorMetadata": true, // TypeORM config
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   }
 }
