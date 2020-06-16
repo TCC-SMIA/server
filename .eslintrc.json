@@ -25,6 +25,7 @@
   ],
   "rules": {
     "@typescript-eslint/camelcase": "off",
+    "camelcase":"off",
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
     "no-useless-constructor":"off",
