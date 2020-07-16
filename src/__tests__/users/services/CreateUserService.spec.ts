@@ -1,5 +1,5 @@
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import CreateUserService from '@modules/users/services/CreateUserService';
+import IUsersRepository from '@modules/users/rules/IUsersRepository';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 
 describe('CreateUserService', () => {

@@ -9,6 +9,7 @@ tmp/*
 
 # testing
 /coverage
+coverage
 
 # production
 /build

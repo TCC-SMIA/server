@@ -1,5 +1,5 @@
 import User from '@modules/users/infra/typeorm/entities/User';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IUsersRepository from '@modules/users/rules/IUsersRepository';
 
 class FakeUsersRepository implements IUsersRepository {
   users: User[] = [];
