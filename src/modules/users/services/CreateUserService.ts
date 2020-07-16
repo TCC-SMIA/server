@@ -1,5 +1,5 @@
-import IUsersRepository from '../repositories/IUsersRepository';
 import User from '../infra/typeorm/entities/User';
+import IUsersRepository from '../rules/IUsersRepository';
 
 class CreateUserService {
   private usersRepository: IUsersRepository;
