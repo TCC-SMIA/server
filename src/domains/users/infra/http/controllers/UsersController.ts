@@ -1,14 +1,12 @@
 import { Response, Request } from 'express';
 
-import CreateUserService from '@modules/users/services/CreateUserService';
-import BCryptHashProvider from '@modules/users/providers/HashProvider/implementations/BCryptHashProvider';
+import CreateUserService from 'domains/users/services/CreateUserService';
+import BCryptHashProvider from 'domains/users/providers/HashProvider/implementations/BCryptHashProvider';
 import UsersRepository from '../../typeorm/repositories/UsersRepository';
 
 class UsersController {
   async create(request: Request, response: Response): Promise<Response> {
-    const { name, nickname, email, password } = request.body;
-
-    console.log(name, nickname, email, password);
+    const { name, nickname, email, password, type } = request.body;
 
     const usersRepository = new UsersRepository();
     const hashProvider = new BCryptHashProvider();
@@ -23,6 +21,7 @@ class UsersController {
       nickname,
       email,
       password,
+      type,
     });
 
     console.log(newUser);
@@ -31,4 +30,4 @@ class UsersController {
   }
 }
 
-export default UsersController;
+export default new UsersController();
