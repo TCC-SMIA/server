@@ -21,6 +21,7 @@ coverage
 .env.test.local
 .env.production.local
 .env
+.vscode
 
 
 npm-debug.log*
