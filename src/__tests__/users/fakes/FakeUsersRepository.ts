@@ -1,31 +1,34 @@
-import User from 'domains/users/infra/typeorm/entities/User';
-import IUsersRepository from 'domains/users/rules/IUsersRepository';
+import User from '@domains/users/infra/typeorm/entities/User';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
 
 class FakeUsersRepository implements IUsersRepository {
-  save(user: User): Promise<User> {
-    throw new Error('Method not implemented.');
+  private users: User[] = [];
+
+  public async save(user: User): Promise<User> {
+    this.users.push(user);
+
+    return user;
   }
 
-  findByEmail(email: string): Promise<User | undefined> {
-    throw new Error('Method not implemented.');
+  public async findByEmail(email: string): Promise<User | undefined> {
+    const userExists = this.users.find(user => user.email === email);
+
+    return userExists;
   }
 
-  findByNickname(nickname: string): Promise<User | undefined> {
-    throw new Error('Method not implemented.');
+  public async findByNickname(nickname: string): Promise<User | undefined> {
+    const userExists = this.users.find(user => user.nickname === nickname);
+
+    return userExists;
   }
 
-  findById(id: string): Promise<User | undefined> {
-    throw new Error('Method not implemented.');
+  public async findById(id: string): Promise<User | undefined> {
+    const userExists = this.users.find(user => user.id === id);
+
+    return userExists;
   }
 
-  users: User[] = [];
-
-  async create(): Promise<User> {
-    const name = 'aaa';
-    const user = new User();
-
-    Object.assign(user, { name });
-
+  public async create(user: User): Promise<User> {
     this.users.push(user);
 
     return user;
