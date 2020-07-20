@@ -2,6 +2,7 @@ import CreateUserService from '@domains/users/services/CreateUserService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import UserTypes from '@domains/users/enums/UserEnums';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
+import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
 
@@ -29,5 +30,45 @@ describe('CreateUserService', () => {
     });
 
     expect(user.name).toBe('jhon');
+  });
+
+  it('Should not able to create a new reporter with the same email', async () => {
+    await createUserService.execute({
+      name: 'jhon',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+      type: UserTypes.Reporter,
+    });
+
+    await expect(
+      createUserService.execute({
+        name: 'jhon2',
+        email: 'doe@doe.com',
+        nickname: 'johnd',
+        password: '123123',
+        type: UserTypes.Reporter,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Should not able to create a new reporter with the same nickname', async () => {
+    await createUserService.execute({
+      name: 'jhon',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+      type: UserTypes.Reporter,
+    });
+
+    await expect(
+      createUserService.execute({
+        name: 'Doe',
+        email: 'john@john.com',
+        nickname: 'johnzins',
+        password: '123123',
+        type: UserTypes.Reporter,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
