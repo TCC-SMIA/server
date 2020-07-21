@@ -9,6 +9,7 @@ class UsersController {
     const { name, nickname, email, password, type } = request.body;
 
     const usersRepository = new UsersRepository();
+
     const hashProvider = new BCryptHashProvider();
 
     const createUserService = new CreateUserService(
@@ -23,8 +24,6 @@ class UsersController {
       password,
       type,
     });
-
-    console.log(newUser);
 
     return response.json(newUser);
   }

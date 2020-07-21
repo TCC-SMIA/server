@@ -1,8 +1,8 @@
 import User from 'domains/users/infra/typeorm/entities/User';
 import IUsersRepository from 'domains/users/rules/IUsersRepository';
-import AppError from '@shared/errors/AppError';
 import IHashProvider from 'domains/users/providers/HashProvider/rules/IHashProvider';
 import UserTypes from '../enums/UserEnums';
+import CreateUserValidator from '../infra/http/validators/CreateUserValidator';
 
 interface IRequest {
   name: string;
@@ -29,19 +29,9 @@ class CreateUserService {
     password,
     type,
   }: IRequest): Promise<User> {
-    const checkEmailExists = await this.usersRepository.findByEmail(email);
+    const createUserValidator = new CreateUserValidator(this.usersRepository);
 
-    if (checkEmailExists) {
-      throw new AppError('Email already exists');
-    }
-
-    const checkNicknameExists = await this.usersRepository.findByNickname(
-      nickname,
-    );
-
-    if (checkNicknameExists) {
-      throw new AppError('Nickname already used');
-    }
+    await createUserValidator.checkUserExists({ nickname, email });
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 

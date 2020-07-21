@@ -1,3 +1,5 @@
+import { uuid } from 'uuidv4';
+
 import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 
@@ -28,7 +30,11 @@ class FakeUsersRepository implements IUsersRepository {
     return userExists;
   }
 
-  public async create(user: User): Promise<User> {
+  public async create(userData: User): Promise<User> {
+    const user = new User();
+
+    Object.assign(user, { id: uuid() }, userData);
+
     this.users.push(user);
 
     return user;
