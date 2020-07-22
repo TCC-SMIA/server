@@ -6,7 +6,7 @@ import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
-import FakeAgencyProvider from '../fakes/FakeAgencyProvider';
+import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
 let fakeUsersRepository: IUsersRepository;
 let authenticateUserService: AuthenticateUserService;
@@ -17,7 +17,7 @@ describe('AuthenticateUserService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    fakeAgencyRepository = new FakeAgencyProvider();
+    fakeAgencyRepository = new FakeAgencyRepository();
     authenticateUserService = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider,

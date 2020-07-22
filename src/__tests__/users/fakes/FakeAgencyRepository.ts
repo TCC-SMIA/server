@@ -1,7 +1,7 @@
 import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 
-class FakeAgencyProvider implements IAgencyRepository {
+class FakeAgencyRepository implements IAgencyRepository {
   private agencies: Agency[] = [];
 
   public async save(agency: Agency): Promise<Agency> {
@@ -17,4 +17,4 @@ class FakeAgencyProvider implements IAgencyRepository {
   }
 }
 
-export default FakeAgencyProvider;
+export default FakeAgencyRepository;
