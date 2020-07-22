@@ -17,6 +17,12 @@ class AgencyRepository implements IAgencyRepository {
 
     return storedAgency;
   }
+
+  public async findByEmail(email: string): Promise<Agency | undefined> {
+    const agency = await this.agencyRepository.findOne({ where: { email } });
+
+    return agency;
+  }
 }
 
 export default AgencyRepository;
