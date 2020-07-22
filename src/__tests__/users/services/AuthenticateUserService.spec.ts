@@ -2,6 +2,7 @@ import AuthenticateUserService from '@domains/users/services/AuthenticateUserSer
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import UserTypes from '@domains/users/enums/UserEnums';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
+import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
 
@@ -35,5 +36,48 @@ describe('AuthenticateUserService', () => {
 
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
+  });
+
+  it('should not be able authenticate with wrong email/password combination', async () => {
+    await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+      type: UserTypes.Reporter,
+    });
+
+    await expect(
+      authenticateUserService.execute({
+        email: 'doe@doe.com',
+        password: '1231232',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able authenticate with wrong nickname/password combination', async () => {
+    await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+      type: UserTypes.Reporter,
+    });
+
+    await expect(
+      authenticateUserService.execute({
+        nickname: 'johnzins',
+        password: '1231232',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able authenticate with a non existing user', async () => {
+    await expect(
+      authenticateUserService.execute({
+        nickname: 'johnzins',
+        password: '1231232',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

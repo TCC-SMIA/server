@@ -4,10 +4,10 @@ import express, { Express } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
+import globalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
 import '@shared/container';
-import routes from './routes';
 import '@shared/infra/typeorm/index';
-import GlobalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
+import routes from './routes';
 
 class Server {
   private server: Express;
@@ -17,13 +17,13 @@ class Server {
 
     this.middlewares();
     this.routes();
+    this.errorHandling();
     this.startServer();
   }
 
   middlewares(): void {
     this.server.use(cors());
     this.server.use(express.json());
-    this.server.use(GlobalErrorsMiddleware);
   }
 
   routes(): void {
@@ -33,6 +33,10 @@ class Server {
   startServer(): void {
     this.server.listen(3333);
     console.log('Server started on port 3333');
+  }
+
+  errorHandling(): void {
+    this.server.use(globalErrorsMiddleware);
   }
 }
 

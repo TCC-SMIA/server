@@ -4,7 +4,7 @@ import { sign } from 'jsonwebtoken';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import authConfig from '@config/authConfig';
-import CreateSessionValidator from '@domains/users/infra/http/validators/CreateSessionValidator';
+import AppError from '@shared/errors/AppError';
 import User from '@domains/users/infra/typeorm/entities/User';
 import { injectable, inject } from 'tsyringe';
 
@@ -34,16 +34,25 @@ class AuthenticateUserService {
     nickname,
     password,
   }: IRequest): Promise<IResponse> {
-    const createSessionValidator = new CreateSessionValidator(
-      this.usersRepository,
-      this.hashProvider,
+    let user: User | undefined;
+    if (email) {
+      user = await this.usersRepository.findByEmail(email);
+    }
+    if (nickname) {
+      user = await this.usersRepository.findByNickname(nickname);
+    }
+    if (!user) {
+      throw new AppError('User was not found.');
+    }
+
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
     );
 
-    const user = await createSessionValidator.checkUserCredentials({
-      email,
-      nickname,
-      password,
-    });
+    if (!passwordMatched) {
+      throw new AppError('Incorrect combination for login');
+    }
 
     const { secret, expiresIn } = authConfig.jwt;
 
