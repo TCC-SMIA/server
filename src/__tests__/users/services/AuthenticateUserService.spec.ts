@@ -2,7 +2,6 @@ import AuthenticateUserService from '@domains/users/services/AuthenticateUserSer
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import UserTypes from '@domains/users/enums/UserEnums';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
-import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
 

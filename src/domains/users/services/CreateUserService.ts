@@ -1,4 +1,7 @@
+import 'reflect-metadata';
+import { inject, injectable } from 'tsyringe';
 import User from 'domains/users/infra/typeorm/entities/User';
+
 import IUsersRepository from 'domains/users/rules/IUsersRepository';
 import IHashProvider from 'domains/users/providers/HashProvider/rules/IHashProvider';
 import UserTypes from '../enums/UserEnums';
@@ -12,15 +15,15 @@ interface IRequest {
   type: UserTypes.Admin | UserTypes.Reporter | UserTypes.EnvironmentalAgency;
 }
 
+@injectable()
 class CreateUserService {
-  private usersRepository: IUsersRepository;
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
-  private hashProvider: IHashProvider;
-
-  constructor(usersRepository: IUsersRepository, hashProvider: IHashProvider) {
-    this.usersRepository = usersRepository;
-    this.hashProvider = hashProvider;
-  }
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
+  ) {}
 
   async execute({
     name,

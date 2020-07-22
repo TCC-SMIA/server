@@ -1,11 +1,12 @@
+import 'reflect-metadata';
 import { sign } from 'jsonwebtoken';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
-import AppError from '@shared/errors/AppError';
 import authConfig from '@config/authConfig';
 import CreateSessionValidator from '@domains/users/infra/http/validators/CreateSessionValidator';
 import User from '@domains/users/infra/typeorm/entities/User';
+import { injectable, inject } from 'tsyringe';
 
 interface IRequest {
   email?: string;
@@ -18,15 +19,15 @@ interface IResponse {
   token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
-  private usersRepository: IUsersRepository;
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
-  private hashProvider: IHashProvider;
-
-  constructor(usersRepository: IUsersRepository, hashProvider: IHashProvider) {
-    this.usersRepository = usersRepository;
-    this.hashProvider = hashProvider;
-  }
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
+  ) {}
 
   public async execute({
     email,

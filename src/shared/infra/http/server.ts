@@ -1,11 +1,12 @@
-import 'dotenv/config';
 import 'reflect-metadata';
+import 'dotenv/config';
 import express, { Express } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
-import '@shared/infra/typeorm/index';
+import '@shared/container';
 import routes from './routes';
+import '@shared/infra/typeorm/index';
 import GlobalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
 
 class Server {
