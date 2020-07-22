@@ -19,8 +19,8 @@ class Server {
   constructor() {
     this.server = express();
 
-    this.swaggerSetup();
     this.middlewares();
+    this.swaggerSetup();
     this.routes();
     this.errorHandling();
     this.startServer();
@@ -32,8 +32,12 @@ class Server {
   }
 
   private swaggerSetup(): void {
-    this.server.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-    console.log(`API Documentation: ${process.env.API_URL}/docs`);
+    this.server.use(
+      '/api/docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument),
+    );
+    console.log(`API Documentation: ${process.env.API_URL}/api/docs`);
   }
 
   private routes(): void {
@@ -45,7 +49,7 @@ class Server {
     console.log(`Server started on ${process.env.API_URL}`);
   }
 
-  errorHandling(): void {
+  private errorHandling(): void {
     this.server.use(globalErrorsMiddleware);
   }
 }

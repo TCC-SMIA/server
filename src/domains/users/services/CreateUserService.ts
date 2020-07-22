@@ -5,14 +5,12 @@ import User from 'domains/users/infra/typeorm/entities/User';
 import IUsersRepository from 'domains/users/rules/IUsersRepository';
 import IHashProvider from 'domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-import UserTypes from '../enums/UserEnums';
 
 interface IRequest {
   name: string;
   nickname: string;
   email: string;
   password: string;
-  type: UserTypes.Admin | UserTypes.Reporter | UserTypes.EnvironmentalAgency;
 }
 
 @injectable()
@@ -25,13 +23,7 @@ class CreateUserService {
     private hashProvider: IHashProvider,
   ) {}
 
-  async execute({
-    name,
-    nickname,
-    email,
-    password,
-    type,
-  }: IRequest): Promise<User> {
+  async execute({ name, nickname, email, password }: IRequest): Promise<User> {
     const checkEmailExists = await this.usersRepository.findByEmail(email);
 
     if (checkEmailExists) {
@@ -53,7 +45,6 @@ class CreateUserService {
       nickname,
       email,
       password: hashedPassword,
-      type,
     });
 
     return user;

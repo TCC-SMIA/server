@@ -8,7 +8,7 @@
         "start": "ts-node src/index.ts",
         "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpileOnly --ignore-watch node_modules src/shared/infra/http/server.ts",
         "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-        "test": "jest --passWithNoTests",
+        "test": "jest --passWithNoTests --watch",
         "test:staged": "jest --passWithNoTests"
     },
     "dependencies": {
@@ -24,7 +24,8 @@
         "swagger-ui-express": "^4.1.4",
         "tsyringe": "^4.3.0",
         "typeorm": "0.2.25",
-        "uuidv4": "^6.2.0"
+        "uuidv4": "^6.2.0",
+        "yup": "^0.29.1"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.2",
@@ -34,6 +35,7 @@
         "@types/jsonwebtoken": "^8.5.0",
         "@types/node": "^8.0.29",
         "@types/swagger-ui-express": "^4.1.2",
+        "@types/yup": "^0.29.3",
         "@typescript-eslint/eslint-plugin": "^3.2.0",
         "@typescript-eslint/parser": "^3.2.0",
         "eslint": "^7.2.0",

@@ -30,8 +30,5 @@ export const swaggerDocument = {
     '/sessions': {
       post: createSession,
     },
-    '/users': {
-      post: '',
-    },
   },
 };

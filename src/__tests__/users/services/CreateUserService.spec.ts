@@ -1,6 +1,5 @@
 import CreateUserService from '@domains/users/services/CreateUserService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
-import UserTypes from '@domains/users/enums/UserEnums';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
@@ -26,7 +25,6 @@ describe('CreateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
-      type: UserTypes.Reporter,
     });
 
     expect(user.name).toBe('jhon');
@@ -38,7 +36,6 @@ describe('CreateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
-      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -47,7 +44,6 @@ describe('CreateUserService', () => {
         email: 'doe@doe.com',
         nickname: 'johnd',
         password: '123123',
-        type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -58,7 +54,6 @@ describe('CreateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
-      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -67,7 +62,6 @@ describe('CreateUserService', () => {
         email: 'john@john.com',
         nickname: 'johnzins',
         password: '123123',
-        type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
