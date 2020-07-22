@@ -9,8 +9,9 @@ import * as swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from '@shared/providers/Documentation/implementations/Swagger';
 
 import routes from './routes';
+import globalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
+
 import '@shared/infra/typeorm/index';
-import GlobalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
 
 class Server {
   private server: Express;
@@ -21,13 +22,13 @@ class Server {
     this.swaggerSetup();
     this.middlewares();
     this.routes();
+    this.errorHandling();
     this.startServer();
   }
 
   private middlewares(): void {
     this.server.use(cors());
     this.server.use(express.json());
-    this.server.use(GlobalErrorsMiddleware);
   }
 
   private swaggerSetup(): void {
@@ -42,6 +43,10 @@ class Server {
   private startServer(): void {
     this.server.listen(3333);
     console.log(`Server started on ${process.env.API_URL}`);
+  }
+
+  errorHandling(): void {
+    this.server.use(globalErrorsMiddleware);
   }
 }
 

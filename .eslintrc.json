@@ -24,6 +24,7 @@
     "prettier"
   ],
   "rules": {
+    "import/no-unresolved":"off",
     "@typescript-eslint/camelcase": "off",
     "camelcase":"off",
     "prettier/prettier": "error",
