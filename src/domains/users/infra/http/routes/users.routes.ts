@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import UsersController from '../controllers/AgencyController';
+
+import UsersController from '@domains/users/infra/http/controllers/UsersController';
+import checkUserCredentials from '@domains/users/infra/http/validators/CreateUserValidator';
 
 const userRoutes = Router();
 
-userRoutes.post('/', UsersController.create);
+userRoutes.post('/', checkUserCredentials, UsersController.create);
 
 export default userRoutes;

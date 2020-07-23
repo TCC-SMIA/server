@@ -1,5 +1,6 @@
 import { Repository, getRepository } from 'typeorm';
 
+import AppError from '@shared/errors/AppError';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import Agency from '../entities/Agency';
 
@@ -16,6 +17,16 @@ class AgencyRepository implements IAgencyRepository {
     const storedAgency = await this.agencyRepository.save(agency);
 
     return storedAgency;
+  }
+
+  public async findByEmail(email: string): Promise<Agency> {
+    const agency = await this.agencyRepository.findOne({ where: { email } });
+
+    if (!agency) {
+      throw new AppError('');
+    }
+
+    return agency;
   }
 }
 

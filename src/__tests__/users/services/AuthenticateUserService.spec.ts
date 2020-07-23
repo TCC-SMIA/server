@@ -2,20 +2,26 @@ import AuthenticateUserService from '@domains/users/services/AuthenticateUserSer
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
+import FakeAgencyProvider from '../fakes/FakeAgencyRepository';
 
 let fakeUsersRepository: IUsersRepository;
 let authenticateUserService: AuthenticateUserService;
 let fakeHashProvider: IHashProvider;
+let fakeAgencyRepository: IAgencyRepository;
 
 describe('AuthenticateUserService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeAgencyRepository = new FakeAgencyProvider();
     authenticateUserService = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider,
+      fakeAgencyRepository,
     );
   });
 
@@ -30,6 +36,7 @@ describe('AuthenticateUserService', () => {
     const response = await authenticateUserService.execute({
       email: 'doe@doe.com',
       password: '123123',
+      user_type: UserTypes.Reporter,
     });
 
     expect(response).toHaveProperty('token');
@@ -48,6 +55,7 @@ describe('AuthenticateUserService', () => {
       authenticateUserService.execute({
         email: 'doe@doe.com',
         password: '1231232',
+        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -64,6 +72,7 @@ describe('AuthenticateUserService', () => {
       authenticateUserService.execute({
         nickname: 'johnzins',
         password: '1231232',
+        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -73,6 +82,7 @@ describe('AuthenticateUserService', () => {
       authenticateUserService.execute({
         nickname: 'johnzins',
         password: '1231232',
+        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
