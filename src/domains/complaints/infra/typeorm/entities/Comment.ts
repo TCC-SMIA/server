@@ -7,6 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
+import User from '@domains/users/infra/typeorm/entities/User';
 import Complaint from './Complaint';
 
 @Entity('comments')
@@ -22,7 +23,14 @@ class Comment {
   complaint: Complaint;
 
   @Column()
-  content: Date;
+  user_id: string;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: Complaint;
+
+  @Column()
+  content: string;
 
   @Column('time with time zone')
   date: Date;

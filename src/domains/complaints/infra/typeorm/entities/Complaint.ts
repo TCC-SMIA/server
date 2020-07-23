@@ -22,10 +22,16 @@ class Complaint {
   user: User;
 
   @Column()
-  content: Date;
+  title: string;
+
+  @Column()
+  description: string;
 
   @Column('time with time zone')
   date: Date;
+
+  @Column({ type: 'point' })
+  latitude: string;
 
   @CreateDateColumn()
   created_at: Date;
