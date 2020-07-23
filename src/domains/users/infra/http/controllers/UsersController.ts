@@ -18,6 +18,15 @@ class UsersController {
 
     return response.json(newUser);
   }
+
+  async update(request: Request, response: Response): Promise<Response> {
+    const userId = request.user.id;
+    const { name, nickname, email, password } = request.body;
+
+    console.log(userId);
+
+    return response.json({ success: true });
+  }
 }
 
 export default new UsersController();
