@@ -86,4 +86,41 @@ describe('AuthenticateUserService', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should be able to authenticate an environmental agency', async () => {
+    const user = await fakeAgencyRepository.save({
+      name: 'any_name',
+      email: 'mail@mail.com',
+      password: '123123',
+      cnpj: '12312331231',
+    });
+
+    const response = await authenticateUserService.execute({
+      email: 'mail@mail.com',
+      password: '123123',
+      user_type: UserTypes.EnvironmentalAgency,
+    });
+
+    expect(response).toHaveProperty('token');
+    expect(response.user).toEqual(user);
+  });
+
+  it('should not be able to authenticate an environmental agency without sending an email', async () => {
+    await expect(
+      authenticateUserService.execute({
+        password: '123123',
+        user_type: UserTypes.EnvironmentalAgency,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to authenticate with a non valid user type', async () => {
+    await expect(
+      authenticateUserService.execute({
+        email: 'mail@mail.com',
+        password: '123123',
+        user_type: 'any_type',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });

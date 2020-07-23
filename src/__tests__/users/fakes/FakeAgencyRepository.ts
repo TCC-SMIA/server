@@ -1,13 +1,19 @@
 import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import IAgencyDTO from '@domains/users/dtos/IAgencyDTO';
 
 class FakeAgencyRepository implements IAgencyRepository {
   private agencies: Agency[] = [];
 
-  public async save(agency: Agency): Promise<Agency> {
-    this.agencies.push(agency);
+  public async save(data: IAgencyDTO): Promise<Agency> {
+    const agency = new Agency();
+    const formattedAgency = Object.assign(agency, data);
 
-    return agency;
+    formattedAgency.id = String(Math.random());
+
+    this.agencies.push(formattedAgency);
+
+    return formattedAgency;
   }
 
   public async findByEmail(email: string): Promise<Agency | undefined> {

@@ -5,7 +5,7 @@ import AuthenticateUserService from '@domains/users/services/AuthenticateUserSer
 
 class SessionsController {
   public async create(request: Request, response: Response) {
-    const { email, nickname, password } = request.body;
+    const { email, nickname, password, user_type } = request.body;
 
     const authenticateUserService = container.resolve(AuthenticateUserService);
 
@@ -13,6 +13,7 @@ class SessionsController {
       email,
       nickname,
       password,
+      user_type,
     });
 
     return response.json({ user, token });

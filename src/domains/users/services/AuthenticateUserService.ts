@@ -15,7 +15,7 @@ interface IRequest {
   email?: string;
   nickname?: string;
   password: string;
-  user_type: UserTypes.Reporter | UserTypes.EnvironmentalAgency;
+  user_type: string;
 }
 
 interface IResponse {
