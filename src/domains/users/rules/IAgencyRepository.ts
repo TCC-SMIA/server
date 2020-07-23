@@ -1,7 +1,7 @@
 import Agency from '../infra/typeorm/entities/Agency';
-import ICreateAgencyDTO from '../dtos/ICreateAgencyDTO';
+import IAgencyDTO from '../dtos/IAgencyDTO';
 
 export default interface IAgencyRepository {
-  save(agency: ICreateAgencyDTO): Promise<Agency>;
-  findByEmail(email: string): Promise<Agency>;
+  save(agency: IAgencyDTO): Promise<Agency>;
+  findByEmail(email: string): Promise<Agency | undefined>;
 }
