@@ -5,7 +5,7 @@ import IAgencyDTO from '@domains/users/dtos/IAgencyDTO';
 class FakeAgencyRepository implements IAgencyRepository {
   private agencies: Agency[] = [];
 
-  public async save(data: IAgencyDTO): Promise<Agency> {
+  public async create(data: IAgencyDTO): Promise<Agency> {
     const agency = new Agency();
     const formattedAgency = Object.assign(agency, data);
 
@@ -14,6 +14,12 @@ class FakeAgencyRepository implements IAgencyRepository {
     this.agencies.push(formattedAgency);
 
     return formattedAgency;
+  }
+
+  public async save(agency: Agency): Promise<Agency> {
+    this.agencies.push(agency);
+
+    return agency;
   }
 
   public async findByEmail(email: string): Promise<Agency | undefined> {

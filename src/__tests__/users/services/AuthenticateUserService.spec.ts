@@ -88,7 +88,7 @@ describe('AuthenticateUserService', () => {
   });
 
   it('should be able to authenticate an environmental agency', async () => {
-    const user = await fakeAgencyRepository.save({
+    const user = await fakeAgencyRepository.create({
       name: 'any_name',
       email: 'mail@mail.com',
       password: '123123',
