@@ -1,11 +1,10 @@
 import 'reflect-metadata';
-
 import { inject, injectable } from 'tsyringe';
 import Agency from 'domains/users/infra/typeorm/entities/Agency';
 
+import IAgencyRepository from 'domains/users/rules/IAgencyRepository';
 import IHashProvider from 'domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-import IAgencyRepository from '../rules/IAgencyRepository';
 
 interface IRequest {
   name: string;
@@ -25,27 +24,33 @@ class CreateAgencyService {
   ) {}
 
   async execute({ name, cnpj, email, password }: IRequest): Promise<Agency> {
+    console.log('Entrou no CreateAgencyService');
     const checkEmailExist = await this.agencyRepository.findByEmail(email);
+
+    console.log(checkEmailExist);
 
     if (checkEmailExist) {
       throw new AppError('Email already exists');
     }
 
-    const checkCnpjExists = await this.agencyRepository.findByEmail(email);
+    // const checkCnpjExists = await this.agencyRepository.findByEmail(email);
 
-    if (checkCnpjExists) {
-      throw new AppError('Cnpj already registered on our database');
-    }
+    // if (checkCnpjExists) {
+    //  throw new AppError('Cnpj already registered on our database');
+    // }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    const agency = await this.agencyRepository.save({
+    console.log(hashedPassword);
+
+    const agency = await this.agencyRepository.create({
       name,
       cnpj,
       email,
       password: hashedPassword,
     });
     return agency;
+    console.log(agency);
   }
 }
 export default CreateAgencyService;
