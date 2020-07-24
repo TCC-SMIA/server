@@ -33,15 +33,7 @@ class CreateAgencyService {
       throw new AppError('Email already exists');
     }
 
-    // const checkCnpjExists = await this.agencyRepository.findByEmail(email);
-
-    // if (checkCnpjExists) {
-    //  throw new AppError('Cnpj already registered on our database');
-    // }
-
     const hashedPassword = await this.hashProvider.generateHash(password);
-
-    console.log(hashedPassword);
 
     const agency = await this.agencyRepository.create({
       name,
@@ -50,7 +42,6 @@ class CreateAgencyService {
       password: hashedPassword,
     });
     return agency;
-    console.log(agency);
   }
 }
 export default CreateAgencyService;
