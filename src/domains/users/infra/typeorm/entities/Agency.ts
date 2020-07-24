@@ -20,7 +20,7 @@ class Agency {
   @Column()
   email: string;
 
-  @Column({ type: 'point' })
+  @Column({ nullable: true })
   location: string;
 
   @Column()

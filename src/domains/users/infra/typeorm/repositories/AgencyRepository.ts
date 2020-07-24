@@ -11,6 +11,10 @@ class AgencyRepository implements IAgencyRepository {
     this.agencyRepository = getRepository(Agency);
   }
 
+  findByCnpj(_cnpj: string): Promise<Agency | undefined> {
+    throw new Error('CNPJ already registered on our databse');
+  }
+
   public async create(agencyData: ICreateAgencyDTO): Promise<Agency> {
     const agency = this.agencyRepository.create(agencyData);
 
@@ -23,12 +27,14 @@ class AgencyRepository implements IAgencyRepository {
     return this.agencyRepository.save(agency);
   }
 
+  public async findById(id: string): Promise<Agency | undefined> {
+    const agency = await this.agencyRepository.findOne({ where: { id } });
+
+    return agency;
+  }
+
   public async findByEmail(email: string): Promise<Agency | undefined> {
     const agency = await this.agencyRepository.findOne({ where: { email } });
-
-    // if (!agency) {
-    // throw new AppError('Email already exists');
-    // }
 
     return agency;
   }
