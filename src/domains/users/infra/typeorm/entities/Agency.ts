@@ -20,6 +20,9 @@ class Agency {
   @Column()
   email: string;
 
+  @Column({ type: 'point' })
+  location: string;
+
   @Column()
   password: string;
 
