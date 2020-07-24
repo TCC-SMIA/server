@@ -32,7 +32,7 @@ class AuthenticateUserService {
     @inject('HashProvider')
     private hashProvider: IHashProvider,
 
-    @inject('AgencyProvider')
+    @inject('AgencyRepository')
     private agencyRepository: IAgencyRepository,
   ) {}
 

@@ -31,7 +31,7 @@ class Complaint {
   date: Date;
 
   @Column({ type: 'point' })
-  latitude: string;
+  location: string;
 
   @CreateDateColumn()
   created_at: Date;
