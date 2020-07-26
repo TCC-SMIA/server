@@ -8,7 +8,7 @@
         "start": "ts-node src/index.ts",
         "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpileOnly --ignore-watch node_modules src/shared/infra/http/server.ts",
         "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-        "test": "jest --passWithNoTests --watchAll",
+        "test": "jest --passWithNoTests --watch",
         "test:staged": "jest --passWithNoTests --findRelatedTests",
         "test:resumed": "jest --passWithNoTests --watchAll --silent --noStackTrace",
         "test:ci": "jest --passWithNoTests"
