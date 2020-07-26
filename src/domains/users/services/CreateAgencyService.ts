@@ -24,10 +24,7 @@ class CreateAgencyService {
   ) {}
 
   async execute({ name, cnpj, email, password }: IRequest): Promise<Agency> {
-    console.log('Entrou no CreateAgencyService');
     const checkEmailExist = await this.agencyRepository.findByEmail(email);
-
-    console.log(checkEmailExist);
 
     if (checkEmailExist) {
       throw new AppError('Email already exists');
@@ -41,6 +38,7 @@ class CreateAgencyService {
       email,
       password: hashedPassword,
     });
+
     return agency;
   }
 }

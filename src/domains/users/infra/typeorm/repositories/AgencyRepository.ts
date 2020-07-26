@@ -26,10 +26,6 @@ class AgencyRepository implements IAgencyRepository {
   public async findByEmail(email: string): Promise<Agency | undefined> {
     const agency = await this.agencyRepository.findOne({ where: { email } });
 
-    // if (!agency) {
-    // throw new AppError('Email already exists');
-    // }
-
     return agency;
   }
 }

@@ -1,19 +1,18 @@
 import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
-import IAgencyDTO from '@domains/users/dtos/IAgencyDTO';
+import { uuid } from 'uuidv4';
 
 class FakeAgencyRepository implements IAgencyRepository {
   private agencies: Agency[] = [];
 
-  public async create(data: IAgencyDTO): Promise<Agency> {
+  public async create(agencyData: Agency): Promise<Agency> {
     const agency = new Agency();
-    const formattedAgency = Object.assign(agency, data);
 
-    formattedAgency.id = String(Math.random());
+    Object.assign(agency, { id: uuid() }, agencyData);
 
-    this.agencies.push(formattedAgency);
+    this.agencies.push(agency);
 
-    return formattedAgency;
+    return agency;
   }
 
   public async save(agency: Agency): Promise<Agency> {
