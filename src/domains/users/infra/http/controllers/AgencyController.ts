@@ -7,7 +7,6 @@ class AgencyController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, cnpj, email, password } = request.body;
 
-    console.log('Entrou aqui no controller AgencyController');
     const createAgencyService = container.resolve(CreateAgencyService);
 
     const newAgency = await createAgencyService.execute({
@@ -17,7 +16,6 @@ class AgencyController {
       password,
     });
 
-    console.log('Final do controller AgencyController');
     return response.json(newAgency);
   }
 }
