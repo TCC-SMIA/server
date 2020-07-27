@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import AppError from '@shared/errors/AppError';
 import getValidationErrors from '@shared/utils/getValidationErrors';
 
-const createUserValidator = async (
+const updateUserValidator = async (
   request: Request,
   response: Response,
   next: NextFunction,
@@ -28,9 +28,20 @@ const createUserValidator = async (
       email: Yup.string()
         .email('Insert a valid email.')
         .required('Email is a required field.'),
-      password: Yup.string()
-        .min(6, 'At least 6 characters in the password field')
-        .required('Password is a required field'),
+      oldpassword: Yup.string().min(
+        6,
+        'At least 6 characters in the oldpassword field',
+      ),
+      password: Yup.string().min(
+        6,
+        'At least 6 characters in the password field',
+      ),
+      password_confirmation: Yup.string()
+        .oneOf(
+          [Yup.ref('password')],
+          'Password and password_confirmation must be equals',
+        )
+        .min(6, 'At least 6 characters in the password_confirmation field'),
     });
 
     await userSchema.validate(userData, { abortEarly: false });
@@ -46,4 +57,4 @@ const createUserValidator = async (
   }
 };
 
-export default createUserValidator;
+export default updateUserValidator;

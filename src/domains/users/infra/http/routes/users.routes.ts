@@ -1,14 +1,19 @@
 import { Router } from 'express';
 
 import UsersController from '@domains/users/infra/http/controllers/UsersController';
-import checkUserCredentials from '@domains/users/infra/http/validators/CreateUserValidator';
+
+import createUserValidator from '@domains/users/infra/http/validators/CreateUserValidator';
+import updateUserValidator from '@domains/users/infra/http/validators/UpdateUserValidator';
 
 import ensureAuthenticate from '@domains/users/infra/http/middlewares/ensureAuthenticate';
 
 const userRoutes = Router();
 
-userRoutes.post('/', checkUserCredentials, UsersController.create);
-userRoutes.put('/profile', ensureAuthenticate, UsersController.update);
-userRoutes.get('/profile', ensureAuthenticate, UsersController.show);
+userRoutes.post('/', createUserValidator, UsersController.create);
+
+userRoutes.use(ensureAuthenticate);
+
+userRoutes.put('/profile', updateUserValidator, UsersController.update);
+userRoutes.get('/profile', UsersController.show);
 
 export default userRoutes;
