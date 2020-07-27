@@ -11,8 +11,10 @@ class AgencyRepository implements IAgencyRepository {
     this.agencyRepository = getRepository(Agency);
   }
 
-  findByCnpj(_cnpj: string): Promise<Agency | undefined> {
-    throw new Error('CNPJ already registered on our databse');
+  public async findByCnpj(cnpj: string): Promise<Agency | undefined> {
+    const agency = await this.agencyRepository.findOne({ where: { cnpj } });
+
+    return agency;
   }
 
   public async create(agencyData: ICreateAgencyDTO): Promise<Agency> {

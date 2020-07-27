@@ -30,6 +30,12 @@ class CreateAgencyService {
       throw new AppError('Email already exists');
     }
 
+    const checkCnpj = await this.agencyRepository.findByCnpj(cnpj);
+
+    if (checkCnpj) {
+      throw new AppError('CNPJ already used');
+    }
+
     const hashedPassword = await this.hashProvider.generateHash(password);
 
     const agency = await this.agencyRepository.create({
