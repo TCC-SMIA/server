@@ -5,6 +5,8 @@ import CreateUserService from 'domains/users/services/CreateUserService';
 import ShowProfileService from '@domains/users/services/ShowProfileService';
 import UpdateProfileService from '@domains/users/services/UpdateProfileService';
 
+import { classToClass } from 'class-transformer';
+
 class UsersController {
   async create(request: Request, response: Response): Promise<Response> {
     const { name, nickname, email, password } = request.body;
@@ -44,7 +46,7 @@ class UsersController {
       password_confirmation,
     });
 
-    return response.json(updatedUser);
+    return response.json(classToClass(updatedUser));
   }
 
   async show(request: Request, response: Response): Promise<Response> {
@@ -54,7 +56,7 @@ class UsersController {
 
     const user = await showProfileService.execute({ userId });
 
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }
 

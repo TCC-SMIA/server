@@ -30,10 +30,10 @@ class Complaint {
   @Column({ default: false })
   resolved: boolean;
 
-  @Column('time with time zone')
+  @Column('timestamp with time zone')
   date: Date;
 
-  @Column({ type: 'point' })
+  @Column({ type: 'point', nullable: true })
   location: string;
 
   @CreateDateColumn()

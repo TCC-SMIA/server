@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 
 import AuthenticateUserService from '@domains/users/services/AuthenticateUserService';
 
+import { classToClass } from 'class-transformer';
+
 class SessionsController {
   public async create(request: Request, response: Response) {
     const { email, nickname, password, user_type } = request.body;
@@ -16,7 +18,7 @@ class SessionsController {
       user_type,
     });
 
-    return response.json({ user, token });
+    return response.json({ user: classToClass(user), token });
   }
 }
 
