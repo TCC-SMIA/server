@@ -6,7 +6,7 @@ import CreateComplaintService from '@domains/complaints/services/CreateComplaint
 class ComplaintsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { title, description } = request.body;
+    const { title, description, date } = request.body;
 
     const createComplaintService = container.resolve(CreateComplaintService);
 
@@ -14,6 +14,7 @@ class ComplaintsController {
       user_id,
       title,
       description,
+      date,
     });
 
     return response.json(newComplaint);

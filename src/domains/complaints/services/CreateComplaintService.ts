@@ -8,6 +8,7 @@ interface IRequest {
   user_id: string;
   title: string;
   description: string;
+  date: Date;
 }
 
 @injectable()
@@ -21,11 +22,13 @@ class CreateComplaintService {
     user_id,
     title,
     description,
+    date,
   }: IRequest): Promise<Complaint> {
     const complaint = await this.complaintsRepository.create({
       user_id,
       title,
       description,
+      date,
     });
 
     return complaint;

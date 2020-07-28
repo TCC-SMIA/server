@@ -18,6 +18,7 @@ describe('CreateComplaintService', () => {
       user_id: 'anyuserid',
       title: 'test complaint created',
       description: 'description of complaint created',
+      date: new Date(),
     });
 
     expect(complaint.title).toBe('test complaint created');

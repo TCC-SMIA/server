@@ -26,16 +26,16 @@ class ComplaintsRepository implements IComplaintsRepository {
   public async findById(complaintId: string): Promise<Complaint | undefined> {
     const complaint = await this.complaintsRepository.findOne({
       where: { complaintId },
+      relations: ['user'],
     });
 
     return complaint;
   }
 
-  public async findAllByUserId(
-    user_id: string,
-  ): Promise<Complaint[] | undefined> {
+  public async findAllByUserId(user_id: string): Promise<Complaint[]> {
     const complaints = await this.complaintsRepository.find({
       where: { user_id },
+      relations: ['user'],
     });
 
     return complaints;
