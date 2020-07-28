@@ -27,6 +27,9 @@ class Complaint {
   @Column()
   description: string;
 
+  @Column({ default: false })
+  resolved: boolean;
+
   @Column('time with time zone')
   date: Date;
 
