@@ -1,6 +1,7 @@
 import { Repository, getRepository } from 'typeorm';
 
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
+import ICreateComplaintDTO from '@domains/complaints/dtos/ICreateComplaintDTO';
 import Complaint from '../entities/Complaint';
 
 class ComplaintsRepository implements IComplaintsRepository {
@@ -10,12 +11,34 @@ class ComplaintsRepository implements IComplaintsRepository {
     this.complaintsRepository = getRepository(Complaint);
   }
 
-  public async create(data: Partial<Complaint>): Promise<Complaint> {
-    const complaint = this.complaintsRepository.create(data);
+  public async create(complaintData: ICreateComplaintDTO): Promise<Complaint> {
+    const complaint = this.complaintsRepository.create(complaintData);
 
     const createdComplaint = await this.complaintsRepository.save(complaint);
 
     return createdComplaint;
+  }
+
+  public async save(complaint: Complaint): Promise<Complaint> {
+    return this.complaintsRepository.save(complaint);
+  }
+
+  public async findById(complaintId: string): Promise<Complaint | undefined> {
+    const complaint = await this.complaintsRepository.findOne({
+      where: { complaintId },
+    });
+
+    return complaint;
+  }
+
+  public async findAllByUserId(
+    user_id: string,
+  ): Promise<Complaint[] | undefined> {
+    const complaints = await this.complaintsRepository.find({
+      where: { user_id },
+    });
+
+    return complaints;
   }
 }
 
