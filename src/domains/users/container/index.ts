@@ -1,13 +1,16 @@
 import { container } from 'tsyringe';
 
-import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
 import IUsersRepository from '../rules/IUsersRepository';
+import UsersRepository from '../infra/typeorm/repositories/UsersRepository';
+
+import IAgencyRepository from '../rules/IAgencyRepository';
+import AgencyRepository from '../infra/typeorm/repositories/AgencyRepository';
+
 import IHashProvider from '../providers/HashProvider/rules/IHashProvider';
-import IAgencyRepository from '../rules/IAgencyRepository';
-import AgencyRepository from '../infra/typeorm/repositories/AgencyRepository';
 import BCryptHashProvider from '../providers/HashProvider/implementations/BCryptHashProvider';
-import AgencyRepository from '../infra/typeorm/repositories/AgencyRepository';
-import IAgencyRepository from '../rules/IAgencyRepository';
+
+import IUserTokensRepository from '../rules/IUserTokensRepository';
+import UserTokensRepository from '../infra/typeorm/repositories/UserTokensRepository';
 
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
@@ -20,3 +23,8 @@ container.registerSingleton<IAgencyRepository>(
 );
 
 container.registerSingleton<IHashProvider>('HashProvider', BCryptHashProvider);
+
+container.registerSingleton<IUserTokensRepository>(
+  'UserTokensRepository',
+  UserTokensRepository,
+);
