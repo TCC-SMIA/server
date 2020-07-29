@@ -4,6 +4,7 @@ import userRoutes from 'domains/users/infra/http/routes/users.routes';
 import sessionsRoutes from 'domains/users/infra/http/routes/sessions.routes';
 import agencyRoutes from '@domains/users/infra/http/routes/agency.routes';
 import complaintsRoutes from '@domains/complaints/infra/http/routes/complaints.routes';
+import passwordRoutes from '@domains/users/infra/http/routes/password.routes';
 
 const routes = Router();
 
@@ -14,5 +15,6 @@ routes.use('/users', userRoutes);
 routes.use('/agencies', agencyRoutes);
 routes.use('/complaints', complaintsRoutes);
 routes.use('/sessions', sessionsRoutes);
+routes.use('/password', passwordRoutes);
 
 export default routes;
