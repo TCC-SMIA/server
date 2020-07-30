@@ -11,10 +11,6 @@ const createAgencyValidator = async (
 ): Promise<Response | void> => {
   const agencyData = request.body;
 
-  /*
-    name, cnpj, email, password
-  */
-
   try {
     const agencySchema = Yup.object().shape({
       name: Yup.string()

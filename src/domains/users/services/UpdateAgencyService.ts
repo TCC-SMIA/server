@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 import IAgencyRepository from '../rules/IAgencyRepository';
 import IHashProvider from '../providers/HashProvider/rules/IHashProvider';

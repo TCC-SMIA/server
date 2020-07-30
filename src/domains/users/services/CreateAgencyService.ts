@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import Agency from 'domains/users/infra/typeorm/entities/Agency';
+import Agency from '@domains/users/infra/typeorm/entities/Agency';
 
-import IAgencyRepository from 'domains/users/rules/IAgencyRepository';
-import IHashProvider from 'domains/users/providers/HashProvider/rules/IHashProvider';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {

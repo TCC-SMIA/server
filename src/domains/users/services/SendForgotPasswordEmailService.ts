@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import IUsersRepository from 'domains/users/rules/IUsersRepository';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IMailProvider from '@shared/providers/MailProvider/rules/IMailProvider';
 import IUserTokensRepository from '@domains/users/rules/IUserTokensRepository';
 

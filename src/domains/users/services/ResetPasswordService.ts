@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { isAfter, addHours } from 'date-fns';
 
-import IUsersRepository from 'domains/users/rules/IUsersRepository';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IUserTokensRepository from '@domains/users/rules/IUserTokensRepository';
 
 import AppError from '@shared/errors/AppError';
