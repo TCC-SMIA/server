@@ -1,7 +1,7 @@
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 
-import CreateUserService from 'domains/users/services/CreateUserService';
+import CreateUserService from '@domains/users/services/CreateUserService';
 import ShowProfileService from '@domains/users/services/ShowProfileService';
 import UpdateProfileService from '@domains/users/services/UpdateProfileService';
 

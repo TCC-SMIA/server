@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 
-import userRoutes from 'domains/users/infra/http/routes/users.routes';
-import sessionsRoutes from 'domains/users/infra/http/routes/sessions.routes';
+import userRoutes from '@domains/users/infra/http/routes/users.routes';
+import sessionsRoutes from '@domains/users/infra/http/routes/sessions.routes';
 import agencyRoutes from '@domains/users/infra/http/routes/agency.routes';
 import complaintsRoutes from '@domains/complaints/infra/http/routes/complaints.routes';
 import passwordRoutes from '@domains/users/infra/http/routes/password.routes';

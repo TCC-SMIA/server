@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import User from 'domains/users/infra/typeorm/entities/User';
+import User from '@domains/users/infra/typeorm/entities/User';
 
-import IUsersRepository from 'domains/users/rules/IUsersRepository';
-import IHashProvider from 'domains/users/providers/HashProvider/rules/IHashProvider';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
+import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
 
 interface IRequest {
