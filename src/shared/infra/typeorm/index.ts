@@ -1,9 +1,8 @@
 import 'reflect-metadata';
+import 'dotenv/config';
 import { createConnection } from 'typeorm';
 import * as path from 'path';
-import * as dotenv from 'dotenv';
 
-dotenv.config();
 export default createConnection({
   type: 'postgres',
   host: process.env.DB_HOST,
