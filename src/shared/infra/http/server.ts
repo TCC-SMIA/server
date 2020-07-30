@@ -37,7 +37,7 @@ class Server {
       swaggerUi.serve,
       swaggerUi.setup(swaggerDocument),
     );
-    console.log(`API Documentation: ${process.env.API_URL}/api/docs`);
+    console.log(`API Documentation: ${process.env.APP_URL}/api/docs`);
   }
 
   private routes(): void {
@@ -46,7 +46,7 @@ class Server {
 
   private startServer(): void {
     this.server.listen(3333);
-    console.log(`Server started on ${process.env.API_URL}`);
+    console.log(`Server started on ${process.env.APP_URL}`);
   }
 
   private errorHandling(): void {
