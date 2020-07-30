@@ -6,6 +6,8 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
+import { Exclude } from 'class-transformer';
+
 @Entity('agencies')
 class Agency {
   @PrimaryGeneratedColumn('uuid')
@@ -24,6 +26,7 @@ class Agency {
   location: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @CreateDateColumn()

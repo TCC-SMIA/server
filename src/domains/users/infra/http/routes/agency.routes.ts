@@ -12,5 +12,6 @@ agencyRoutes.post('/', createAgencyValidator, AgencyController.create);
 agencyRoutes.use(ensureAuthenticate);
 
 agencyRoutes.put('/profile', AgencyController.update);
+agencyRoutes.get('/profile', AgencyController.show);
 
 export default agencyRoutes;
