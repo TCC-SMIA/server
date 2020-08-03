@@ -45,7 +45,7 @@ class Server {
   }
 
   private startServer(): void {
-    this.server.listen(3333);
+    this.server.listen(process.env.PORT || 3333);
     console.log(`Server started on ${process.env.APP_URL}`);
   }
 
