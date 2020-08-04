@@ -21,7 +21,7 @@ class UsersController {
       password,
     });
 
-    return response.json(newUser);
+    return response.json(classToClass(newUser));
   }
 
   async update(request: Request, response: Response): Promise<Response> {
