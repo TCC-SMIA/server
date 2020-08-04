@@ -32,7 +32,7 @@ class Comment {
   @Column()
   content: string;
 
-  @Column('time with time zone')
+  @Column('time with time zone', { nullable: true })
   date: Date;
 
   @CreateDateColumn()
