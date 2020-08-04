@@ -32,7 +32,9 @@ class CommentsRepository implements ICommentsRepository {
 
     Object.assign(comment, commentData);
 
-    return this.commentRepository.save(comment);
+    const storedComment = await this.commentRepository.save(comment);
+
+    return storedComment;
   }
 }
 

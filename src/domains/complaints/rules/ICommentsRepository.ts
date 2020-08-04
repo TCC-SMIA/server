@@ -4,5 +4,5 @@ import Complaint from '../infra/typeorm/entities/Complaint';
 
 export default interface ICommentsRepository {
   create(user: User, complaint: Complaint, content: string): Promise<Comment>;
-  update(complaint: Partial<Comment>): Promise<Comment>;
+  update(comment: Partial<Comment>): Promise<Comment>;
 }
