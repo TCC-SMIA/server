@@ -6,4 +6,5 @@ export default interface IComplaintsRepository {
   save(complaint: Complaint): Promise<Complaint>;
   findById(complaintId: string): Promise<Complaint | undefined>;
   findAllByUserId(user_id: string): Promise<Complaint[]>;
+  findAllComplaints(skip: number, take: number): Promise<Complaint[]>;
 }

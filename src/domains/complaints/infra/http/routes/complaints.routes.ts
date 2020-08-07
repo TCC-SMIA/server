@@ -9,5 +9,6 @@ const complaintsRoutes = Router();
 complaintsRoutes.use(ensureAuthenticate);
 
 complaintsRoutes.post('/', ComplaintsController.create);
+complaintsRoutes.get('/', ComplaintsController.index);
 
 export default complaintsRoutes;

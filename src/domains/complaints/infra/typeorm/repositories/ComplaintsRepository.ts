@@ -40,6 +40,18 @@ class ComplaintsRepository implements IComplaintsRepository {
 
     return complaints;
   }
+
+  public async findAllComplaints(
+    skip: number,
+    take: number,
+  ): Promise<Complaint[]> {
+    const complaints = await this.complaintsRepository.find({
+      skip,
+      take,
+    });
+
+    return complaints;
+  }
 }
 
 export default ComplaintsRepository;
