@@ -8,7 +8,7 @@ import { classToClass } from 'class-transformer';
 
 class AgencyController {
   async create(request: Request, response: Response): Promise<Response> {
-    const { name, cnpj, email, password } = request.body;
+    const { name, cnpj, email, password, latitude, longitude } = request.body;
 
     const createAgencyService = container.resolve(CreateAgencyService);
 
@@ -16,6 +16,8 @@ class AgencyController {
       name,
       cnpj,
       email,
+      latitude,
+      longitude,
       password,
     });
 

@@ -11,29 +11,32 @@ import { Exclude } from 'class-transformer';
 @Entity('agencies')
 class Agency {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  cnpj: string;
+  cnpj!: string;
 
   @Column()
-  email: string;
+  email!: string;
 
-  @Column({ nullable: true })
-  location: string;
+  @Column({ type: 'real' })
+  latitude!: number;
+
+  @Column({ type: 'real' })
+  longitude!: number;
 
   @Column()
   @Exclude()
-  password: string;
+  password!: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }
 
 export default Agency;
