@@ -1,7 +1,6 @@
 import { Repository, getRepository } from 'typeorm';
 
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
-import ICreateComplaintDTO from '@domains/complaints/dtos/ICreateComplaintDTO';
 import Complaint from '../entities/Complaint';
 
 class ComplaintsRepository implements IComplaintsRepository {
@@ -11,7 +10,7 @@ class ComplaintsRepository implements IComplaintsRepository {
     this.complaintsRepository = getRepository(Complaint);
   }
 
-  public async create(complaintData: ICreateComplaintDTO): Promise<Complaint> {
+  public async create(complaintData: Partial<Complaint>): Promise<Complaint> {
     const complaint = this.complaintsRepository.create(complaintData);
 
     const createdComplaint = await this.complaintsRepository.save(complaint);

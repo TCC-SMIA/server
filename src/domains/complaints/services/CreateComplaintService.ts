@@ -8,6 +8,9 @@ interface IRequest {
   user_id: string;
   title: string;
   description: string;
+  latitude: number;
+  longitude: number;
+  anonymous: boolean;
   date: Date;
 }
 
@@ -22,12 +25,18 @@ class CreateComplaintService {
     user_id,
     title,
     description,
+    latitude,
+    longitude,
+    anonymous,
     date,
   }: IRequest): Promise<Complaint> {
     const complaint = await this.complaintsRepository.create({
       user_id,
       title,
       description,
+      latitude,
+      longitude,
+      anonymous,
       date,
     });
 

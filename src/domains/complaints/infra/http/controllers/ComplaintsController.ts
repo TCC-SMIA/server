@@ -7,7 +7,14 @@ import ListComplaintsService from '@domains/complaints/services/ListComplaintsSe
 class ComplaintsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { title, description, date } = request.body;
+    const {
+      title,
+      description,
+      date,
+      latitude,
+      longitude,
+      anonymous,
+    } = request.body;
 
     const createComplaintService = container.resolve(CreateComplaintService);
 
@@ -15,6 +22,9 @@ class ComplaintsController {
       user_id,
       title,
       description,
+      latitude,
+      longitude,
+      anonymous,
       date,
     });
 
