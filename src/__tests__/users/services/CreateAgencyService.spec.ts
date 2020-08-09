@@ -68,10 +68,10 @@ describe('CreateAgencyService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not able to create a new agency with the an existing cnpj', async () => {
+  it('should not able to create a new agency with an existing cnpj', async () => {
     await createAgencyService.execute({
       name: 'valid_agency_name',
-      email: 'same_email@mail.com',
+      email: 'valid_email@mail.com',
       cnpj: '58.017.080/0001-78',
       password: 'valid_password',
       latitude: -222222,
@@ -81,7 +81,7 @@ describe('CreateAgencyService', () => {
     await expect(
       createAgencyService.execute({
         name: 'valid_second_agency_name',
-        email: 'same_email2@mail.com',
+        email: 'valid_email@mail.com',
         cnpj: '58.017.080/0001-78',
         password: 'valid_password',
         latitude: -222222,
