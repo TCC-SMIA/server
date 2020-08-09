@@ -1,7 +1,7 @@
 import ICommentsRepository from '@domains/complaints/rules/ICommentsRepository';
 import User from '@domains/users/infra/typeorm/entities/User';
 import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 import Comment from '@domains/complaints/infra/typeorm/entities/Comment';
 
 class FakeCommentsRepository implements ICommentsRepository {
@@ -16,7 +16,7 @@ class FakeCommentsRepository implements ICommentsRepository {
 
     Object.assign(comment, { content, user, complaint });
 
-    comment.id = uuid();
+    comment.id = v4();
 
     this.comments.push(comment);
 

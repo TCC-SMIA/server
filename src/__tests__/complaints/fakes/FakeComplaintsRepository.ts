@@ -1,4 +1,4 @@
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
@@ -25,7 +25,7 @@ class FakeComplaintsRepository implements IComplaintsRepository {
   public async create(complaintData: Partial<Complaint>): Promise<Complaint> {
     const complaint = new Complaint();
 
-    Object.assign(complaint, { id: uuid() }, complaintData);
+    Object.assign(complaint, { id: v4() }, complaintData);
 
     this.complaints.push(complaint);
 
