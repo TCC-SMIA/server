@@ -13,33 +13,33 @@ import Complaint from './Complaint';
 @Entity('comments')
 class Comment {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  complaint_id: string;
+  complaint_id!: string;
 
   @ManyToOne(() => Complaint)
   @JoinColumn({ name: 'complaint_id' })
-  complaint: Complaint;
+  complaint!: Complaint;
 
   @Column()
-  user_id: string;
+  user_id!: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  user: Complaint;
+  user!: Complaint;
 
   @Column()
-  content: string;
+  content!: string;
 
-  @Column('time with time zone', { nullable: true })
-  date: Date;
+  @Column('time with time zone')
+  date!: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }
 
 export default Comment;
