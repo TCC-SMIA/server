@@ -20,16 +20,30 @@ describe('CreateAgencyService', () => {
   });
 
   it('should be able to create a new Agency', async () => {
+    const createMock = jest.spyOn(fakeAgencyRepository, 'create');
+
     const agency = await createAgencyService.execute({
       name: 'valid_agency_name',
       email: 'valid_agency_mail@mail.com',
       cnpj: '58.017.080/0001-78',
       password: 'valid_password',
+      latitude: -222222,
+      longitude: 222222,
     });
 
+    expect(agency).toBeTruthy();
+    expect(agency.id).toBeTruthy();
     expect(agency.name).toBe('valid_agency_name');
     expect(agency.cnpj).toBe('58.017.080/0001-78');
     expect(agency.email).toBe('valid_agency_mail@mail.com');
+    expect(createMock).toHaveBeenCalledWith({
+      name: 'valid_agency_name',
+      email: 'valid_agency_mail@mail.com',
+      cnpj: '58.017.080/0001-78',
+      password: 'valid_password',
+      latitude: -222222,
+      longitude: 222222,
+    });
   });
 
   it('should not able to create a new agency with the same email', async () => {
@@ -38,6 +52,8 @@ describe('CreateAgencyService', () => {
       email: 'same_email@mail.com',
       cnpj: '58.017.080/0001-78',
       password: 'valid_password',
+      latitude: -222222,
+      longitude: 222222,
     });
 
     await expect(
@@ -46,6 +62,8 @@ describe('CreateAgencyService', () => {
         email: 'same_email@mail.com',
         cnpj: '58.017.080/0001-78',
         password: 'valid_password',
+        latitude: -222222,
+        longitude: 222222,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -56,6 +74,8 @@ describe('CreateAgencyService', () => {
       email: 'same_email@mail.com',
       cnpj: '58.017.080/0001-78',
       password: 'valid_password',
+      latitude: -222222,
+      longitude: 222222,
     });
 
     await expect(
@@ -64,6 +84,8 @@ describe('CreateAgencyService', () => {
         email: 'same_email2@mail.com',
         cnpj: '58.017.080/0001-78',
         password: 'valid_password',
+        latitude: -222222,
+        longitude: 222222,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
