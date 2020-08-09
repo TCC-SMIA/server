@@ -2,7 +2,6 @@ import { uuid } from 'uuidv4';
 
 import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
-import ICreateComplaintDTO from '@domains/complaints/dtos/ICreateComplaintDTO';
 
 class FakeComplaintsRepository implements IComplaintsRepository {
   private complaints: Complaint[] = [];
@@ -23,7 +22,7 @@ class FakeComplaintsRepository implements IComplaintsRepository {
     return complaintExists;
   }
 
-  public async create(complaintData: ICreateComplaintDTO): Promise<Complaint> {
+  public async create(complaintData: Partial<Complaint>): Promise<Complaint> {
     const complaint = new Complaint();
 
     Object.assign(complaint, { id: uuid() }, complaintData);
