@@ -47,6 +47,9 @@ class ComplaintsRepository implements IComplaintsRepository {
     const complaints = await this.complaintsRepository.find({
       skip,
       take,
+      order: {
+        created_at: 'DESC',
+      },
     });
 
     return complaints;
