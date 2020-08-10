@@ -15,7 +15,7 @@ describe('ListComplaintsService', () => {
   it('should be able to list the complaints created', async () => {
     const date = new Date();
 
-    const complaint = await fakeComplaintsRepository.create({
+    await fakeComplaintsRepository.create({
       user_id: 'valid_id',
       title: 'New anonynmous Complaint',
       description: 'We found a new planet',
@@ -25,11 +25,21 @@ describe('ListComplaintsService', () => {
       date,
     });
 
+    await fakeComplaintsRepository.create({
+      user_id: 'valid_id',
+      title: 'New anonynmous Complaint',
+      description: 'We found a new planet',
+      latitude: -222222,
+      longitude: 222222,
+      anonymous: false,
+      date,
+    });
+
     const listComplaints = await listComplaintsService.execute({
       skip: 0,
       take: 10,
     });
 
-    expect(listComplaints).toHaveLength(1);
+    expect(listComplaints).toHaveLength(2);
   });
 });
