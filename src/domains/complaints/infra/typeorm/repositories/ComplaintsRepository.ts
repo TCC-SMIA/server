@@ -51,6 +51,10 @@ class ComplaintsRepository implements IComplaintsRepository {
 
     return complaints;
   }
+
+  public async delete(complaint: Complaint): Promise<void> {
+    await this.complaintsRepository.remove(complaint);
+  }
 }
 
 export default ComplaintsRepository;
