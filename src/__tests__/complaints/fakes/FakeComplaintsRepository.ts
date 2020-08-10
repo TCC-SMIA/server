@@ -41,8 +41,6 @@ class FakeComplaintsRepository implements IComplaintsRepository {
   public async findAllComplaints(skip = 0, take = 10): Promise<Complaint[]> {
     const findComplaints = this.complaints.slice(skip, take);
 
-    console.log(findComplaints);
-
     return findComplaints;
   }
 }
