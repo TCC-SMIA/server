@@ -21,6 +21,7 @@ const createSessionValidator = async (
       password: Yup.string()
         .min(6, 'At least 6 characters in the password field')
         .required('Password is a required field'),
+      user_type: Yup.string().required('User type is missing'),
     });
 
     await userSchema.validate(userData, { abortEarly: false });
