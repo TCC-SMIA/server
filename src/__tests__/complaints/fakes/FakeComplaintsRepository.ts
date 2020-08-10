@@ -38,13 +38,12 @@ class FakeComplaintsRepository implements IComplaintsRepository {
     return complaint;
   }
 
-  public async findAllComplaints(
-    skip: number,
-    take: number,
-  ): Promise<Complaint[]> {
-    const complaints = this.complaints.slice(skip, take);
+  public async findAllComplaints(skip = 0, take = 10): Promise<Complaint[]> {
+    const findComplaints = this.complaints.slice(skip, take);
 
-    return complaints;
+    console.log(findComplaints);
+
+    return findComplaints;
   }
 }
 

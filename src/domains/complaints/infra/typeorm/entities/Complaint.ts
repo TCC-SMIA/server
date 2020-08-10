@@ -12,7 +12,7 @@ import User from '@domains/users/infra/typeorm/entities/User';
 @Entity('complaints')
 class Complaint {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Column()
   user_id!: string;
