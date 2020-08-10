@@ -20,6 +20,9 @@ describe('CreateUserService', () => {
   });
 
   it('Should be able to create a new reporter', async () => {
+    jest
+      .spyOn(fakeHashProvider, 'generateHash')
+      .mockReturnValueOnce(Promise.resolve('hashed_password'));
     const user = await createUserService.execute({
       name: 'jhon',
       email: 'doe@doe.com',
@@ -27,7 +30,12 @@ describe('CreateUserService', () => {
       password: '123123',
     });
 
+    expect(user).toBeTruthy();
+    expect(user.id).toBeTruthy();
     expect(user.name).toBe('jhon');
+    expect(user.email).toBe('doe@doe.com');
+    expect(user.nickname).toBe('johnzins');
+    expect(user.password).toBe('hashed_password');
   });
 
   it('Should not able to create a new reporter with the same email', async () => {

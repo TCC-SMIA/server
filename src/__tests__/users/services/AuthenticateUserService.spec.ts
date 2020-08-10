@@ -41,6 +41,7 @@ describe('AuthenticateUserService', () => {
 
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
+    expect(response.user.id).toBeTruthy();
   });
 
   it('should not be able authenticate with wrong email/password combination', async () => {
@@ -119,8 +120,69 @@ describe('AuthenticateUserService', () => {
       authenticateUserService.execute({
         email: 'mail@mail.com',
         password: '123123',
-        user_type: 'any_type',
+        user_type: 'invalid_type',
       }),
     ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should authenticate an User with correct values', async () => {
+    const createMock = jest.spyOn(fakeUsersRepository, 'create');
+    const executeMock = jest.spyOn(authenticateUserService, 'execute');
+
+    await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+    });
+
+    await authenticateUserService.execute({
+      email: 'doe@doe.com',
+      password: '123123',
+      user_type: UserTypes.Reporter,
+    });
+
+    expect(executeMock).toHaveBeenCalledWith({
+      email: 'doe@doe.com',
+      password: '123123',
+      user_type: UserTypes.Reporter,
+    });
+    expect(createMock).toHaveBeenCalledWith({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+    });
+  });
+
+  it('should authenticate an Agency with correct values', async () => {
+    const createMock = jest.spyOn(fakeAgencyRepository, 'create');
+    const executeMock = jest.spyOn(authenticateUserService, 'execute');
+
+    await fakeAgencyRepository.create({
+      name: 'any_name',
+      email: 'mail@mail.com',
+      password: '123123',
+      cnpj: '12312331231',
+    });
+
+    await authenticateUserService.execute({
+      email: 'mail@mail.com',
+      password: '123123',
+      user_type: UserTypes.EnvironmentalAgency,
+    });
+
+    expect(executeMock).toHaveBeenCalledWith({
+      email: 'mail@mail.com',
+      password: '123123',
+      user_type: UserTypes.EnvironmentalAgency,
+    });
+
+    expect(createMock).toHaveBeenCalledWith({
+      name: 'any_name',
+      email: 'mail@mail.com',
+      password: '123123',
+      cnpj: '12312331231',
+    });
   });
 });
