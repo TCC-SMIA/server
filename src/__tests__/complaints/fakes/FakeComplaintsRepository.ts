@@ -43,6 +43,14 @@ class FakeComplaintsRepository implements IComplaintsRepository {
 
     return findComplaints;
   }
+
+  public async delete(complaint: Complaint): Promise<void> {
+    const complaintIndex = this.complaints.findIndex(
+      complaintItem => complaintItem.id === complaint.id,
+    );
+
+    this.complaints.slice(complaintIndex);
+  }
 }
 
 export default FakeComplaintsRepository;
