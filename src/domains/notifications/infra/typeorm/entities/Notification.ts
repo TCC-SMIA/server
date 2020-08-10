@@ -1,16 +1,15 @@
 import {
-  ObjectID,
-  ObjectIdColumn,
   Entity,
   Column,
   UpdateDateColumn,
   CreateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('notifications')
 class Notification {
-  @ObjectIdColumn()
-  id: ObjectID;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   content: string;
