@@ -1,19 +1,11 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import Agency from '@domains/users/infra/typeorm/entities/Agency';
 
+import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-
-interface IRequest {
-  name: string;
-  cnpj: string;
-  email: string;
-  latitude: number;
-  longitude: number;
-  password: string;
-}
+import { ICreateAgencyDTO } from '../dtos/ICreateAgencyDTO';
 
 @injectable()
 class CreateAgencyService {
@@ -32,7 +24,7 @@ class CreateAgencyService {
     password,
     latitude,
     longitude,
-  }: IRequest): Promise<Agency> {
+  }: ICreateAgencyDTO): Promise<Agency> {
     const checkEmailExist = await this.agencyRepository.findByEmail(email);
 
     if (checkEmailExist) {
