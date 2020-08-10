@@ -9,16 +9,20 @@ import {
 } from 'typeorm';
 import User from '@domains/users/infra/typeorm/entities/User';
 
+import { Exclude } from 'class-transformer';
+
 @Entity('complaints')
 class Complaint {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
+  @Exclude()
   user_id!: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
+  @Exclude()
   user!: User;
 
   @Column()
