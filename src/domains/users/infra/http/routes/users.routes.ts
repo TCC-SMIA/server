@@ -15,5 +15,6 @@ userRoutes.use(ensureAuthenticate);
 
 userRoutes.put('/profile', updateUserValidator, UsersController.update);
 userRoutes.get('/profile', UsersController.show);
+userRoutes.delete('/', UsersController.delete);
 
 export default userRoutes;

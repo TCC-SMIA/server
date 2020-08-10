@@ -11,10 +11,6 @@ const createAgencyValidator = async (
 ): Promise<Response | void> => {
   const agencyData = request.body;
 
-  /*
-    name, cnpj, email, password
-  */
-
   try {
     const agencySchema = Yup.object().shape({
       name: Yup.string()
@@ -27,6 +23,8 @@ const createAgencyValidator = async (
         /([0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2})$/,
         'Insert a valid CNPJ.',
       ),
+      latitude: Yup.number().required('Latitude must be provided'),
+      longitude: Yup.number().required('Longitude must be provided'),
       email: Yup.string().email('Insert a valid email.'),
       password: Yup.string()
         .min(6, 'At least 6 characters in the password field.')

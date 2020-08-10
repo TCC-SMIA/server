@@ -10,6 +10,8 @@ interface IRequest {
   name: string;
   cnpj: string;
   email: string;
+  latitude: number;
+  longitude: number;
   password: string;
 }
 
@@ -23,7 +25,14 @@ class CreateAgencyService {
     private hashProvider: IHashProvider,
   ) {}
 
-  async execute({ name, cnpj, email, password }: IRequest): Promise<Agency> {
+  async execute({
+    name,
+    cnpj,
+    email,
+    password,
+    latitude,
+    longitude,
+  }: IRequest): Promise<Agency> {
     const checkEmailExist = await this.agencyRepository.findByEmail(email);
 
     if (checkEmailExist) {
@@ -33,7 +42,7 @@ class CreateAgencyService {
     const checkCnpj = await this.agencyRepository.findByCnpj(cnpj);
 
     if (checkCnpj) {
-      throw new AppError('CNPJ already used');
+      throw new AppError('CNPJ already exists');
     }
 
     const hashedPassword = await this.hashProvider.generateHash(password);
@@ -42,6 +51,8 @@ class CreateAgencyService {
       name,
       cnpj,
       email,
+      latitude,
+      longitude,
       password: hashedPassword,
     });
 

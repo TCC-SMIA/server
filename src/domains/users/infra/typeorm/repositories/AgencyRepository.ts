@@ -2,7 +2,6 @@ import { Repository, getRepository } from 'typeorm';
 
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import Agency from '@domains/users/infra/typeorm/entities/Agency';
-import ICreateAgencyDTO from '@domains/users/dtos/ICreateAgencyDTO';
 
 class AgencyRepository implements IAgencyRepository {
   private agencyRepository: Repository<Agency>;
@@ -17,7 +16,7 @@ class AgencyRepository implements IAgencyRepository {
     return agency;
   }
 
-  public async create(agencyData: ICreateAgencyDTO): Promise<Agency> {
+  public async create(agencyData: Partial<Agency>): Promise<Agency> {
     const agency = this.agencyRepository.create(agencyData);
 
     await this.agencyRepository.save(agency);

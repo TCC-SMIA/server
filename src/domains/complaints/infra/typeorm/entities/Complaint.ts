@@ -12,35 +12,41 @@ import User from '@domains/users/infra/typeorm/entities/User';
 @Entity('complaints')
 class Complaint {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  user_id: string;
+  user_id!: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user!: User;
 
   @Column()
-  title: string;
+  title!: string;
 
   @Column()
-  description: string;
+  description!: string;
 
   @Column({ default: false })
-  resolved: boolean;
+  resolved!: boolean;
 
   @Column('timestamp with time zone')
-  date: Date;
+  date!: Date;
 
-  @Column({ type: 'point', nullable: true })
-  location: string;
+  @Column({ type: 'real' })
+  latitude!: number;
+
+  @Column({ type: 'real' })
+  longitude!: number;
+
+  @Column({ default: false })
+  anonymous!: boolean;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }
 
 export default Complaint;
