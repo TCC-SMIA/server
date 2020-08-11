@@ -73,4 +73,30 @@ describe('CreateUserService', () => {
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
+
+  it('Should calls create with correct values', async () => {
+    const mockedCreate = jest.spyOn(fakeUsersRepository, 'create');
+    jest
+      .spyOn(fakeHashProvider, 'generateHash')
+      .mockReturnValueOnce(Promise.resolve('hashed_password'));
+    const user = await createUserService.execute({
+      name: 'jhon',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+    });
+
+    expect(user).toBeTruthy();
+    expect(user.id).toBeTruthy();
+    expect(user.name).toBe('jhon');
+    expect(user.email).toBe('doe@doe.com');
+    expect(user.nickname).toBe('johnzins');
+    expect(user.password).toBe('hashed_password');
+    expect(mockedCreate).toHaveBeenLastCalledWith({
+      name: 'jhon',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: 'hashed_password',
+    });
+  });
 });

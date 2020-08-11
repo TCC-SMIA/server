@@ -25,6 +25,7 @@ describe('ShowAgencyService', () => {
       agencyId: agency.id,
     });
 
+    expect(agencyProfile.id).toBe(agency.id);
     expect(agencyProfile.name).toBe('valid_agency_name');
     expect(agencyProfile.email).toBe('valid_email@mail.com');
     expect(agencyProfile.cnpj).toBe('58.017.080/0001-78');

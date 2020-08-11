@@ -14,6 +14,7 @@ describe('CreateComplaintService', () => {
   });
 
   it('should be able to create a complaint', async () => {
+    const date = new Date();
     const complaint = await createComplaintService.execute({
       user_id: 'anyuserid',
       title: 'test complaint created',
@@ -21,10 +22,17 @@ describe('CreateComplaintService', () => {
       latitude: -222222,
       longitude: 222222,
       anonymous: false,
-      date: new Date(),
+      date,
     });
 
+    expect(complaint).toBeTruthy();
+    expect(complaint.id).toBeTruthy();
     expect(complaint.title).toBe('test complaint created');
+    expect(complaint.description).toBe('description of complaint created');
+    expect(complaint.latitude).toBe(-222222);
+    expect(complaint.longitude).toBe(222222);
+    expect(complaint.anonymous).toBe(false);
+    expect(complaint.date).toBe(date);
   });
 
   it('should be able to create a anonymous complaint', async () => {
