@@ -9,6 +9,8 @@ const complaintsRoutes = Router();
 complaintsRoutes.use(ensureAuthenticate);
 
 complaintsRoutes.post('/', ComplaintsController.create);
+complaintsRoutes.put('/update', ComplaintsController.update);
 complaintsRoutes.get('/', ComplaintsController.index);
+complaintsRoutes.delete('/delete', ComplaintsController.delete);
 
 export default complaintsRoutes;
