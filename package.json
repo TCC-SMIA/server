@@ -12,6 +12,8 @@
         "test": "jest --passWithNoTests --watch",
         "test:staged": "jest --passWithNoTests --findRelatedTests",
         "test:resumed": "jest --passWithNoTests --watchAll --silent --noStackTrace",
+        "lint:fix": "yarn lint --fix --quiet",
+        "lint": "eslint src/ --ext .ts",
         "test:ci": "jest --passWithNoTests"
     },
     "dependencies": {
