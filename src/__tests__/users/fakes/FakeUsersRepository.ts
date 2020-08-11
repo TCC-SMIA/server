@@ -6,10 +6,12 @@ import IUsersRepository from '@domains/users/rules/IUsersRepository';
 class FakeUsersRepository implements IUsersRepository {
   private users: User[] = [];
 
-  public async save(user: User): Promise<User> {
-    this.users.push(user);
+  public async update(user: User): Promise<User> {
+    const userIndex = this.users.findIndex(findUser => findUser.id === user.id);
 
-    return user;
+    this.users[userIndex] = user;
+
+    return this.users[userIndex];
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
