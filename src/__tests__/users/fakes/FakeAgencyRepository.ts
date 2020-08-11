@@ -28,10 +28,14 @@ class FakeAgencyRepository implements IAgencyRepository {
     return agency;
   }
 
-  public async save(agency: Agency): Promise<Agency> {
-    this.agencies.push(agency);
+  public async update(agency: Agency): Promise<Agency> {
+    const agencyIndex = this.agencies.findIndex(
+      findAgency => findAgency.id === agency.id,
+    );
 
-    return agency;
+    this.agencies[agencyIndex] = agency;
+
+    return this.agencies[agencyIndex];
   }
 
   public async findByEmail(email: string): Promise<Agency | undefined> {

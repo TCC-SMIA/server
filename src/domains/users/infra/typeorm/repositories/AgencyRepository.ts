@@ -24,7 +24,7 @@ class AgencyRepository implements IAgencyRepository {
     return agency;
   }
 
-  public async save(agency: Agency): Promise<Agency> {
+  public async update(agency: Agency): Promise<Agency> {
     return this.agencyRepository.save(agency);
   }
 

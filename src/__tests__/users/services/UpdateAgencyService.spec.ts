@@ -34,8 +34,37 @@ describe('UpdateAgencyService', () => {
       email: 'validupdatedemail@email.com',
     });
 
+    expect(updatedAgency).toBeTruthy();
+    expect(updatedAgency.id).toBeTruthy();
     expect(updatedAgency.name).toBe('Updated Valid Name');
     expect(updatedAgency.email).toBe('validupdatedemail@email.com');
+  });
+
+  it('should be able to update the agency', async () => {
+    const updateMock = jest.spyOn(fakeAgencyRepository, 'update');
+    const agency = await fakeAgencyRepository.create({
+      name: 'Valid Agency Name',
+      cnpj: '60603851000150',
+      email: 'validemail@email.com',
+      password: '123456,',
+    });
+
+    const updatedAgency = await updateAgencyService.execute({
+      agencyId: agency.id,
+      name: 'Updated Valid Name',
+      email: 'validupdatedemail@email.com',
+    });
+
+    Object.assign(agency, {
+      name: 'Updated Valid Name',
+      email: 'validupdatedemail@email.com',
+    });
+
+    expect(updatedAgency).toBeTruthy();
+    expect(updatedAgency.id).toBeTruthy();
+    expect(updatedAgency.name).toBe('Updated Valid Name');
+    expect(updatedAgency.email).toBe('validupdatedemail@email.com');
+    expect(updateMock).toHaveBeenCalledWith(agency);
   });
 
   it('should be able to update the agency password', async () => {

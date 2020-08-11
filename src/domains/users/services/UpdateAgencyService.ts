@@ -73,7 +73,7 @@ class UpdateAgencyService {
       agency.password = await this.hashProvider.generateHash(password);
     }
 
-    const updateAgency = await this.agencyRepository.save(agency);
+    const updateAgency = await this.agencyRepository.update(agency);
 
     return updateAgency;
   }
