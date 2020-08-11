@@ -14,7 +14,7 @@ import { Exclude } from 'class-transformer';
 @Entity('complaints')
 class Complaint {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
   @Exclude()
