@@ -7,13 +7,12 @@ import Notification from '@domains/notifications/infra/typeorm/entities/Notifica
 class FakeNotificationsRepository implements INotificationsRepository {
   private notifications: Notification[] = [];
 
-  public async create({
-    user_id,
-    content,
-  }: ICreateNotificationDTO): Promise<Notification> {
+  public async create(
+    notificationData: ICreateNotificationDTO,
+  ): Promise<Notification> {
     const notification = new Notification();
 
-    Object.assign(notification, { id: v4(), user_id, content });
+    Object.assign(notification, { id: v4() }, notificationData);
 
     this.notifications.push(notification);
 

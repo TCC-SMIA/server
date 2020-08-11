@@ -1,7 +1,8 @@
+import { Repository, getRepository } from 'typeorm';
+
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import ICreateNotificationDTO from '@domains/notifications/dtos/ICreateNotificationsDTO';
-import { Repository, getRepository } from 'typeorm';
-import Notification from '../entities/Notification';
+import Notification from '@domains/notifications/infra/typeorm/entities/Notification';
 
 class NotificationsRepository implements INotificationsRepository {
   private ormRepository: Repository<Notification>;
@@ -14,14 +15,14 @@ class NotificationsRepository implements INotificationsRepository {
     user_id,
     content,
   }: ICreateNotificationDTO): Promise<Notification> {
-    const newNotification = this.ormRepository.create({
+    const notification = this.ormRepository.create({
       content,
       user_id,
     });
 
-    await this.ormRepository.save(newNotification);
+    await this.ormRepository.save(notification);
 
-    return newNotification;
+    return notification;
   }
 }
 
