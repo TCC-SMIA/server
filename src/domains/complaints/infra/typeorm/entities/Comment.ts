@@ -27,7 +27,7 @@ class Comment {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  user!: Complaint;
+  user!: User;
 
   @Column()
   content!: string;
