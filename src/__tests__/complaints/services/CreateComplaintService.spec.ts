@@ -25,6 +25,7 @@ describe('CreateComplaintService', () => {
       user_id: 'anyuserid',
       title: 'test complaint created',
       description: 'description of complaint created',
+      imageFilename: 'image.jpg',
       latitude: -222222,
       longitude: 222222,
       anonymous: false,
@@ -39,6 +40,7 @@ describe('CreateComplaintService', () => {
     expect(complaint.longitude).toBe(222222);
     expect(complaint.anonymous).toBe(false);
     expect(complaint.date).toBe(date);
+    expect(complaint.image).toBe('image.jpg');
   });
 
   it('should be able to create a anonymous complaint', async () => {
