@@ -1,15 +1,21 @@
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import CreateComplaintService from '@domains/complaints/services/CreateComplaintService';
+import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
+import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider.ts/FakeStorageProvider';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
+let fakeStorageProvider: IStorageProvider;
 let createComplaintService: CreateComplaintService;
 
 describe('CreateComplaintService', () => {
   beforeEach(() => {
     fakeComplaintsRepository = new FakeComplaintsRepository();
+    fakeStorageProvider = new FakeStorageProvider();
+
     createComplaintService = new CreateComplaintService(
       fakeComplaintsRepository,
+      fakeStorageProvider,
     );
   });
 
@@ -61,6 +67,7 @@ describe('CreateComplaintService', () => {
       user_id: 'valid_id',
       title: 'New anonynmous Complaint',
       description: 'We found a new planet',
+      image: '',
       latitude: -222222,
       longitude: 222222,
       anonymous: true,

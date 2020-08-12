@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import User from '@domains/users/infra/typeorm/entities/User';
 
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity('complaints')
 class Complaint {
@@ -34,6 +34,9 @@ class Complaint {
   @Column({ default: false })
   resolved!: boolean;
 
+  @Column({ nullable: true })
+  image: string;
+
   @Column('timestamp with time zone')
   date!: Date;
 
@@ -51,6 +54,15 @@ class Complaint {
 
   @UpdateDateColumn()
   updated_at!: Date;
+
+  @Expose({ name: 'image_url' })
+  getAvatarUrl(): string | null {
+    if (!this.image) {
+      return null;
+    }
+
+    return `${process.env.APP_URL}/files/${this.image}`;
+  }
 }
 
 export default Complaint;

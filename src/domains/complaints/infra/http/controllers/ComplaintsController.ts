@@ -5,7 +5,7 @@ import CreateComplaintService from '@domains/complaints/services/CreateComplaint
 import ListComplaintsService from '@domains/complaints/services/ListComplaintsService';
 import UpdateComplaintService from '@domains/complaints/services/UpdateComplaintService';
 import DeleteComplaintService from '@domains/complaints/services/DeleteComplaintService';
-import { resolve } from 'url';
+import { classToClass } from 'class-transformer';
 
 class ComplaintsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -19,6 +19,8 @@ class ComplaintsController {
       anonymous,
     } = request.body;
 
+    const { filename } = request.file;
+
     const createComplaintService = container.resolve(CreateComplaintService);
 
     const newComplaint = await createComplaintService.execute({
@@ -29,9 +31,10 @@ class ComplaintsController {
       longitude,
       anonymous,
       date,
+      imageFilename: filename,
     });
 
-    return response.json(newComplaint);
+    return response.json(classToClass(newComplaint));
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
