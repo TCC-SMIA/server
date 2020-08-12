@@ -1,4 +1,4 @@
 export enum UserTypes {
-  Reporter = 'Reporter',
-  EnvironmentalAgency = 'Agency',
+  Reporter = 1,
+  EnvironmentalAgency = 2,
 }

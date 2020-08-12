@@ -3,7 +3,6 @@ import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
-import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
 import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
@@ -34,9 +33,8 @@ describe('AuthenticateUserService', () => {
     });
 
     const response = await authenticateUserService.execute({
-      email: 'doe@doe.com',
+      login: 'doe@doe.com',
       password: '123123',
-      user_type: UserTypes.Reporter,
     });
 
     expect(response).toHaveProperty('token');
@@ -54,9 +52,8 @@ describe('AuthenticateUserService', () => {
 
     await expect(
       authenticateUserService.execute({
-        email: 'doe@doe.com',
+        login: 'doe@doe.com',
         password: '1231232',
-        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -71,9 +68,8 @@ describe('AuthenticateUserService', () => {
 
     await expect(
       authenticateUserService.execute({
-        nickname: 'johnzins',
+        login: 'johnzins',
         password: '1231232',
-        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -81,9 +77,8 @@ describe('AuthenticateUserService', () => {
   it('should not be able authenticate with a non existing user', async () => {
     await expect(
       authenticateUserService.execute({
-        nickname: 'johnzins',
+        login: 'johnzins',
         password: '1231232',
-        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -97,9 +92,8 @@ describe('AuthenticateUserService', () => {
     });
 
     const response = await authenticateUserService.execute({
-      email: 'mail@mail.com',
+      login: 'mail@mail.com',
       password: '123123',
-      user_type: UserTypes.EnvironmentalAgency,
     });
 
     expect(response).toHaveProperty('token');
@@ -109,18 +103,8 @@ describe('AuthenticateUserService', () => {
   it('should not be able to authenticate an environmental agency without sending an email', async () => {
     await expect(
       authenticateUserService.execute({
+        login: '',
         password: '123123',
-        user_type: UserTypes.EnvironmentalAgency,
-      }),
-    ).rejects.toBeInstanceOf(AppError);
-  });
-
-  it('should not be able to authenticate with a non valid user type', async () => {
-    await expect(
-      authenticateUserService.execute({
-        email: 'mail@mail.com',
-        password: '123123',
-        user_type: 'invalid_type',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -137,15 +121,13 @@ describe('AuthenticateUserService', () => {
     });
 
     await authenticateUserService.execute({
-      email: 'doe@doe.com',
+      login: 'doe@doe.com',
       password: '123123',
-      user_type: UserTypes.Reporter,
     });
 
     expect(executeMock).toHaveBeenCalledWith({
-      email: 'doe@doe.com',
+      login: 'doe@doe.com',
       password: '123123',
-      user_type: UserTypes.Reporter,
     });
     expect(createMock).toHaveBeenCalledWith({
       name: 'John Doe',
@@ -167,15 +149,13 @@ describe('AuthenticateUserService', () => {
     });
 
     await authenticateUserService.execute({
-      email: 'mail@mail.com',
+      login: 'mail@mail.com',
       password: '123123',
-      user_type: UserTypes.EnvironmentalAgency,
     });
 
     expect(executeMock).toHaveBeenCalledWith({
-      email: 'mail@mail.com',
+      login: 'mail@mail.com',
       password: '123123',
-      user_type: UserTypes.EnvironmentalAgency,
     });
 
     expect(createMock).toHaveBeenCalledWith({
