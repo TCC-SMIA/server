@@ -1,7 +1,7 @@
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import CreateComplaintService from '@domains/complaints/services/CreateComplaintService';
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
-import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider.ts/FakeStorageProvider';
+import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider/FakeStorageProvider';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
