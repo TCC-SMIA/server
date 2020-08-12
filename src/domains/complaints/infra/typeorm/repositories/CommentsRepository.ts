@@ -16,10 +16,11 @@ class CommentsRepository implements ICommentsRepository {
     user: User,
     complaint: Complaint,
     content: string,
+    date: Date,
   ): Promise<Comment> {
     const comment = new Comment();
 
-    Object.assign(comment, { content, user, complaint });
+    Object.assign(comment, { content, user, complaint, date });
     const createdComment = this.commentRepository.create(comment);
 
     const storedComment = await this.commentRepository.save(createdComment);

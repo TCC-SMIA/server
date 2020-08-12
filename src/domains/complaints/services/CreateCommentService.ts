@@ -10,6 +10,7 @@ interface CreateCommentRequest {
   user_id: string;
   complaint_id: string;
   content: string;
+  date: Date;
 }
 
 @injectable()
@@ -32,6 +33,7 @@ class CreateCommentService {
     user_id,
     complaint_id,
     content,
+    date,
   }: CreateCommentRequest): Promise<Comment> {
     const user = await this.usersRepository.findById(user_id);
 
@@ -49,10 +51,11 @@ class CreateCommentService {
       user,
       complaint,
       content,
+      date,
     );
 
     await this.notificationsRepository.create({
-      user_id: complaint.id,
+      user_id: complaint.user_id,
       content: `Novo comentário de ${user.name} na sua publicação.`,
     });
 

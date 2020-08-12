@@ -11,10 +11,11 @@ class FakeCommentsRepository implements ICommentsRepository {
     user: User,
     complaint: Complaint,
     content: string,
+    date: Date,
   ): Promise<Comment> {
     const comment = new Comment();
 
-    Object.assign(comment, { content, user, complaint });
+    Object.assign(comment, { content, user, complaint, date });
 
     comment.id = v4();
 
