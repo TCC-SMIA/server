@@ -53,6 +53,11 @@ class CreateComplaintService {
       image: filename,
     });
 
+    if (complaint.anonymous) {
+      delete complaint.user;
+      delete complaint.user_id;
+    }
+
     return complaint;
   }
 }

@@ -56,7 +56,8 @@ class UpdateComplaintService {
     const updatedComplaint = await this.complaintsRepository.save(complaint);
 
     if (updatedComplaint.anonymous) {
-      return classToClass(updatedComplaint);
+      delete updatedComplaint.user_id;
+      delete updatedComplaint.user;
     }
 
     return updatedComplaint;

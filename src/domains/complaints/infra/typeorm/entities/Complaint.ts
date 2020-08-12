@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import User from '@domains/users/infra/typeorm/entities/User';
 
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
 @Entity('complaints')
 class Complaint {
@@ -17,12 +17,10 @@ class Complaint {
   id!: string;
 
   @Column()
-  @Exclude()
   user_id!: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
-  @Exclude()
   user!: User;
 
   @Column()
