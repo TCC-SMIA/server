@@ -34,10 +34,8 @@ This project is being developed using these technologies:
 - Make sure you have NodeJS installed on your machine.
 - Download or clone this project.
 - Create a PostgreSQL database called `smia`.
-- Have a mongoDb driver installed.
 - If you are using Yarn as a package manager.
   - Run `yarn` to install all the necessary dependencies.
-  - Run `yarn typeorm migration:run` to create tables on database.
   - Run `yarn dev:server` to start the Server.
 - After all the instructions you can see the server running on port http://localhost:3333.
 
