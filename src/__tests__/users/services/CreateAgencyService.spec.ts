@@ -50,7 +50,7 @@ describe('CreateAgencyService', () => {
     await createAgencyService.execute({
       name: 'valid_agency_name',
       email: 'same_email@mail.com',
-      cnpj: '58.017.080/0001-78',
+      cnpj: '62728791000128',
       password: 'valid_password',
       latitude: -222222,
       longitude: 222222,
@@ -58,7 +58,7 @@ describe('CreateAgencyService', () => {
 
     await expect(
       createAgencyService.execute({
-        name: 'valid_agency_name',
+        name: 'valid_second_agency_name',
         email: 'same_email@mail.com',
         cnpj: '58.017.080/0001-78',
         password: 'valid_password',
@@ -71,8 +71,8 @@ describe('CreateAgencyService', () => {
   it('should not able to create a new agency with an existing cnpj', async () => {
     await createAgencyService.execute({
       name: 'valid_agency_name',
-      email: 'valid_email@mail.com',
-      cnpj: '58.017.080/0001-78',
+      email: 'valid_second_email@mail.com',
+      cnpj: '62728791000128',
       password: 'valid_password',
       latitude: -222222,
       longitude: 222222,
@@ -82,7 +82,7 @@ describe('CreateAgencyService', () => {
       createAgencyService.execute({
         name: 'valid_second_agency_name',
         email: 'valid_email@mail.com',
-        cnpj: '58.017.080/0001-78',
+        cnpj: '62728791000128',
         password: 'valid_password',
         latitude: -222222,
         longitude: 222222,

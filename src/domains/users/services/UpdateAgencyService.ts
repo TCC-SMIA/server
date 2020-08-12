@@ -55,6 +55,12 @@ class UpdateAgencyService {
     }
 
     if (password && oldpassword) {
+      if (password_confirmation !== password) {
+        throw new AppError(
+          'Password and password_confirmation must be the same',
+        );
+      }
+
       const passwordMatched = await this.hashProvider.compareHash(
         oldpassword,
         agency.password,
@@ -62,12 +68,6 @@ class UpdateAgencyService {
 
       if (!passwordMatched) {
         throw new AppError('old password is wrong');
-      }
-
-      if (password !== password_confirmation) {
-        throw new AppError(
-          'Password and password_confirmation must be the same',
-        );
       }
 
       agency.password = await this.hashProvider.generateHash(password);

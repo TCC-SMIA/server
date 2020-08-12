@@ -172,14 +172,14 @@ describe('UpdateAgencyService', () => {
     const agency = await fakeAgencyRepository.create({
       name: 'Valid Agency Name',
       cnpj: '25553541000178',
-      email: 'validsecondemail@email.com',
+      email: 'validemail@email.com',
       password: '123456,',
     });
 
     await expect(
       updateAgencyService.execute({
         agencyId: agency.id,
-        name: 'Valid Agency Name',
+        name: 'Valid Second Agency Name',
         email: 'validsecondemail@email.com',
         oldpassword: '123456',
         password: 'combinationOne',
