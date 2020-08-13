@@ -2,20 +2,26 @@ import IComplaintsRepository from '@domains/complaints/rules/IComplaintsReposito
 import CreateComplaintService from '@domains/complaints/services/CreateComplaintService';
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
 import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider/FakeStorageProvider';
+import FakeAgencyRepository from '@tests/users/fakes/FakeAgencyRepository';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import AppError from '@shared/errors/AppError';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
 let fakeStorageProvider: IStorageProvider;
 let createComplaintService: CreateComplaintService;
+let fakeAgencyRepository: IAgencyRepository;
 
 describe('CreateComplaintService', () => {
   beforeEach(() => {
     fakeComplaintsRepository = new FakeComplaintsRepository();
     fakeStorageProvider = new FakeStorageProvider();
+    fakeAgencyRepository = new FakeAgencyRepository();
 
     createComplaintService = new CreateComplaintService(
       fakeComplaintsRepository,
       fakeStorageProvider,
+      fakeAgencyRepository,
     );
   });
 
@@ -75,5 +81,30 @@ describe('CreateComplaintService', () => {
       anonymous: true,
       date,
     });
+  });
+
+  it('should not permit an environmental agency create a complaint', async () => {
+    const date = new Date();
+
+    const agency = await fakeAgencyRepository.create({
+      name: 'valid_agency_name',
+      email: 'same_email@mail.com',
+      cnpj: '62728791000128',
+      password: 'valid_password',
+      latitude: -222222,
+      longitude: 222222,
+    });
+
+    await expect(
+      createComplaintService.execute({
+        user_id: agency.id,
+        title: 'New anonynmous Complaint',
+        description: 'We found a new planet',
+        latitude: -222222,
+        longitude: 222222,
+        anonymous: true,
+        date,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });

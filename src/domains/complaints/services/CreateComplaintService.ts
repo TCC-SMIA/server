@@ -2,6 +2,8 @@ import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
 
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import AppError from '@shared/errors/AppError';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
@@ -24,6 +26,9 @@ class CreateComplaintService {
 
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
+
+    @inject('AgencyRepository')
+    private agencyRepository: IAgencyRepository,
   ) {}
 
   public async execute({
@@ -37,6 +42,12 @@ class CreateComplaintService {
     imageFilename,
   }: IRequest): Promise<Complaint> {
     let filename = '';
+
+    const checkIfIsAgency = await this.agencyRepository.findById(user_id);
+
+    if (checkIfIsAgency) {
+      throw new AppError('This kind of user can not create a complaint');
+    }
 
     if (imageFilename) {
       filename = await this.storageProvider.saveFile(imageFilename);
