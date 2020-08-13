@@ -46,18 +46,19 @@ class UpdateComplaintService {
       );
     }
 
-    complaint.title = title;
-    complaint.description = description;
-    complaint.latitude = latitude;
-    complaint.longitude = longitude;
-    complaint.anonymous = anonymous;
-    complaint.date = date;
+    Object.assign(complaint, {
+      title,
+      description,
+      latitude,
+      longitude,
+      anonymous,
+      date,
+    });
 
     const updatedComplaint = await this.complaintsRepository.save(complaint);
 
-    if (updatedComplaint.anonymous) {
-      delete updatedComplaint.user_id;
-      delete updatedComplaint.user;
+    if (complaint.anonymous) {
+      return classToClass(updatedComplaint);
     }
 
     return updatedComplaint;

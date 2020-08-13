@@ -4,6 +4,7 @@ import { injectable, inject } from 'tsyringe';
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
+import { classToClass } from 'class-transformer';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
@@ -65,8 +66,7 @@ class CreateComplaintService {
     });
 
     if (complaint.anonymous) {
-      delete complaint.user;
-      delete complaint.user_id;
+      return classToClass(complaint);
     }
 
     return complaint;
