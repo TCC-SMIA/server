@@ -20,7 +20,7 @@ class Notification {
   @Column()
   user_id!: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user!: User;
 
