@@ -2,19 +2,24 @@ import CreateAgencyService from '@domains/users/services/CreateAgencyService';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
 import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
+import FakeUsersRepository from '../fakes/FakeUsersRepository';
 
+let fakeUsersRepository: IUsersRepository;
 let fakeAgencyRepository: IAgencyRepository;
 let createAgencyService: CreateAgencyService;
 let fakeHashProvider: IHashProvider;
 
 describe('CreateAgencyService', () => {
   beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
     fakeAgencyRepository = new FakeAgencyRepository();
     fakeHashProvider = new FakeHashProvider();
     createAgencyService = new CreateAgencyService(
       fakeAgencyRepository,
+      fakeUsersRepository,
       fakeHashProvider,
     );
   });
