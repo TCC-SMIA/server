@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import ICommentsRepository from '../rules/ICommentsRepository';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 import Comment from '../infra/typeorm/entities/Comment';
@@ -25,8 +26,8 @@ class CreateCommentService {
     @inject('ComplaintsRepository')
     private complaintsRepository: IComplaintsRepository,
 
-    @inject('NotificationsRepository')
-    private notificationsRepository: INotificationsRepository,
+    @inject('CreateNotificationService')
+    private createNotificationService: CreateNotificationService,
   ) {}
 
   public async execute({
@@ -54,7 +55,7 @@ class CreateCommentService {
       date,
     );
 
-    await this.notificationsRepository.create({
+    await this.createNotificationService.execute({
       user_id: complaint.user_id,
       content: `Novo comentário de ${user.name} na sua publicação.`,
     });
