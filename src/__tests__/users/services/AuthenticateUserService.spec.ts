@@ -34,13 +34,14 @@ describe('AuthenticateUserService', () => {
     });
 
     const response = await authenticateUserService.execute({
-      email: 'doe@doe.com',
+      login: 'doe@doe.com',
       password: '123123',
-      user_type: UserTypes.Reporter,
     });
 
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
+    expect(response.user.id).toBeTruthy();
+    expect(response.user_type).toBe(UserTypes.Reporter);
   });
 
   it('should not be able authenticate with wrong email/password combination', async () => {
@@ -53,9 +54,8 @@ describe('AuthenticateUserService', () => {
 
     await expect(
       authenticateUserService.execute({
-        email: 'doe@doe.com',
+        login: 'doe@doe.com',
         password: '1231232',
-        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -70,9 +70,8 @@ describe('AuthenticateUserService', () => {
 
     await expect(
       authenticateUserService.execute({
-        nickname: 'johnzins',
+        login: 'johnzins',
         password: '1231232',
-        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -80,9 +79,8 @@ describe('AuthenticateUserService', () => {
   it('should not be able authenticate with a non existing user', async () => {
     await expect(
       authenticateUserService.execute({
-        nickname: 'johnzins',
+        login: 'johnzins',
         password: '1231232',
-        user_type: UserTypes.Reporter,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -96,31 +94,78 @@ describe('AuthenticateUserService', () => {
     });
 
     const response = await authenticateUserService.execute({
-      email: 'mail@mail.com',
+      login: 'mail@mail.com',
       password: '123123',
-      user_type: UserTypes.EnvironmentalAgency,
     });
 
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
+    expect(response.user_type).toBe(UserTypes.EnvironmentalAgency);
   });
 
   it('should not be able to authenticate an environmental agency without sending an email', async () => {
     await expect(
       authenticateUserService.execute({
+        login: '',
         password: '123123',
-        user_type: UserTypes.EnvironmentalAgency,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to authenticate with a non valid user type', async () => {
-    await expect(
-      authenticateUserService.execute({
-        email: 'mail@mail.com',
-        password: '123123',
-        user_type: 'any_type',
-      }),
-    ).rejects.toBeInstanceOf(AppError);
+  it('should authenticate an User with correct values', async () => {
+    const createMock = jest.spyOn(fakeUsersRepository, 'create');
+    const executeMock = jest.spyOn(authenticateUserService, 'execute');
+
+    await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+    });
+
+    await authenticateUserService.execute({
+      login: 'doe@doe.com',
+      password: '123123',
+    });
+
+    expect(executeMock).toHaveBeenCalledWith({
+      login: 'doe@doe.com',
+      password: '123123',
+    });
+    expect(createMock).toHaveBeenCalledWith({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+    });
+  });
+
+  it('should authenticate an Agency with correct values', async () => {
+    const createMock = jest.spyOn(fakeAgencyRepository, 'create');
+    const executeMock = jest.spyOn(authenticateUserService, 'execute');
+
+    await fakeAgencyRepository.create({
+      name: 'any_name',
+      email: 'mail@mail.com',
+      password: '123123',
+      cnpj: '12312331231',
+    });
+
+    await authenticateUserService.execute({
+      login: 'mail@mail.com',
+      password: '123123',
+    });
+
+    expect(executeMock).toHaveBeenCalledWith({
+      login: 'mail@mail.com',
+      password: '123123',
+    });
+
+    expect(createMock).toHaveBeenCalledWith({
+      name: 'any_name',
+      email: 'mail@mail.com',
+      password: '123123',
+      cnpj: '12312331231',
+    });
   });
 });

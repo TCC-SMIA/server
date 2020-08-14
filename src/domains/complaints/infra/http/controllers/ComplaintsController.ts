@@ -3,6 +3,9 @@ import { container } from 'tsyringe';
 
 import CreateComplaintService from '@domains/complaints/services/CreateComplaintService';
 import ListComplaintsService from '@domains/complaints/services/ListComplaintsService';
+import UpdateComplaintService from '@domains/complaints/services/UpdateComplaintService';
+import DeleteComplaintService from '@domains/complaints/services/DeleteComplaintService';
+import { classToClass } from 'class-transformer';
 
 class ComplaintsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -16,6 +19,7 @@ class ComplaintsController {
       anonymous,
     } = request.body;
 
+    const { filename } = request.file;
     const createComplaintService = container.resolve(CreateComplaintService);
 
     const newComplaint = await createComplaintService.execute({
@@ -26,9 +30,10 @@ class ComplaintsController {
       longitude,
       anonymous,
       date,
+      imageFilename: filename,
     });
 
-    return response.json(newComplaint);
+    return response.json(classToClass(newComplaint));
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
@@ -57,6 +62,50 @@ class ComplaintsController {
     });
 
     return response.json(complaints);
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const {
+      complaint_id,
+      title,
+      description,
+      latitude,
+      longitude,
+      anonymous,
+      date,
+    } = request.body;
+
+    const updateComplaintsService = container.resolve(UpdateComplaintService);
+
+    const updatedComplaint = await updateComplaintsService.execute({
+      user_id,
+      complaint_id,
+      title,
+      description,
+      latitude,
+      longitude,
+      anonymous,
+      date,
+    });
+
+    if (updatedComplaint.anonymous) {
+      return response.json(classToClass(updatedComplaint));
+    }
+
+    return response.json(updatedComplaint);
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+    const { complaint_id } = request.body;
+
+    const deleteComplaintService = container.resolve(DeleteComplaintService);
+
+    await deleteComplaintService.execute({ user_id, complaint_id });
+
+    return response.status(204).json();
   }
 }
 

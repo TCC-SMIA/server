@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { sign } from 'jsonwebtoken';
+import Validator from 'validator';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
@@ -12,15 +13,14 @@ import IAgencyRepository from '../rules/IAgencyRepository';
 import Agency from '../infra/typeorm/entities/Agency';
 
 interface IRequest {
-  email?: string;
-  nickname?: string;
+  login: string;
   password: string;
-  user_type: string;
 }
 
 interface IResponse {
   user: User | Agency;
   token: string;
+  user_type: number;
 }
 
 @injectable()
@@ -36,33 +36,25 @@ class AuthenticateUserService {
     private agencyRepository: IAgencyRepository,
   ) {}
 
-  public async execute({
-    email,
-    nickname,
-    password,
-    user_type,
-  }: IRequest): Promise<IResponse> {
+  public async execute({ login, password }: IRequest): Promise<IResponse> {
     let user: User | Agency | undefined;
+    let user_type = 0;
 
-    switch (user_type) {
-      case UserTypes.Reporter:
-        if (email) {
-          user = await this.usersRepository.findByEmail(email);
-        }
-        if (nickname) {
-          user = await this.usersRepository.findByNickname(nickname);
-        }
-        break;
+    const validEmail = Validator.isEmail(login);
 
-      case UserTypes.EnvironmentalAgency:
-        if (!email) {
-          throw new AppError('Email must be provided.');
-        }
-        user = await this.agencyRepository.findByEmail(email);
-        break;
+    if (!validEmail) {
+      user = await this.usersRepository.findByNickname(login);
+      user_type = UserTypes.Reporter;
+    }
 
-      default:
-        throw new AppError('Invalid user type.');
+    if (validEmail) {
+      user = await this.usersRepository.findByEmail(login);
+      user_type = UserTypes.Reporter;
+    }
+
+    if (!user) {
+      user = await this.agencyRepository.findByEmail(login);
+      user_type = UserTypes.EnvironmentalAgency;
     }
 
     if (!user) {
@@ -84,7 +76,7 @@ class AuthenticateUserService {
       expiresIn,
     });
 
-    return { user, token };
+    return { user, token, user_type };
   }
 }
 

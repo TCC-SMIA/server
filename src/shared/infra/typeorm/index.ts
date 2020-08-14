@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm';
 import * as path from 'path';
 
 export default createConnection({
+  name: 'default',
   type: 'postgres',
   host: process.env.DB_HOST,
   port: 5432,

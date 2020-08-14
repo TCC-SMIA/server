@@ -34,6 +34,8 @@ describe('UpdateProfileService', () => {
       nickname: 'youngman',
     });
 
+    expect(updatedUser).toBeTruthy();
+    expect(updatedUser.id).toBe(user.id);
     expect(updatedUser.name).toBe('Young Man');
     expect(updatedUser.nickname).toBe('youngman');
     expect(updatedUser.email).toBe('youngman@teste.com');
@@ -184,5 +186,33 @@ describe('UpdateProfileService', () => {
         password_confirmation: 'wrongPassword2',
       }),
     ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('Shoud calls update with correct values', async () => {
+    const updateMock = jest.spyOn(fakeUsersRepository, 'update');
+
+    const user = await fakeUsersRepository.create({
+      name: 'John Doe',
+      email: 'doe@doe.com',
+      nickname: 'johnzins',
+      password: '123123',
+    });
+
+    const updatedUser = await updateProfileService.execute({
+      userId: user.id,
+      name: 'Young Man',
+      email: 'youngman@teste.com',
+      nickname: 'youngman',
+    });
+
+    Object.assign(user, {
+      name: 'Young Man',
+      email: 'youngman@teste.com',
+      nickname: 'youngman',
+    });
+
+    expect(updatedUser).toBeTruthy();
+    expect(updatedUser.id).toBe(user.id);
+    expect(updateMock).toHaveBeenCalledWith(user);
   });
 });

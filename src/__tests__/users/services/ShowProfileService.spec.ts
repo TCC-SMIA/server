@@ -23,6 +23,7 @@ describe('ShowProfileService', () => {
 
     const profile = await showProfileService.execute({ userId: user.id });
 
+    expect(profile.id).toBe(user.id);
     expect(profile.name).toBe('John Doe');
     expect(profile.nickname).toBe('johnzins');
     expect(profile.email).toBe('doe@doe.com');

@@ -47,9 +47,17 @@ class ComplaintsRepository implements IComplaintsRepository {
     const complaints = await this.complaintsRepository.find({
       skip,
       take,
+      order: {
+        created_at: 'DESC',
+      },
+      relations: ['user'],
     });
 
     return complaints;
+  }
+
+  public async delete(complaint: Complaint): Promise<void> {
+    await this.complaintsRepository.remove(complaint);
   }
 }
 

@@ -82,7 +82,7 @@ class UpdateProfileService {
 
       user.password = await this.hashProvider.generateHash(password);
     }
-    const updatedUser = await this.usersRepository.save(user);
+    const updatedUser = await this.usersRepository.update(user);
 
     return updatedUser;
   }

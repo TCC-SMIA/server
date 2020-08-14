@@ -8,6 +8,7 @@ import cors from 'cors';
 import * as swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from '@shared/providers/Documentation/implementations/Swagger';
 
+import multerConfig from '@config/multerConfig';
 import routes from './routes';
 import globalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
 
@@ -29,6 +30,7 @@ class Server {
   private middlewares(): void {
     this.server.use(cors());
     this.server.use(express.json());
+    this.server.use('/files', express.static(multerConfig.uploadsFolder));
   }
 
   private swaggerSetup(): void {

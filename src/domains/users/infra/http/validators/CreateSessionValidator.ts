@@ -13,11 +13,7 @@ const createSessionValidator = async (
 
   try {
     const userSchema = Yup.object().shape({
-      nickname: Yup.string().matches(
-        /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
-        'Insert a valid nickname without especials characters',
-      ),
-      email: Yup.string().email('Insert a valid email.'),
+      login: Yup.string().required('Please type your login and try again'),
       password: Yup.string()
         .min(6, 'At least 6 characters in the password field')
         .required('Password is a required field'),

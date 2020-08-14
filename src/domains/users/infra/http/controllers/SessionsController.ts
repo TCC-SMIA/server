@@ -7,18 +7,16 @@ import { classToClass } from 'class-transformer';
 
 class SessionsController {
   public async create(request: Request, response: Response) {
-    const { email, nickname, password, user_type } = request.body;
+    const { login, password } = request.body;
 
     const authenticateUserService = container.resolve(AuthenticateUserService);
 
-    const { user, token } = await authenticateUserService.execute({
-      email,
-      nickname,
+    const { user, token, user_type } = await authenticateUserService.execute({
+      login,
       password,
-      user_type,
     });
 
-    return response.json({ user: classToClass(user), token });
+    return response.json({ user: classToClass(user), token, user_type });
   }
 }
 

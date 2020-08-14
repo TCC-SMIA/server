@@ -1,25 +1,21 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import Agency from '@domains/users/infra/typeorm/entities/Agency';
 
+import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-
-interface IRequest {
-  name: string;
-  cnpj: string;
-  email: string;
-  latitude: number;
-  longitude: number;
-  password: string;
-}
+import { ICreateAgencyDTO } from '../dtos/ICreateAgencyDTO';
+import IUsersRepository from '../rules/IUsersRepository';
 
 @injectable()
 class CreateAgencyService {
   constructor(
     @inject('AgencyRepository')
     private agencyRepository: IAgencyRepository,
+
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
@@ -32,10 +28,13 @@ class CreateAgencyService {
     password,
     latitude,
     longitude,
-  }: IRequest): Promise<Agency> {
-    const checkEmailExist = await this.agencyRepository.findByEmail(email);
+  }: ICreateAgencyDTO): Promise<Agency> {
+    const [checkUserEmailExists, checkAgencyEmailExists] = await Promise.all([
+      this.usersRepository.findByEmail(email),
+      this.agencyRepository.findByEmail(email),
+    ]);
 
-    if (checkEmailExist) {
+    if (checkUserEmailExists || checkAgencyEmailExists) {
       throw new AppError('Email already exists');
     }
 

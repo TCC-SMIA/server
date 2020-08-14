@@ -18,16 +18,16 @@ class Comment {
   @Column()
   complaint_id!: string;
 
-  @ManyToOne(() => Complaint)
+  @ManyToOne(() => Complaint, { cascade: true })
   @JoinColumn({ name: 'complaint_id' })
   complaint!: Complaint;
 
   @Column()
   user_id!: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
-  user!: Complaint;
+  user!: User;
 
   @Column()
   content!: string;

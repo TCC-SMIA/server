@@ -3,10 +3,10 @@ import { Router } from 'express';
 import ensureAuthenticate from '@domains/users/infra/http/middlewares/ensureAuthenticate';
 import CommentsController from '../controllers/CommentsController';
 
-const complaintsRoutes = Router();
+const commentsRoutes = Router();
 
-complaintsRoutes.use(ensureAuthenticate);
+commentsRoutes.use(ensureAuthenticate);
 
-complaintsRoutes.post('/', CommentsController.create);
+commentsRoutes.post('/', CommentsController.create);
 
-export default complaintsRoutes;
+export default commentsRoutes;
