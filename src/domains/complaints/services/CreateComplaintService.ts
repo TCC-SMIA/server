@@ -3,6 +3,10 @@ import { injectable, inject } from 'tsyringe';
 
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
 import getLocationInfo from '@shared/utils/getLocationInfo';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import AppError from '@shared/errors/AppError';
+import { classToClass } from 'class-transformer';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
@@ -25,6 +29,12 @@ class CreateComplaintService {
 
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
+
+    @inject('AgencyRepository')
+    private agencyRepository: IAgencyRepository,
+
+    @inject('CreateNotificationService')
+    private createNotificationService: CreateNotificationService,
   ) {}
 
   public async execute({
@@ -38,6 +48,12 @@ class CreateComplaintService {
     imageFilename,
   }: IRequest): Promise<Complaint> {
     let filename;
+
+    const checkIfIsAgency = await this.agencyRepository.findById(user_id);
+
+    if (checkIfIsAgency) {
+      throw new AppError('This kind of user can not create a complaint');
+    }
 
     if (imageFilename) {
       filename = await this.storageProvider.saveFile(imageFilename);
@@ -58,9 +74,13 @@ class CreateComplaintService {
       image: filename,
     });
 
+    await this.createNotificationService.execute({
+      user_id: complaint.user_id,
+      content: `Sua denuncia foi criada com sucesso!`,
+    });
+
     if (complaint.anonymous) {
-      delete complaint.user;
-      delete complaint.user_id;
+      return classToClass(complaint);
     }
 
     return complaint;

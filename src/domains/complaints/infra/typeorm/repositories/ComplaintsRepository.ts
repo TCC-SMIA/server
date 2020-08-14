@@ -50,6 +50,7 @@ class ComplaintsRepository implements IComplaintsRepository {
       order: {
         created_at: 'DESC',
       },
+      relations: ['user'],
     });
 
     return complaints;

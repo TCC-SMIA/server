@@ -3,6 +3,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import { classToClass } from 'class-transformer';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
@@ -22,6 +23,9 @@ class UpdateComplaintService {
   constructor(
     @inject('ComplaintsRepository')
     private complaintsRepository: IComplaintsRepository,
+
+    @inject('CreateNotificationService')
+    private createNotificationService: CreateNotificationService,
   ) {}
 
   public async execute({
@@ -46,18 +50,24 @@ class UpdateComplaintService {
       );
     }
 
-    complaint.title = title;
-    complaint.description = description;
-    complaint.latitude = latitude;
-    complaint.longitude = longitude;
-    complaint.anonymous = anonymous;
-    complaint.date = date;
+    Object.assign(complaint, {
+      title,
+      description,
+      latitude,
+      longitude,
+      anonymous,
+      date,
+    });
 
     const updatedComplaint = await this.complaintsRepository.save(complaint);
 
-    if (updatedComplaint.anonymous) {
-      delete updatedComplaint.user_id;
-      delete updatedComplaint.user;
+    await this.createNotificationService.execute({
+      user_id: complaint.user_id,
+      content: `Sua denuncia foi atualizada com sucesso!`,
+    });
+
+    if (complaint.anonymous) {
+      return classToClass(updatedComplaint);
     }
 
     return updatedComplaint;

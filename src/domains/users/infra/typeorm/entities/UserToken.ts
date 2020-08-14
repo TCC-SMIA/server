@@ -5,7 +5,10 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   Generated,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import User from './User';
 
 @Entity('user_tokens')
 class UserToken {
@@ -18,6 +21,10 @@ class UserToken {
 
   @Column()
   user_id!: string;
+
+  @ManyToOne(() => User, { cascade: true })
+  @JoinColumn({ name: 'user_id' })
+  user!: User;
 
   @CreateDateColumn()
   created_at!: Date;

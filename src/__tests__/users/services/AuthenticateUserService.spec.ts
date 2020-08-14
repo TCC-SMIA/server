@@ -3,6 +3,7 @@ import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
 import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
@@ -40,6 +41,7 @@ describe('AuthenticateUserService', () => {
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
     expect(response.user.id).toBeTruthy();
+    expect(response.user_type).toBe(UserTypes.Reporter);
   });
 
   it('should not be able authenticate with wrong email/password combination', async () => {
@@ -98,6 +100,7 @@ describe('AuthenticateUserService', () => {
 
     expect(response).toHaveProperty('token');
     expect(response.user).toEqual(user);
+    expect(response.user_type).toBe(UserTypes.EnvironmentalAgency);
   });
 
   it('should not be able to authenticate an environmental agency without sending an email', async () => {

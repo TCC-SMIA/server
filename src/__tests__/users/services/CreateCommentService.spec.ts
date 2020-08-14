@@ -7,6 +7,7 @@ import FakeComplaintsRepository from '@tests/complaints/fakes/FakeComplaintsRepo
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeCommentsRepository from '../fakes/FakeCommentsRepository';
 
@@ -15,6 +16,7 @@ let usersRepository: IUsersRepository;
 let complaintRepository: IComplaintsRepository;
 let createCommentService: CreateCommentService;
 let notificationsRepository: INotificationsRepository;
+let createNotificationService: CreateNotificationService;
 
 describe('CreateCommentService', () => {
   beforeEach(() => {
@@ -22,12 +24,14 @@ describe('CreateCommentService', () => {
     complaintRepository = new FakeComplaintsRepository();
     commentRepository = new FakeCommentsRepository();
     notificationsRepository = new FakeNotificationsRepository();
-
+    createNotificationService = new CreateNotificationService(
+      notificationsRepository,
+    );
     createCommentService = new CreateCommentService(
       commentRepository,
       usersRepository,
       complaintRepository,
-      notificationsRepository,
+      createNotificationService,
     );
   });
 
@@ -49,13 +53,10 @@ describe('CreateCommentService', () => {
       date: new Date(),
     });
 
-    const date = new Date();
-
     const comment = await createCommentService.execute({
       user_id: user.id,
       complaint_id: complaint.id,
       content: 'New comment',
-      date,
     });
 
     expect(comment).toBeTruthy();
@@ -76,14 +77,11 @@ describe('CreateCommentService', () => {
       date: new Date(),
     });
 
-    const date = new Date();
-
     await expect(
       createCommentService.execute({
         user_id: 'invalid_id',
         complaint_id: complaint.id,
         content: 'New comment',
-        date,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -96,14 +94,11 @@ describe('CreateCommentService', () => {
       password: '123123',
     });
 
-    const date = new Date();
-
     await expect(
       createCommentService.execute({
         user_id: user.id,
         complaint_id: 'invalid_id',
         content: 'New comment',
-        date,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

@@ -18,21 +18,21 @@ class Comment {
   @Column()
   complaint_id!: string;
 
-  @ManyToOne(() => Complaint)
+  @ManyToOne(() => Complaint, { cascade: true })
   @JoinColumn({ name: 'complaint_id' })
   complaint!: Complaint;
 
   @Column()
   user_id!: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user!: User;
 
   @Column()
   content!: string;
 
-  @Column('time with time zone')
+  @Column('timestamp with time zone')
   date!: Date;
 
   @CreateDateColumn()

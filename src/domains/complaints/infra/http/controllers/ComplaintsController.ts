@@ -66,7 +66,7 @@ class ComplaintsController {
       take: Number(takeParam),
     });
 
-    return response.json(classToClass(complaints));
+    return response.json(complaints);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -95,7 +95,11 @@ class ComplaintsController {
       date,
     });
 
-    return response.json(classToClass(updatedComplaint));
+    if (updatedComplaint.anonymous) {
+      return response.json(classToClass(updatedComplaint));
+    }
+
+    return response.json(updatedComplaint);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
