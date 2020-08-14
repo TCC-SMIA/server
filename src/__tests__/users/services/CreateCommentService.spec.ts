@@ -7,6 +7,7 @@ import FakeComplaintsRepository from '@tests/complaints/fakes/FakeComplaintsRepo
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeCommentsRepository from '../fakes/FakeCommentsRepository';
 
@@ -15,6 +16,7 @@ let usersRepository: IUsersRepository;
 let complaintRepository: IComplaintsRepository;
 let createCommentService: CreateCommentService;
 let notificationsRepository: INotificationsRepository;
+let createNotificationService: CreateNotificationService;
 
 describe('CreateCommentService', () => {
   beforeEach(() => {
@@ -22,12 +24,14 @@ describe('CreateCommentService', () => {
     complaintRepository = new FakeComplaintsRepository();
     commentRepository = new FakeCommentsRepository();
     notificationsRepository = new FakeNotificationsRepository();
-
+    createNotificationService = new CreateNotificationService(
+      notificationsRepository,
+    );
     createCommentService = new CreateCommentService(
       commentRepository,
       usersRepository,
       complaintRepository,
-      notificationsRepository,
+      createNotificationService,
     );
   });
 
