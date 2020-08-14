@@ -7,7 +7,7 @@ import CreateCommentService from '@domains/complaints/services/CreateCommentServ
 class CommentsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const userId = request.user.id;
-    const { content, complaint_id, date } = request.body;
+    const { content, complaint_id } = request.body;
 
     const createCommentService = container.resolve(CreateCommentService);
 
@@ -15,7 +15,6 @@ class CommentsController {
       user_id: userId,
       content,
       complaint_id,
-      date,
     });
 
     return response.json(classToClass(comment));
