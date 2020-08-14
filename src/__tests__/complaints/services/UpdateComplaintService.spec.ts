@@ -2,19 +2,29 @@ import IComplaintsRepository from '@domains/complaints/rules/IComplaintsReposito
 import UpdateComplaintService from '@domains/complaints/services/UpdateComplaintService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
-import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
+import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeUsersRepository from '../../users/fakes/FakeUsersRepository';
+import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
 let updateComplaintService: UpdateComplaintService;
 let fakeUsersRepository: IUsersRepository;
+let fakeNotificationsRepository: INotificationsRepository;
+let createNotificationService: CreateNotificationService;
 
 describe('UpdateComplaintService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeComplaintsRepository = new FakeComplaintsRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
+    createNotificationService = new CreateNotificationService(
+      fakeNotificationsRepository,
+    );
     updateComplaintService = new UpdateComplaintService(
       fakeComplaintsRepository,
+      createNotificationService,
     );
   });
 
