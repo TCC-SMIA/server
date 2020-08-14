@@ -5,23 +5,33 @@ import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider/FakeSt
 import FakeAgencyRepository from '@tests/users/fakes/FakeAgencyRepository';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
+import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
 let fakeStorageProvider: IStorageProvider;
 let createComplaintService: CreateComplaintService;
 let fakeAgencyRepository: IAgencyRepository;
+let fakeNotificationsRepository: INotificationsRepository;
+let createNotificationService: CreateNotificationService;
 
 describe('CreateComplaintService', () => {
   beforeEach(() => {
     fakeComplaintsRepository = new FakeComplaintsRepository();
     fakeStorageProvider = new FakeStorageProvider();
     fakeAgencyRepository = new FakeAgencyRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
+    createNotificationService = new CreateNotificationService(
+      fakeNotificationsRepository,
+    );
 
     createComplaintService = new CreateComplaintService(
       fakeComplaintsRepository,
       fakeStorageProvider,
       fakeAgencyRepository,
+      createNotificationService,
     );
   });
 
