@@ -5,6 +5,7 @@ import IStorageProvider from '@shared/providers/StorageProvider/rules/IStoragePr
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
 import { classToClass } from 'class-transformer';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
@@ -30,6 +31,9 @@ class CreateComplaintService {
 
     @inject('AgencyRepository')
     private agencyRepository: IAgencyRepository,
+
+    @inject('CreateNotificationService')
+    private createNotificationService: CreateNotificationService,
   ) {}
 
   public async execute({
@@ -63,6 +67,11 @@ class CreateComplaintService {
       anonymous,
       date,
       image: filename,
+    });
+
+    await this.createNotificationService.execute({
+      user_id: complaint.user_id,
+      content: `Sua denuncia foi criada com sucesso!`,
     });
 
     if (complaint.anonymous) {
