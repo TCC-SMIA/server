@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
 
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
+import getLocationInfo from '@shared/utils/getLocationInfo';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
@@ -13,7 +14,7 @@ interface IRequest {
   longitude: number;
   anonymous: boolean;
   date: Date;
-  imageFilename?: string;
+  imageFilename?: string | undefined;
 }
 
 @injectable()
@@ -36,11 +37,13 @@ class CreateComplaintService {
     date,
     imageFilename,
   }: IRequest): Promise<Complaint> {
-    let filename = '';
+    let filename;
 
     if (imageFilename) {
       filename = await this.storageProvider.saveFile(imageFilename);
     }
+
+    const { city, state } = await getLocationInfo({ latitude, longitude });
 
     const complaint = await this.complaintsRepository.create({
       user_id,
@@ -48,6 +51,8 @@ class CreateComplaintService {
       description,
       latitude,
       longitude,
+      city,
+      state,
       anonymous,
       date,
       image: filename,

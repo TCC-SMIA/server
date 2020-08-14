@@ -44,6 +44,12 @@ class Complaint {
   @Column({ type: 'real' })
   longitude!: number;
 
+  @Column()
+  city: string;
+
+  @Column()
+  state: string;
+
   @Column({ default: false })
   anonymous!: boolean;
 

@@ -19,7 +19,11 @@ class ComplaintsController {
       anonymous,
     } = request.body;
 
-    const { filename } = request.file;
+    let filename;
+
+    if (request.file) {
+      filename = request.file.filename;
+    }
 
     const createComplaintService = container.resolve(CreateComplaintService);
 
