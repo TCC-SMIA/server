@@ -1,3 +1,4 @@
+import { request } from 'express';
 import api from './apiInstance';
 
 interface IRequest {
@@ -10,14 +11,24 @@ interface IResponse {
   state: string | undefined;
 }
 
-const getLocationInfo = async ({
+export default async function getLocationInfo({
   latitude,
   longitude,
-}: IRequest): Promise<IResponse> => {
+}: IRequest): Promise<IResponse> {
   try {
-    const response = await api.get(
-      `${process.env.OPEN_CAGE_URL}key=${process.env.OPEN_CAGE_KEY}&q=${latitude},${longitude}&pretty=1&no_annotations=1`,
-    );
+    const urlRequest = `${process.env.OPEN_CAGE_URL}`;
+
+    const response = await api.get(urlRequest, {
+      params: {
+        key: process.env.OPEN_CAGE_KEY,
+        q: `${latitude},${longitude}`,
+        pretty: 1,
+        no_annotations: 1,
+      },
+    });
+
+    console.log(urlRequest);
+    console.log(response.data.results);
 
     const { town, state } = response.data.results.components;
 
@@ -33,6 +44,4 @@ const getLocationInfo = async ({
       state: undefined,
     };
   }
-};
-
-export default getLocationInfo;
+}

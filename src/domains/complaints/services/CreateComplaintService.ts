@@ -47,13 +47,13 @@ class CreateComplaintService {
     date,
     imageFilename,
   }: IRequest): Promise<Complaint> {
-    let filename;
-
     const checkIfIsAgency = await this.agencyRepository.findById(user_id);
 
     if (checkIfIsAgency) {
       throw new AppError('This kind of user can not create a complaint');
     }
+
+    let filename;
 
     if (imageFilename) {
       filename = await this.storageProvider.saveFile(imageFilename);
@@ -80,7 +80,8 @@ class CreateComplaintService {
     });
 
     if (complaint.anonymous) {
-      return classToClass(complaint);
+      delete complaint.user;
+      delete complaint.user_id;
     }
 
     return complaint;
