@@ -59,7 +59,7 @@ class UpdateComplaintService {
       date,
     });
 
-    const updatedComplaint = await this.complaintsRepository.save(complaint);
+    await this.complaintsRepository.save(complaint);
 
     await this.createNotificationService.execute({
       user_id: complaint.user_id,
@@ -67,10 +67,11 @@ class UpdateComplaintService {
     });
 
     if (complaint.anonymous) {
-      return classToClass(updatedComplaint);
+      delete complaint.user;
+      delete complaint.user_id;
     }
 
-    return updatedComplaint;
+    return complaint;
   }
 }
 
