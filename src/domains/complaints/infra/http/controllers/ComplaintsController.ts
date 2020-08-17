@@ -25,6 +25,12 @@ class ComplaintsController {
       filename = request.file.filename;
     }
 
+    let anonymous_info = false;
+
+    if (anonymous === '1') {
+      anonymous_info = true;
+    }
+
     const createComplaintService = container.resolve(CreateComplaintService);
 
     const newComplaint = await createComplaintService.execute({
@@ -33,7 +39,7 @@ class ComplaintsController {
       description,
       latitude: Number(latitude),
       longitude: Number(longitude),
-      anonymous,
+      anonymous: anonymous_info,
       date,
       imageFilename: filename,
     });

@@ -1,4 +1,3 @@
-import { request } from 'express';
 import api from './apiInstance';
 
 interface IRequest {
@@ -27,12 +26,15 @@ export default async function getLocationInfo({
       },
     });
 
-    console.log(urlRequest);
-    console.log(response.data.results);
+    const { results } = response.data;
 
-    const { town, state } = response.data.results.components;
+    const { state } = results[0].components;
 
-    console.log(town, state);
+    let { town } = results[0].components;
+
+    if (!town) {
+      town = results[0].components.city;
+    }
 
     return {
       city: town,

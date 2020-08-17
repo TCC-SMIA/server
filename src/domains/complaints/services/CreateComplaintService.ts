@@ -5,7 +5,6 @@ import IStorageProvider from '@shared/providers/StorageProvider/rules/IStoragePr
 import getLocationInfo from '@shared/utils/getLocationInfo';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
-import { classToClass } from 'class-transformer';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
