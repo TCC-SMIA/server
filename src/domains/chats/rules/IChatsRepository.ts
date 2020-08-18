@@ -1,4 +1,4 @@
-import Chat from '@domains/chat/infra/typeorm/entities/Chat';
+import Chat from '@domains/chats/infra/typeorm/entities/Chat';
 
 export default interface IChatsRepository {
   create(chatData: Partial<Chat>): Promise<Chat>;

@@ -1,6 +1,6 @@
+import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import IChatsRepository from '../rules/IChatsRepository';

@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
-import CreateChatService from '@domains/chat/services/CreateChatService';
+import CreateChatService from '@domains/chats/services/CreateChatService';
 
 class ChatsController {
   public async create(request: Request, response: Response): Promise<Response> {

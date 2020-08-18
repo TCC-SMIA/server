@@ -6,7 +6,7 @@ import agencyRoutes from '@domains/users/infra/http/routes/agency.routes';
 import complaintsRoutes from '@domains/complaints/infra/http/routes/complaints.routes';
 import commentsRoutes from '@domains/complaints/infra/http/routes/comments.routes';
 import passwordRoutes from '@domains/users/infra/http/routes/password.routes';
-import chatsRoutes from '@domains/chat/infra/http/routes/chats.routes';
+import chatsRoutes from '@domains/chats/infra/http/routes/chats.routes';
 
 const routes = Router();
 
