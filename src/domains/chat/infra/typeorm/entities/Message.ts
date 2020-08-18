@@ -4,11 +4,12 @@ import {
   Column,
   UpdateDateColumn,
   CreateDateColumn,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 import User from '@domains/users/infra/typeorm/entities/User';
+import Chat from './Chat';
 
 @Entity('messages')
 class Message {
@@ -21,9 +22,16 @@ class Message {
   @Column()
   user_id: string;
 
-  @OneToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @Column()
+  chat_id: string;
+
+  @ManyToOne(() => Chat, { cascade: true })
+  @JoinColumn({ name: 'chat_id' })
+  chat: Chat;
 
   @CreateDateColumn()
   created_at: Date;
