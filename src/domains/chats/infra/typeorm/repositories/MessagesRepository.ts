@@ -1,4 +1,4 @@
-import IMessagesRepository from '@domains/chat/rules/IMessagesRepository';
+import IMessagesRepository from '@domains/chats/rules/IMessagesRepository';
 import { Repository, getRepository } from 'typeorm';
 import Message from '../entities/Message';
 

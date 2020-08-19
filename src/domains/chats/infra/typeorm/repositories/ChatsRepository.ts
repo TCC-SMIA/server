@@ -1,4 +1,4 @@
-import IChatsRepository from '@domains/chat/rules/IChatsRepository';
+import IChatsRepository from '@domains/chats/rules/IChatsRepository';
 import { Repository, getRepository } from 'typeorm';
 import Chat from '../entities/Chat';
 
