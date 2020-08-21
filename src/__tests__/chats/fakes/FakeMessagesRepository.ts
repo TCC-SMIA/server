@@ -25,6 +25,10 @@ class FakeMessagesRepository implements IMessagesRepository {
 
     return this.messages[messageIndex];
   }
+
+  public async findAllByChat(chat_id: string): Promise<Message[]> {
+    return this.messages.filter(message => message.chat_id === chat_id);
+  }
 }
 
 export default FakeMessagesRepository;

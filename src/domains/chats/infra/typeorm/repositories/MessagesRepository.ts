@@ -20,6 +20,10 @@ class MessagesRepository implements IMessagesRepository {
   public async update(message: Message): Promise<Message> {
     return this.messagesRepository.save(message);
   }
+
+  public async findAllByChat(chat_id: string): Promise<Message[]> {
+    return this.messagesRepository.find({ where: { chat_id } });
+  }
 }
 
 export default MessagesRepository;
