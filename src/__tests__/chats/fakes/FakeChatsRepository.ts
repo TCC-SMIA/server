@@ -23,6 +23,10 @@ class FakeChatsRepository implements IChatsRepository {
 
     return this.chats[chatIndex];
   }
+
+  public async findAllByUser(user_id: string): Promise<Chat[]> {
+    return this.chats.filter((chat, index) => chat.users[index].id === user_id);
+  }
 }
 
 export default FakeChatsRepository;

@@ -20,6 +20,10 @@ class ChatsRepository implements IChatsRepository {
   public async update(chat: Chat): Promise<Chat> {
     return this.chatsRepository.save(chat);
   }
+
+  public async findAllByUser(user_id: string): Promise<Chat[]> {
+    return this.chatsRepository.find({ where: { user: user_id } });
+  }
 }
 
 export default ChatsRepository;
