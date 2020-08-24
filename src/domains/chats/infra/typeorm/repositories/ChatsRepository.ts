@@ -24,6 +24,10 @@ class ChatsRepository implements IChatsRepository {
   public async findAllByUser(user_id: string): Promise<Chat[]> {
     return this.chatsRepository.find({ where: { user: user_id } });
   }
+
+  public async findById(chat_id: string): Promise<Chat | undefined> {
+    return this.chatsRepository.findOne({ where: { id: chat_id } });
+  }
 }
 
 export default ChatsRepository;

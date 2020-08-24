@@ -7,6 +7,7 @@ import complaintsRoutes from '@domains/complaints/infra/http/routes/complaints.r
 import commentsRoutes from '@domains/complaints/infra/http/routes/comments.routes';
 import passwordRoutes from '@domains/users/infra/http/routes/password.routes';
 import chatsRoutes from '@domains/chats/infra/http/routes/chats.routes';
+import messagesRoutes from '@domains/chats/infra/http/routes/messages.routes';
 
 const routes = Router();
 
@@ -21,5 +22,6 @@ routes.use('/comments', commentsRoutes);
 routes.use('/sessions', sessionsRoutes);
 routes.use('/password', passwordRoutes);
 routes.use('/chats', chatsRoutes);
+routes.use('/messages', messagesRoutes);
 
 export default routes;
