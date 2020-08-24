@@ -19,16 +19,27 @@ class ComplaintsController {
       anonymous,
     } = request.body;
 
-    const { filename } = request.file;
+    let filename;
+
+    if (request.file) {
+      filename = request.file.filename;
+    }
+
+    let anonymous_info = false;
+
+    if (anonymous === '1') {
+      anonymous_info = true;
+    }
+
     const createComplaintService = container.resolve(CreateComplaintService);
 
     const newComplaint = await createComplaintService.execute({
       user_id,
       title,
       description,
-      latitude,
-      longitude,
-      anonymous,
+      latitude: Number(latitude),
+      longitude: Number(longitude),
+      anonymous: anonymous_info,
       date,
       imageFilename: filename,
     });
@@ -61,7 +72,7 @@ class ComplaintsController {
       take: Number(takeParam),
     });
 
-    return response.json(complaints);
+    return response.json(classToClass(complaints));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -90,11 +101,7 @@ class ComplaintsController {
       date,
     });
 
-    if (updatedComplaint.anonymous) {
-      return response.json(classToClass(updatedComplaint));
-    }
-
-    return response.json(updatedComplaint);
+    return response.json(classToClass(updatedComplaint));
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

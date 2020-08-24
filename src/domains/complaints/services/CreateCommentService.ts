@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
+
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
-import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import ICommentsRepository from '../rules/ICommentsRepository';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
@@ -11,7 +11,6 @@ interface CreateCommentRequest {
   user_id: string;
   complaint_id: string;
   content: string;
-  date: Date;
 }
 
 @injectable()
@@ -34,7 +33,6 @@ class CreateCommentService {
     user_id,
     complaint_id,
     content,
-    date,
   }: CreateCommentRequest): Promise<Comment> {
     const user = await this.usersRepository.findById(user_id);
 
@@ -48,12 +46,13 @@ class CreateCommentService {
       throw new AppError('Complaint does not exist');
     }
 
-    const comment = await this.commentsRepository.create(
+    const today = new Date();
+    const comment = await this.commentsRepository.create({
       user,
       complaint,
       content,
-      date,
-    );
+      date: today,
+    });
 
     await this.createNotificationService.execute({
       user_id: complaint.user_id,

@@ -25,10 +25,9 @@ class ListComplaintsService {
 
     const filteredComplaints = complaints.map(complaint => {
       if (complaint.anonymous) {
-        return classToClass(complaint);
+        delete complaint.user;
+        delete complaint.user_id;
       }
-
-      complaint.user = classToClass(complaint.user);
       return complaint;
     });
 
