@@ -1,4 +1,4 @@
-import api from './apiInstance';
+import api from '@shared/providers/HttpClientProvider/implementations/AxiosProvider';
 
 interface IRequest {
   latitude: number;
