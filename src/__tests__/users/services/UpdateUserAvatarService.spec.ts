@@ -42,6 +42,22 @@ describe('UpdateAvatarService', () => {
     expect(user.avatar).toBe('avatar.jpg');
   });
 
+  it('should be able to update agency avatar', async () => {
+    const agency = await fakeAgencysRepository.create({
+      name: 'Valid Agency Name',
+      cnpj: '60603851000150',
+      email: 'validemail@email.com',
+      password: '123456,',
+    });
+
+    await updateAvatarService.execute({
+      user_id: agency.id,
+      avatarFilename: 'avatar.jpg',
+    });
+
+    expect(agency.avatar).toBe('avatar.jpg');
+  });
+
   it('should not be able to update avatar from non existing user', async () => {
     await expect(
       updateAvatarService.execute({
