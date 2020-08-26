@@ -2,21 +2,26 @@ import AppError from '@shared/errors/AppError';
 
 import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider/FakeStorageProvider';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
-import UpdateUserAvatarService from '@domains/users/services/UpdateUserAvatarService';
+import UpdateAvatarService from '@domains/users/services/UpdateAvatarService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
-describe('UpdateUserAvatarService', () => {
-  let updateUserAvatarService: UpdateUserAvatarService;
+describe('UpdateAvatarService', () => {
+  let updateAvatarService: UpdateAvatarService;
   let fakeUsersRepository: IUsersRepository;
+  let fakeAgencysRepository: IAgencyRepository;
   let fakeStorageProvider: IStorageProvider;
 
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
+    fakeAgencysRepository = new FakeAgencyRepository();
     fakeStorageProvider = new FakeStorageProvider();
 
-    updateUserAvatarService = new UpdateUserAvatarService(
+    updateAvatarService = new UpdateAvatarService(
       fakeUsersRepository,
+      fakeAgencysRepository,
       fakeStorageProvider,
     );
   });
@@ -29,7 +34,7 @@ describe('UpdateUserAvatarService', () => {
       password: '123123',
     });
 
-    await updateUserAvatarService.execute({
+    await updateAvatarService.execute({
       user_id: user.id,
       avatarFilename: 'avatar.jpg',
     });
@@ -39,7 +44,7 @@ describe('UpdateUserAvatarService', () => {
 
   it('should not be able to update avatar from non existing user', async () => {
     await expect(
-      updateUserAvatarService.execute({
+      updateAvatarService.execute({
         user_id: 'non-existing-user',
         avatarFilename: 'avatar.jpg',
       }),
@@ -56,12 +61,12 @@ describe('UpdateUserAvatarService', () => {
       password: '123123',
     });
 
-    await updateUserAvatarService.execute({
+    await updateAvatarService.execute({
       user_id: user.id,
       avatarFilename: 'avatar.jpg',
     });
 
-    await updateUserAvatarService.execute({
+    await updateAvatarService.execute({
       user_id: user.id,
       avatarFilename: 'avatar2.jpg',
     });
