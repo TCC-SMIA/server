@@ -18,14 +18,14 @@ class Comment {
   @Column()
   complaint_id!: string;
 
-  @ManyToOne(() => Complaint, { cascade: true })
+  @ManyToOne(() => Complaint, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'complaint_id' })
   complaint!: Complaint;
 
   @Column()
   user_id!: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user!: User;
 
