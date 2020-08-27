@@ -40,7 +40,7 @@ describe('CreateCommentService', () => {
     );
   });
 
-  it('should be able to create a new comment', async () => {
+  it('should be able to create a new comment by user', async () => {
     const user = await fakeUsersRepository.create({
       name: 'jhon',
       email: 'doe@doe.com',
@@ -67,6 +67,37 @@ describe('CreateCommentService', () => {
     expect(comment).toBeTruthy();
     expect(comment.id).toBeTruthy();
     expect(comment.user.id).toBe(user.id);
+    expect(comment.complaint.id).toBe(complaint.id);
+    expect(comment.content).toBe('New comment');
+  });
+
+  it('should be able to create a new comment by agency', async () => {
+    const agency = await fakeAgencysRepository.create({
+      name: 'Valid Agency Name',
+      cnpj: '60603851000150',
+      email: 'validemail@email.com',
+      password: '123456,',
+    });
+
+    const complaint = await complaintRepository.create({
+      title: 'Baleia encalhada',
+      description:
+        'Encontramos uma baleia encalhada na praia do forte, Cabo Frio',
+      latitude: -22.88248,
+      longitude: -42.0737652,
+      anonymous: false,
+      date: new Date(),
+    });
+
+    const comment = await createCommentService.execute({
+      user_id: agency.id,
+      complaint_id: complaint.id,
+      content: 'New comment',
+    });
+
+    expect(comment).toBeTruthy();
+    expect(comment.id).toBeTruthy();
+    expect(comment.agency.id).toBe(agency.id);
     expect(comment.complaint.id).toBe(complaint.id);
     expect(comment.content).toBe('New comment');
   });
