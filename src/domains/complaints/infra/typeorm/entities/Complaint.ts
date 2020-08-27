@@ -19,7 +19,7 @@ class Complaint {
   @Column()
   user_id!: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user!: User;
 

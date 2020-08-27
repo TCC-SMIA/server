@@ -8,6 +8,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import User from '@domains/users/infra/typeorm/entities/User';
+import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import Complaint from './Complaint';
 
 @Entity('comments')
@@ -18,16 +19,23 @@ class Comment {
   @Column()
   complaint_id!: string;
 
-  @ManyToOne(() => Complaint, { cascade: true })
+  @ManyToOne(() => Complaint, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'complaint_id' })
   complaint!: Complaint;
 
   @Column()
   user_id!: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user!: User;
+
+  @Column()
+  agency_id!: string;
+
+  @ManyToOne(() => Agency, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'agency_id' })
+  agency!: Agency;
 
   @Column()
   content!: string;

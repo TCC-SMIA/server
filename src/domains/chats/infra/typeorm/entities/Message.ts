@@ -22,14 +22,14 @@ class Message {
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   @Column()
   chat_id: string;
 
-  @ManyToOne(() => Chat, { cascade: true })
+  @ManyToOne(() => Chat, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'chat_id' })
   chat: Chat;
 
