@@ -2,7 +2,7 @@ import IComplaintsRepository from '@domains/complaints/rules/IComplaintsReposito
 import ListCommentsService from '@domains/complaints/services/ListCommentsService';
 import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
 import ICommentsRepository from '@domains/complaints/rules/ICommentsRepository';
-import FakeCommentsRepository from '@tests/users/fakes/FakeCommentsRepository';
+import FakeCommentsRepository from '@tests/complaints/fakes/FakeCommentsRepository';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import FakeAgencyRepository from '@tests/users/fakes/FakeAgencyRepository';
 import AppError from '@shared/errors/AppError';

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'reflect-metadata';
 import 'dotenv/config';
 import '@shared/container';

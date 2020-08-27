@@ -9,9 +9,9 @@ import INotificationsRepository from '@domains/notifications/rules/INotification
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
-import FakeUsersRepository from '../fakes/FakeUsersRepository';
-import FakeCommentsRepository from '../fakes/FakeCommentsRepository';
-import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
+import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
+import FakeCommentsRepository from '@tests/complaints/fakes/FakeCommentsRepository';
+import FakeAgencyRepository from '@tests/users/fakes/FakeAgencyRepository';
 
 let commentRepository: ICommentsRepository;
 let fakeUsersRepository: IUsersRepository;

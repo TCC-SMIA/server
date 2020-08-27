@@ -10,8 +10,6 @@ class ImageComplaintController {
 
     const { complaint_id } = request.body;
 
-    console.log(complaint_id);
-
     const { filename } = request.file;
 
     const updateImageComplaintService = container.resolve(
