@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { classToClass } from 'class-transformer';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 import Complaint from '../infra/typeorm/entities/Complaint';
 

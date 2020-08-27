@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
 import CreateCommentService from '@domains/complaints/services/CreateCommentService';
+import ListCommentsService from '@domains/complaints/services/ListCommentsService';
 
 class CommentsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -18,6 +19,16 @@ class CommentsController {
     });
 
     return response.json(classToClass(comment));
+  }
+
+  public async index(request: Request, response: Response): Promise<Response> {
+    const { complaint_id } = request.body;
+
+    const listCommentsService = container.resolve(ListCommentsService);
+
+    const listComments = listCommentsService.execute({ complaint_id });
+
+    return response.json(classToClass(listComments));
   }
 }
 
