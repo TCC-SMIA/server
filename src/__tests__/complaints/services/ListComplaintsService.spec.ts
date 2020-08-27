@@ -1,6 +1,5 @@
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import ListComplaintsService from '@domains/complaints/services/ListComplaintsService';
-import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;

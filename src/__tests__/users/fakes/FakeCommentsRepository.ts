@@ -31,6 +31,14 @@ class FakeCommentsRepository implements ICommentsRepository {
 
     return this.comments[commentIndex];
   }
+
+  public async findByComplaintId(complaint_id: string): Promise<Comment[]> {
+    const comments = this.comments.filter(comment => {
+      return comment.complaint_id === complaint_id;
+    });
+
+    return comments;
+  }
 }
 
 export default FakeCommentsRepository;
