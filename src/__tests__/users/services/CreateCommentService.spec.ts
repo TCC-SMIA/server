@@ -8,11 +8,14 @@ import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeCommentsRepository from '../fakes/FakeCommentsRepository';
+import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
 let commentRepository: ICommentsRepository;
-let usersRepository: IUsersRepository;
+let fakeUsersRepository: IUsersRepository;
+let fakeAgencysRepository: IAgencyRepository;
 let complaintRepository: IComplaintsRepository;
 let createCommentService: CreateCommentService;
 let notificationsRepository: INotificationsRepository;
@@ -20,7 +23,8 @@ let createNotificationService: CreateNotificationService;
 
 describe('CreateCommentService', () => {
   beforeEach(() => {
-    usersRepository = new FakeUsersRepository();
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeAgencysRepository = new FakeAgencyRepository();
     complaintRepository = new FakeComplaintsRepository();
     commentRepository = new FakeCommentsRepository();
     notificationsRepository = new FakeNotificationsRepository();
@@ -29,14 +33,15 @@ describe('CreateCommentService', () => {
     );
     createCommentService = new CreateCommentService(
       commentRepository,
-      usersRepository,
+      fakeUsersRepository,
+      fakeAgencysRepository,
       complaintRepository,
       createNotificationService,
     );
   });
 
-  it('should be able to create a new comment', async () => {
-    const user = await usersRepository.create({
+  it('should be able to create a new comment by user', async () => {
+    const user = await fakeUsersRepository.create({
       name: 'jhon',
       email: 'doe@doe.com',
       nickname: 'johnzins',
@@ -66,6 +71,37 @@ describe('CreateCommentService', () => {
     expect(comment.content).toBe('New comment');
   });
 
+  it('should be able to create a new comment by agency', async () => {
+    const agency = await fakeAgencysRepository.create({
+      name: 'Valid Agency Name',
+      cnpj: '60603851000150',
+      email: 'validemail@email.com',
+      password: '123456,',
+    });
+
+    const complaint = await complaintRepository.create({
+      title: 'Baleia encalhada',
+      description:
+        'Encontramos uma baleia encalhada na praia do forte, Cabo Frio',
+      latitude: -22.88248,
+      longitude: -42.0737652,
+      anonymous: false,
+      date: new Date(),
+    });
+
+    const comment = await createCommentService.execute({
+      user_id: agency.id,
+      complaint_id: complaint.id,
+      content: 'New comment',
+    });
+
+    expect(comment).toBeTruthy();
+    expect(comment.id).toBeTruthy();
+    expect(comment.agency.id).toBe(agency.id);
+    expect(comment.complaint.id).toBe(complaint.id);
+    expect(comment.content).toBe('New comment');
+  });
+
   it('should not be able to create a new comment with a non existing user', async () => {
     const complaint = await complaintRepository.create({
       title: 'Baleia encalhada',
@@ -87,7 +123,7 @@ describe('CreateCommentService', () => {
   });
 
   it('should not be able to create a new comment without complaint', async () => {
-    const user = await usersRepository.create({
+    const user = await fakeUsersRepository.create({
       name: 'jhon',
       email: 'doe@doe.com',
       nickname: 'johnzins',

@@ -6,13 +6,13 @@ import CreateCommentService from '@domains/complaints/services/CreateCommentServ
 
 class CommentsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const userId = request.user.id;
+    const user_id = request.user.id;
     const { content, complaint_id } = request.body;
 
     const createCommentService = container.resolve(CreateCommentService);
 
     const comment = await createCommentService.execute({
-      user_id: userId,
+      user_id,
       content,
       complaint_id,
     });
