@@ -35,7 +35,7 @@ class SendForgotPasswordEmailService {
 
     await this.mailProvider.sendMail(
       email,
-      `Pedido de recuperação de senha recebido: ${token}`,
+      `Pedido de recuperação de senha recebido: ${process.env.APP_WEB_URL}/reset-password?token=${token}`,
     );
   }
 }
