@@ -11,7 +11,7 @@ interface ITokenInfo {
 
 const ensureAuthenticate = (
   request: Request,
-  response: Response,
+  _response: Response,
   next: NextFunction,
 ): void => {
   const authHeader = request.headers.authorization;

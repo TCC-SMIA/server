@@ -14,7 +14,7 @@ class Chat {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToMany(() => User, { cascade: true })
+  @ManyToMany(() => User, { onDelete: 'CASCADE' })
   @JoinTable({ name: 'chats_users' })
   users: User[];
 

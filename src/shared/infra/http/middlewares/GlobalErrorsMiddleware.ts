@@ -3,7 +3,7 @@ import AppError from '@shared/errors/AppError';
 
 const globalErrorsMiddleware = (
   err: Error,
-  request: Request,
+  _request: Request,
   response: Response,
   _: NextFunction,
 ): Response => {
@@ -14,6 +14,7 @@ const globalErrorsMiddleware = (
     });
   }
 
+  // eslint-disable-next-line no-console
   console.error(err);
 
   return response.status(500).json({
