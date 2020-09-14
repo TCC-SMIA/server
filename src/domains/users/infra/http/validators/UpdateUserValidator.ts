@@ -19,12 +19,10 @@ const updateUserValidator = async (
           'Insert a valid name without especials characters',
         )
         .required('Name is a required field.'),
-      nickname: Yup.string()
-        .matches(
-          /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
-          'Insert a valid nickname without especials characters',
-        )
-        .required('Nickname is a required field.'),
+      nickname: Yup.string().matches(
+        /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
+        'Insert a valid nickname without especials characters',
+      ),
       email: Yup.string()
         .email('Insert a valid email.')
         .required('Email is a required field.'),
