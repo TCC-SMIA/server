@@ -18,8 +18,6 @@ class ListComplaintsService {
   ) {}
 
   public async execute({ skip, take, city }: IRequest): Promise<Complaint[]> {
-    console.log(city);
-
     if (city) {
       const complaints = await this.complaintsRepository.findByCity(
         skip,
@@ -35,7 +33,6 @@ class ListComplaintsService {
         return complaint;
       });
 
-      console.log('WITH CITY', filteredComplaints);
       return filteredComplaints;
     }
 
@@ -52,7 +49,6 @@ class ListComplaintsService {
       return complaint;
     });
 
-    console.log('WITHOUT CITY', filteredComplaints);
     return filteredComplaints;
   }
 }

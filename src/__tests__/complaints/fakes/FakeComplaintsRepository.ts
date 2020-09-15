@@ -63,7 +63,7 @@ class FakeComplaintsRepository implements IComplaintsRepository {
       complaint => complaint.city === city,
     );
 
-    complaintsFiltered = this.complaints.slice(skip, take);
+    complaintsFiltered = complaintsFiltered.slice(skip, take);
 
     return complaintsFiltered;
   }
