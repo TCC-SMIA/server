@@ -2,19 +2,26 @@ import UpdateProfileService from '@domains/users/services/UpdateProfileService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
+import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
+import User from '@domains/users/infra/typeorm/entities/User';
+import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
+import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
 let fakeUsersRepository: IUsersRepository;
 let updateProfileService: UpdateProfileService;
 let fakeHashProvider: IHashProvider;
+let fakeAgencysRepository: IAgencyRepository;
 
 describe('UpdateProfileService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
+    fakeAgencysRepository = new FakeAgencyRepository();
     fakeHashProvider = new FakeHashProvider();
     updateProfileService = new UpdateProfileService(
       fakeUsersRepository,
+      fakeAgencysRepository,
       fakeHashProvider,
     );
   });
@@ -27,8 +34,8 @@ describe('UpdateProfileService', () => {
       password: '123123',
     });
 
-    const updatedUser = await updateProfileService.execute({
-      userId: user.id,
+    const { user: updatedUser } = await updateProfileService.execute({
+      user_id: user.id,
       name: 'Young Man',
       email: 'youngman@teste.com',
       nickname: 'youngman',
@@ -37,8 +44,30 @@ describe('UpdateProfileService', () => {
     expect(updatedUser).toBeTruthy();
     expect(updatedUser.id).toBe(user.id);
     expect(updatedUser.name).toBe('Young Man');
-    expect(updatedUser.nickname).toBe('youngman');
+    expect(updatedUser).toBeInstanceOf(User);
     expect(updatedUser.email).toBe('youngman@teste.com');
+  });
+
+  it('should be able to update the agency', async () => {
+    const agency = await fakeAgencysRepository.create({
+      name: 'Valid Agency Name',
+      cnpj: '60603851000150',
+      email: 'validemail@email.com',
+      password: '123456,',
+    });
+
+    const { user: updatedUser } = await updateProfileService.execute({
+      user_id: agency.id,
+      name: 'Valid Updated Agency',
+      email: 'validagencyemail@email.com',
+      nickname: 'validAgency',
+    });
+
+    expect(updatedUser).toBeTruthy();
+    expect(updatedUser.id).toBe(agency.id);
+    expect(updatedUser.name).toBe('Valid Updated Agency');
+    expect(updatedUser).toBeInstanceOf(Agency);
+    expect(updatedUser.email).toBe('validagencyemail@email.com');
   });
 
   it('should be able to update the user password', async () => {
@@ -49,8 +78,8 @@ describe('UpdateProfileService', () => {
       password: '123123',
     });
 
-    const updatedUser = await updateProfileService.execute({
-      userId: user.id,
+    const { user: updatedUser } = await updateProfileService.execute({
+      user_id: user.id,
       name: 'Young Man',
       email: 'youngman@teste.com',
       nickname: 'youngman',
@@ -60,7 +89,6 @@ describe('UpdateProfileService', () => {
     });
 
     expect(updatedUser.name).toBe('Young Man');
-    expect(updatedUser.nickname).toBe('youngman');
     expect(updatedUser.email).toBe('youngman@teste.com');
     expect(updatedUser.password).toBe('123456');
   });
@@ -68,7 +96,7 @@ describe('UpdateProfileService', () => {
   it('should not be able to update a non existing user', async () => {
     await expect(
       updateProfileService.execute({
-        userId: 'NonExistingId',
+        user_id: 'NonExistingId',
         name: 'John Doe',
         email: 'doe@doe.com',
         nickname: 'johnzins',
@@ -93,7 +121,7 @@ describe('UpdateProfileService', () => {
 
     await expect(
       updateProfileService.execute({
-        userId: user.id,
+        user_id: user.id,
         name: 'Young Man',
         email: 'youngman@teste.com',
         nickname: 'johnzins',
@@ -118,7 +146,7 @@ describe('UpdateProfileService', () => {
 
     await expect(
       updateProfileService.execute({
-        userId: user.id,
+        user_id: user.id,
         name: 'Young Man',
         email: 'doe@doe.com',
         nickname: 'youngman',
@@ -136,7 +164,7 @@ describe('UpdateProfileService', () => {
 
     await expect(
       updateProfileService.execute({
-        userId: user.id,
+        user_id: user.id,
         name: 'Young Man',
         email: 'doe@doe.com',
         nickname: 'youngman',
@@ -156,7 +184,7 @@ describe('UpdateProfileService', () => {
 
     await expect(
       updateProfileService.execute({
-        userId: user.id,
+        user_id: user.id,
         name: 'Young Man',
         email: 'doe@doe.com',
         nickname: 'youngman',
@@ -177,7 +205,7 @@ describe('UpdateProfileService', () => {
 
     await expect(
       updateProfileService.execute({
-        userId: user.id,
+        user_id: user.id,
         name: 'Young Man',
         email: 'doe@doe.com',
         nickname: 'youngman',
@@ -199,7 +227,7 @@ describe('UpdateProfileService', () => {
     });
 
     const updatedUser = await updateProfileService.execute({
-      userId: user.id,
+      user_id: user.id,
       name: 'Young Man',
       email: 'youngman@teste.com',
       nickname: 'youngman',
@@ -212,7 +240,7 @@ describe('UpdateProfileService', () => {
     });
 
     expect(updatedUser).toBeTruthy();
-    expect(updatedUser.id).toBe(user.id);
+    expect(updatedUser.user.id).toBe(user.id);
     expect(updateMock).toHaveBeenCalledWith(user);
   });
 });

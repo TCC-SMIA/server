@@ -5,15 +5,23 @@ import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import IHashProvider from '../providers/HashProvider/rules/IHashProvider';
+import Agency from '../infra/typeorm/entities/Agency';
+import IAgencyRepository from '../rules/IAgencyRepository';
+import { UserTypes } from '../enums/UserEnums';
 
 interface IRequest {
-  userId: string;
+  user_id: string;
   name: string;
-  nickname: string;
+  nickname?: string;
   email: string;
   oldpassword?: string;
   password?: string;
   password_confirmation?: string;
+}
+
+interface IResponse {
+  user: Agency | User;
+  user_type: number;
 }
 
 @injectable()
@@ -22,42 +30,57 @@ class UpdateProfileService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
+    @inject('AgencyRepository')
+    private agencyRepository: IAgencyRepository,
+
     @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
 
   async execute({
-    userId,
+    user_id,
     name,
     nickname,
     email,
     oldpassword,
     password,
     password_confirmation,
-  }: IRequest): Promise<User> {
-    const user = await this.usersRepository.findById(userId);
+  }: IRequest): Promise<IResponse> {
+    let user: User | Agency | undefined;
+    let user_type = 0;
+
+    user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('User not found');
+      user = await this.agencyRepository.findById(user_id);
+      if (!user) {
+        throw new AppError('User not found');
+      } else {
+        user_type = UserTypes.EnvironmentalAgency;
+      }
+    } else {
+      user_type = UserTypes.Reporter;
     }
 
-    const checkNickNameExists = await this.usersRepository.findByNickname(
-      nickname,
-    );
-
-    if (checkNickNameExists && checkNickNameExists.id !== userId) {
-      throw new AppError('Nickname already used');
+    let checkNickNameExists: User | undefined;
+    if (nickname) {
+      checkNickNameExists = await this.usersRepository.findByNickname(nickname);
+      if (checkNickNameExists && checkNickNameExists.id !== user_id) {
+        throw new AppError('Nickname already used');
+      }
+      if (user instanceof User) {
+        user.nickname = nickname;
+      }
     }
 
     const checkEmailExists = await this.usersRepository.findByEmail(email);
 
-    if (checkEmailExists && checkEmailExists.id !== userId) {
+    if (checkEmailExists && checkEmailExists.id !== user_id) {
       throw new AppError('Email already used');
     }
 
     user.name = name;
     user.email = email;
-    user.nickname = nickname;
 
     if (password && !oldpassword) {
       throw new AppError(
@@ -82,9 +105,16 @@ class UpdateProfileService {
 
       user.password = await this.hashProvider.generateHash(password);
     }
-    const updatedUser = await this.usersRepository.update(user);
 
-    return updatedUser;
+    if (user_type === UserTypes.Reporter) {
+      await this.usersRepository.update(user as User);
+    }
+
+    if (user_type === UserTypes.EnvironmentalAgency) {
+      await this.agencyRepository.update(user as Agency);
+    }
+
+    return { user, user_type };
   }
 }
 

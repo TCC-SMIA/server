@@ -13,6 +13,10 @@ interface IRequest {
   user_id: string;
   avatarFilename: string;
 }
+interface IResponse {
+  user: User | Agency;
+  user_type: number;
+}
 
 @injectable()
 class UpdateUserAvatarService {
@@ -30,7 +34,7 @@ class UpdateUserAvatarService {
   public async execute({
     user_id,
     avatarFilename,
-  }: IRequest): Promise<User | Agency> {
+  }: IRequest): Promise<IResponse> {
     let user: User | Agency | undefined;
     let user_type = 0;
 
@@ -63,7 +67,7 @@ class UpdateUserAvatarService {
       await this.agencyRepository.update(user as Agency);
     }
 
-    return user;
+    return { user, user_type };
   }
 }
 
