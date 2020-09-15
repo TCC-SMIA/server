@@ -51,6 +51,22 @@ class FakeComplaintsRepository implements IComplaintsRepository {
 
     this.complaints.slice(complaintIndex);
   }
+
+  public async findByCity(
+    skip: number,
+    take: number,
+    city: string,
+  ): Promise<Complaint[]> {
+    let complaintsFiltered: Complaint[];
+
+    complaintsFiltered = this.complaints.filter(
+      complaint => complaint.city === city,
+    );
+
+    complaintsFiltered = this.complaints.slice(skip, take);
+
+    return complaintsFiltered;
+  }
 }
 
 export default FakeComplaintsRepository;
