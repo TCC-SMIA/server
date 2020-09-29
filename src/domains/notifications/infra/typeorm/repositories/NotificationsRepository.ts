@@ -11,6 +11,10 @@ class NotificationsRepository implements INotificationsRepository {
     this.ormRepository = getRepository(Notification);
   }
 
+  public async findByUser(user_id: string): Promise<Notification[]> {
+    return this.ormRepository.find({ where: { user_id } });
+  }
+
   public async create({
     user_id,
     content,

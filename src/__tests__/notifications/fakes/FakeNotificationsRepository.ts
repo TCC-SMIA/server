@@ -7,6 +7,12 @@ import Notification from '@domains/notifications/infra/typeorm/entities/Notifica
 class FakeNotificationsRepository implements INotificationsRepository {
   private notifications: Notification[] = [];
 
+  public async findByUser(user_id: string): Promise<Notification[]> {
+    return this.notifications.filter(
+      notification => notification.id === user_id,
+    );
+  }
+
   public async create(
     notificationData: ICreateNotificationDTO,
   ): Promise<Notification> {
