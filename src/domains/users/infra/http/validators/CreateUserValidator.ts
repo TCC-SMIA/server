@@ -15,7 +15,7 @@ const createUserValidator = async (
     const userSchema = Yup.object().shape({
       name: Yup.string()
         .matches(
-          /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/,
+          /\b[A-Za-z](?!\s)/,
           'Insert a valid name without especials characters',
         )
         .required('Name is a required field.'),

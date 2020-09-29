@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import { classToClass } from 'class-transformer';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 import Complaint from '../infra/typeorm/entities/Complaint';
 
 interface IRequest {
   skip: number;
   take: number;
+  city?: string;
 }
 
 @injectable()
@@ -17,7 +17,25 @@ class ListComplaintsService {
     private complaintsRepository: IComplaintsRepository,
   ) {}
 
-  public async execute({ skip, take }: IRequest): Promise<Complaint[]> {
+  public async execute({ skip, take, city }: IRequest): Promise<Complaint[]> {
+    if (city) {
+      const complaints = await this.complaintsRepository.findByCity(
+        skip,
+        take,
+        city,
+      );
+
+      const filteredComplaints = complaints.map(complaint => {
+        if (complaint.anonymous) {
+          delete complaint.user;
+          delete complaint.user_id;
+        }
+        return complaint;
+      });
+
+      return filteredComplaints;
+    }
+
     const complaints = await this.complaintsRepository.findAllComplaints(
       skip,
       take,

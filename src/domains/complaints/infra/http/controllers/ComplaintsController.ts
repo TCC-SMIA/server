@@ -48,10 +48,17 @@ class ComplaintsController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
-    const { skip, take } = request.query;
+    const { skip, take, city } = request.query;
 
+    let cityParam;
     let skipParam = 0;
     let takeParam = 0;
+
+    if (!city) {
+      cityParam = undefined;
+    } else {
+      cityParam = String(city);
+    }
 
     if (!skip) {
       skipParam = 0;
@@ -70,6 +77,7 @@ class ComplaintsController {
     const complaints = await listComplaints.execute({
       skip: Number(skipParam),
       take: Number(takeParam),
+      city: cityParam,
     });
 
     return response.json(classToClass(complaints));

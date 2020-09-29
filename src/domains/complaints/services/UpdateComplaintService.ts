@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import { classToClass } from 'class-transformer';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';

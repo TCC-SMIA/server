@@ -8,5 +8,6 @@ const commentsRoutes = Router();
 commentsRoutes.use(ensureAuthenticate);
 
 commentsRoutes.post('/', CommentsController.create);
+commentsRoutes.get('/', CommentsController.index);
 
 export default commentsRoutes;

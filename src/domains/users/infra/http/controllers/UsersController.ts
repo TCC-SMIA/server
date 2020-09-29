@@ -25,7 +25,7 @@ class UsersController {
   }
 
   async update(request: Request, response: Response): Promise<Response> {
-    const userId = request.user.id;
+    const user_id = request.user.id;
     const {
       name,
       nickname,
@@ -37,8 +37,8 @@ class UsersController {
 
     const updateProfileService = container.resolve(UpdateProfileService);
 
-    const updatedUser = await updateProfileService.execute({
-      userId,
+    const { user, user_type } = await updateProfileService.execute({
+      user_id,
       name,
       nickname,
       email,
@@ -47,7 +47,7 @@ class UsersController {
       password_confirmation,
     });
 
-    return response.json(classToClass(updatedUser));
+    return response.json({ user: classToClass(user), user_type });
   }
 
   async show(request: Request, response: Response): Promise<Response> {

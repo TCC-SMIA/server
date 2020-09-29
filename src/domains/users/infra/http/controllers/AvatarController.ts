@@ -12,12 +12,12 @@ class AvatarController {
 
     const updateAvatar = container.resolve(UpdateAvatarService);
 
-    const user = await updateAvatar.execute({
+    const { user, user_type } = await updateAvatar.execute({
       user_id,
       avatarFilename: filename,
     });
 
-    return response.json(classToClass(user));
+    return response.json({ user: classToClass(user), user_type });
   }
 }
 

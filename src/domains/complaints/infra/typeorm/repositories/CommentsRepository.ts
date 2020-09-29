@@ -27,6 +27,14 @@ class CommentsRepository implements ICommentsRepository {
 
     return storedComment;
   }
+
+  public async findByComplaintId(complaint_id: string): Promise<Comment[]> {
+    const listComments = await this.commentRepository.find({
+      where: { complaint_id },
+    });
+
+    return listComments;
+  }
 }
 
 export default CommentsRepository;
