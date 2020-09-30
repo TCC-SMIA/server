@@ -59,6 +59,24 @@ class ComplaintsRepository implements IComplaintsRepository {
   public async delete(complaint: Complaint): Promise<void> {
     await this.complaintsRepository.remove(complaint);
   }
+
+  public async findByCity(
+    skip: number,
+    take: number,
+    city: string,
+  ): Promise<Complaint[]> {
+    const complaints = await this.complaintsRepository.find({
+      skip,
+      take,
+      where: { city },
+      order: {
+        created_at: 'DESC',
+      },
+      relations: ['user'],
+    });
+
+    return complaints;
+  }
 }
 
 export default ComplaintsRepository;
