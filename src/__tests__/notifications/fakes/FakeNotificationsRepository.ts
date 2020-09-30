@@ -5,6 +5,24 @@ import ICreateNotificationDTO from '@domains/notifications/dtos/ICreateNotificat
 import Notification from '@domains/notifications/infra/typeorm/entities/Notification';
 
 class FakeNotificationsRepository implements INotificationsRepository {
+  public async findById(
+    notification_id: string,
+  ): Promise<Notification | undefined> {
+    return this.notifications.find(
+      notification => notification.id === notification_id,
+    );
+  }
+
+  public async update(notification: Notification): Promise<Notification> {
+    const notificationIndex = this.notifications.findIndex(
+      storedNotification => storedNotification.id === notification.id,
+    );
+
+    this.notifications[notificationIndex] = notification as Notification;
+
+    return this.notifications[notificationIndex];
+  }
+
   private notifications: Notification[] = [];
 
   public async findByUser(user_id: string): Promise<Notification[]> {
