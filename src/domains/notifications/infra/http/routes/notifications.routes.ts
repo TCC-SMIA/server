@@ -8,5 +8,6 @@ const notificationsRoutes = Router();
 notificationsRoutes.use(ensureAuthenticate);
 
 notificationsRoutes.get('/', NotificationsController.show);
+notificationsRoutes.get('/read', NotificationsController.update);
 
 export default notificationsRoutes;
