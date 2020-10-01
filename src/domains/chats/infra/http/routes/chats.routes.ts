@@ -8,5 +8,6 @@ const chatsRoutes = Router();
 chatsRoutes.use(ensureAuthenticate);
 
 chatsRoutes.post('/', ChatsController.create);
+chatsRoutes.get('/', ChatsController.show);
 
 export default chatsRoutes;
