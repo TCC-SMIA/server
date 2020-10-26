@@ -25,7 +25,7 @@ class ComplaintsRepository implements IComplaintsRepository {
   public async findById(complaintId: string): Promise<Complaint | undefined> {
     const complaint = await this.complaintsRepository.findOne({
       where: { id: complaintId },
-      relations: ['user'],
+      relations: ['user', 'comments'],
     });
 
     return complaint;

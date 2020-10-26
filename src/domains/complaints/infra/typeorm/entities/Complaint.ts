@@ -5,11 +5,13 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
-import User from '@domains/users/infra/typeorm/entities/User';
-
 import { Expose } from 'class-transformer';
+
+import User from '@domains/users/infra/typeorm/entities/User';
+import Comment from '@domains/complaints/infra/typeorm/entities/Comment';
 
 @Entity('complaints')
 class Complaint {
@@ -52,6 +54,9 @@ class Complaint {
 
   @Column({ default: false })
   anonymous!: boolean;
+
+  @OneToMany(() => Comment, comments => comments.complaint)
+  comments!: Comment[];
 
   @CreateDateColumn()
   created_at!: Date;
