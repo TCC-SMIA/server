@@ -1,11 +1,12 @@
 import { Response, Request } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import CreateComplaintService from '@domains/complaints/services/CreateComplaintService';
 import ListComplaintsService from '@domains/complaints/services/ListComplaintsService';
 import UpdateComplaintService from '@domains/complaints/services/UpdateComplaintService';
 import DeleteComplaintService from '@domains/complaints/services/DeleteComplaintService';
-import { classToClass } from 'class-transformer';
+import GetComplaintService from '@domains/complaints/services/GetComplaintService';
 
 class ComplaintsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -121,6 +122,16 @@ class ComplaintsController {
     await deleteComplaintService.execute({ user_id, complaint_id });
 
     return response.status(204).json();
+  }
+
+  public async show(request: Request, response: Response) {
+    const { complaint_id } = request.params;
+
+    const getComplaitService = container.resolve(GetComplaintService);
+
+    const complaint = await getComplaitService.execute({ complaint_id });
+
+    return response.json(complaint);
   }
 }
 
