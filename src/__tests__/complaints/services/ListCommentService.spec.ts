@@ -1,6 +1,5 @@
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import ListCommentsService from '@domains/complaints/services/ListCommentsService';
-import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
 import ICommentsRepository from '@domains/complaints/rules/ICommentsRepository';
 import FakeCommentsRepository from '@tests/complaints/fakes/FakeCommentsRepository';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
