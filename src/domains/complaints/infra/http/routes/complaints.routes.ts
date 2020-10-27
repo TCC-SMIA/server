@@ -28,6 +28,8 @@ complaintsRoutes.get('/', ComplaintsController.index);
 
 complaintsRoutes.delete('/delete', ComplaintsController.delete);
 
+complaintsRoutes.get('/:complaint_id', ComplaintsController.show);
+
 complaintsRoutes.patch(
   '/image',
   upload.single('image'),

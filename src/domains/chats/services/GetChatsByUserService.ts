@@ -8,11 +8,10 @@ import Chat from '../infra/typeorm/entities/Chat';
 
 interface IRequest {
   user_id: string;
-  contact_id: string;
 }
 
 @injectable()
-class CreateChatService {
+class GetChatsByUserService {
   constructor(
     @inject('ChatsRepository')
     private chatsRepository: IChatsRepository,
@@ -21,25 +20,21 @@ class CreateChatService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ user_id, contact_id }: IRequest): Promise<Chat> {
+  public async execute({ user_id }: IRequest): Promise<Chat[]> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       throw new AppError('User does not exists.');
     }
 
-    const contact = await this.usersRepository.findById(contact_id);
+    const chats = await this.chatsRepository.findAllByUser(user_id);
 
-    if (!contact) {
+    if (!chats) {
       throw new AppError('Contact does not exists.');
     }
 
-    const users = [user, contact];
-
-    const chat = await this.chatsRepository.create({ user_id, users });
-
-    return chat;
+    return chats;
   }
 }
 
-export default CreateChatService;
+export default GetChatsByUserService;

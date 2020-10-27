@@ -19,21 +19,23 @@ class Comment {
   @Column()
   complaint_id!: string;
 
-  @ManyToOne(() => Complaint, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Complaint, complaint => complaint.id, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'complaint_id' })
   complaint!: Complaint;
 
-  @Column()
+  @Column({ nullable: true })
   user_id!: string;
 
-  @ManyToOne(() => User, { cascade: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => User, { onDelete: 'CASCADE', nullable: true })
   @JoinColumn({ name: 'user_id' })
   user!: User;
 
-  @Column()
+  @Column({ nullable: true })
   agency_id!: string;
 
-  @ManyToOne(() => Agency, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Agency, { onDelete: 'CASCADE', nullable: true })
   @JoinColumn({ name: 'agency_id' })
   agency!: Agency;
 
