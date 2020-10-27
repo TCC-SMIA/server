@@ -36,7 +36,7 @@ class CreateChatService {
 
     const users = [user, contact];
 
-    const chat = await this.chatsRepository.create({ users });
+    const chat = await this.chatsRepository.create({ user_id, users });
 
     return chat;
   }

@@ -24,7 +24,7 @@ class ChatsController {
 
     const service = container.resolve(GetChatsByUserService);
 
-    const chats = service.execute({ user_id });
+    const chats = await service.execute({ user_id });
 
     return response.json(chats);
   }
