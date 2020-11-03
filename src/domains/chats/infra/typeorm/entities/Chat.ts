@@ -22,13 +22,13 @@ class Chat {
   @Column()
   user_id: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToMany(() => User, { onDelete: 'CASCADE', nullable: true })
-  @JoinTable()
-  users: User[];
+  @ManyToOne(() => User, { onDelete: 'CASCADE', eager: true })
+  @JoinColumn()
+  destinatary: User;
 
   @OneToMany(() => Message, messages => messages)
   messages!: Message[];

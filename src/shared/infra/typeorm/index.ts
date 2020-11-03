@@ -26,6 +26,7 @@ export default createConnection({
     ),
   ],
   synchronize: true,
+  logging: 'all',
 }).then(_ => {
   // eslint-disable-next-line no-console
   console.log('Database was sucessfuly connected');
