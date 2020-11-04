@@ -131,7 +131,7 @@ class ComplaintsController {
 
     const complaint = await getComplaitService.execute({ complaint_id });
 
-    return response.json(complaint);
+    return response.json(classToClass(complaint));
   }
 }
 
