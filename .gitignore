@@ -4,6 +4,8 @@
 /node_modules
 /.pnp
 tmp/uploads/*
+!tmp/uploads/.gitkeep
+!tmp/.gitkeep
 !tmp/.gitkeep
 .pnp.js
 
