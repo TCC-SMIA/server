@@ -40,7 +40,10 @@ describe('CreateChatService', () => {
       contact_id: contact.id,
     });
 
-    expect(newChat.users).toStrictEqual([user, contact]);
+    expect(newChat).toBeTruthy();
+    expect(newChat.id).toBeTruthy();
+    expect(newChat.user_id).toBe(user.id);
+    expect(newChat.destinatary.id).toBe(contact.id);
   });
 
   it('should not be able to create a chat with nonexistent user', async () => {

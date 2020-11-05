@@ -2,6 +2,7 @@ import { Response, Request } from 'express';
 import { container } from 'tsyringe';
 import CreateChatService from '@domains/chats/services/CreateChatService';
 import GetChatsByUserService from '@domains/chats/services/GetChatsByUserService';
+import { classToClass } from 'class-transformer';
 
 class ChatsController {
   public async create(request: Request, response: Response): Promise<Response> {
@@ -26,7 +27,7 @@ class ChatsController {
 
     const chats = await service.execute({ user_id });
 
-    return response.json(chats);
+    return response.json(classToClass(chats));
   }
 }
 

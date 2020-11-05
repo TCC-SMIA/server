@@ -41,7 +41,9 @@ describe('CreateMessageService', () => {
     });
 
     const chat = await fakeChatsRepository.create({
-      users: [user, contact],
+      user,
+      user_id: user.id,
+      destinatary: contact,
     });
 
     const newMessage = await createMessageService.execute({
@@ -71,7 +73,9 @@ describe('CreateMessageService', () => {
     });
 
     const chat = await fakeChatsRepository.create({
-      users: [user, contact],
+      user,
+      user_id: user.id,
+      destinatary: contact,
     });
 
     await expect(

@@ -34,9 +34,10 @@ class CreateChatService {
       throw new AppError('Contact does not exists.');
     }
 
-    const users = [user, contact];
-
-    const chat = await this.chatsRepository.create({ user_id, users });
+    const chat = await this.chatsRepository.create({
+      user_id,
+      destinatary: contact,
+    });
 
     return chat;
   }
