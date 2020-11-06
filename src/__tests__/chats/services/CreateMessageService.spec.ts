@@ -53,7 +53,6 @@ describe('CreateMessageService', () => {
     });
 
     expect(newMessage.user_id).toBe(user.id);
-    expect(newMessage.chat_id).toBe(chat.id);
     expect(newMessage.content).toBe('Nova Mensagem');
   });
 

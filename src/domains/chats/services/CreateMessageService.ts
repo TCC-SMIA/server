@@ -40,7 +40,7 @@ class CreateMessageService {
     const chat = await this.chatsRepository.findById(chat_id);
 
     if (!chat) {
-      throw new AppError('Chat not found.');
+      throw new AppError('Chat was not found.');
     }
 
     const newMessage = await this.messagesRepository.create({
@@ -48,7 +48,6 @@ class CreateMessageService {
       user,
       user_id,
       chat,
-      chat_id,
     });
 
     return newMessage;
