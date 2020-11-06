@@ -56,11 +56,28 @@ class FakeComplaintsRepository implements IComplaintsRepository {
     skip: number,
     take: number,
     city: string,
+    state: string,
   ): Promise<Complaint[]> {
     let complaintsFiltered: Complaint[];
 
     complaintsFiltered = this.complaints.filter(
-      complaint => complaint.city === city,
+      complaint => complaint.city === city && complaint.state === state,
+    );
+
+    complaintsFiltered = complaintsFiltered.slice(skip, take);
+
+    return complaintsFiltered;
+  }
+
+  public async findByState(
+    skip: number,
+    take: number,
+    state: string,
+  ): Promise<Complaint[]> {
+    let complaintsFiltered: Complaint[];
+
+    complaintsFiltered = this.complaints.filter(
+      complaint => complaint.state === state,
     );
 
     complaintsFiltered = complaintsFiltered.slice(skip, take);

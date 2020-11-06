@@ -8,6 +8,7 @@ interface IRequest {
   skip: number;
   take: number;
   city?: string;
+  state?: string;
 }
 
 @injectable()
@@ -17,12 +18,36 @@ class ListComplaintsService {
     private complaintsRepository: IComplaintsRepository,
   ) {}
 
-  public async execute({ skip, take, city }: IRequest): Promise<Complaint[]> {
-    if (city) {
+  public async execute({
+    skip,
+    take,
+    city,
+    state,
+  }: IRequest): Promise<Complaint[]> {
+    if (city && state) {
       const complaints = await this.complaintsRepository.findByCity(
         skip,
         take,
         city,
+        state,
+      );
+
+      const filteredComplaints = complaints.map(complaint => {
+        if (complaint.anonymous) {
+          delete complaint.user;
+          delete complaint.user_id;
+        }
+        return complaint;
+      });
+
+      return filteredComplaints;
+    }
+
+    if (state) {
+      const complaints = await this.complaintsRepository.findByState(
+        skip,
+        take,
+        state,
       );
 
       const filteredComplaints = complaints.map(complaint => {
