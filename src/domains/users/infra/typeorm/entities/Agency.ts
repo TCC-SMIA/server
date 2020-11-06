@@ -17,7 +17,7 @@ class Agency {
   @Column()
   name!: string;
 
-  @Column({ unique: true, transformer: stringTransformer })
+  @Column({ unique: true })
   cnpj!: string;
 
   @Column({ unique: true, transformer: stringTransformer })
