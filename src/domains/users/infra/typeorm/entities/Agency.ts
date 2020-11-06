@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 
 import { Exclude, Expose } from 'class-transformer';
+import { stringTransformer } from '@shared/utils/transformers';
 
 @Entity('agencies')
 class Agency {
@@ -16,10 +17,10 @@ class Agency {
   @Column()
   name!: string;
 
-  @Column()
+  @Column({ unique: true, transformer: stringTransformer })
   cnpj!: string;
 
-  @Column()
+  @Column({ unique: true, transformer: stringTransformer })
   email!: string;
 
   @Column({ type: 'real' })
