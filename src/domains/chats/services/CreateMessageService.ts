@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
+import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import IChatsRepository from '../rules/IChatsRepository';
 import Message from '../infra/typeorm/entities/Message';
 import IMessagesRepository from '../rules/IMessagesRepository';
@@ -24,6 +25,9 @@ class CreateMessageService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('NotificationsRepository')
+    private notificationsRepository: INotificationsRepository,
   ) {}
 
   public async execute({
@@ -48,6 +52,11 @@ class CreateMessageService {
       user,
       user_id,
       chat,
+    });
+
+    await this.notificationsRepository.create({
+      user_id: chat.destinatary.id,
+      content: `Você tem uma nova mensagem de ${user.name}.`,
     });
 
     return newMessage;
