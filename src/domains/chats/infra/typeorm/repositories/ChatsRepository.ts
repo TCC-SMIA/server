@@ -22,11 +22,15 @@ class ChatsRepository implements IChatsRepository {
   }
 
   public async findAllByUser(user_id: string): Promise<Chat[]> {
-    const chats = await this.chatsRepository.find({
+    const user_chats = await this.chatsRepository.find({
       where: { user_id },
     });
 
-    return chats;
+    const destinatary_chats = await this.chatsRepository.find({
+      where: { destinatary: user_id },
+    });
+
+    return [...user_chats, ...destinatary_chats];
   }
 
   public async findById(chat_id: string): Promise<Chat | undefined> {
