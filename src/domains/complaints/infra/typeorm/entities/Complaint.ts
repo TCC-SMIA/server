@@ -9,7 +9,10 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
+import path from 'path';
+import fs from 'promise-fs';
 
+import multerConfig from '@config/multerConfig';
 import User from '@domains/users/infra/typeorm/entities/User';
 import Comment from '@domains/complaints/infra/typeorm/entities/Comment';
 
@@ -66,11 +69,16 @@ class Complaint {
 
   @Expose({ name: 'image_url' })
   getAvatarUrl(): string | null {
-    if (!this.image) {
+    if (!this.image) return null;
+
+    try {
+      if (fs.existsSync(path.resolve(multerConfig.uploadsFolder, this.image))) {
+        return `${process.env.APP_URL}/files/${this.image}`;
+      }
+      return null;
+    } catch {
       return null;
     }
-
-    return `${process.env.APP_URL}/files/${this.image}`;
   }
 }
 

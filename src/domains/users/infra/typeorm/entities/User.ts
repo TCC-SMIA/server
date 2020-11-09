@@ -5,8 +5,11 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
 } from 'typeorm';
-
+import path from 'path';
+import fs from 'promise-fs';
 import { Exclude, Expose } from 'class-transformer';
+
+import multerConfig from '@config/multerConfig';
 import { stringTransformer } from '@shared/utils/transformers';
 
 @Entity('users')
@@ -38,11 +41,18 @@ class User {
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
-    if (!this.avatar) {
+    if (!this.avatar) return null;
+
+    try {
+      if (
+        fs.existsSync(path.resolve(multerConfig.uploadsFolder, this.avatar))
+      ) {
+        return `${process.env.APP_URL}/files/${this.avatar}`;
+      }
+      return null;
+    } catch {
       return null;
     }
-
-    return `${process.env.APP_URL}/files/${this.avatar}`;
   }
 }
 
