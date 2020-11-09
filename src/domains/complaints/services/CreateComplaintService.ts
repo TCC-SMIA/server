@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
 import getLocationInfo from '@shared/utils/getLocationInfo';
@@ -83,7 +84,7 @@ class CreateComplaintService {
       delete complaint.user_id;
     }
 
-    return complaint;
+    return classToClass(complaint);
   }
 }
 

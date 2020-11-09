@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
@@ -67,7 +68,7 @@ class UpdateUserAvatarService {
       await this.agencyRepository.update(user as Agency);
     }
 
-    return { user, user_type };
+    return { user: classToClass(user), user_type };
   }
 }
 

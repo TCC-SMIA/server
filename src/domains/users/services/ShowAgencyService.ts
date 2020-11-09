@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
@@ -17,13 +18,13 @@ class ShowAgencyService {
   ) {}
 
   async execute({ agencyId }: IRequest): Promise<Agency> {
-    const checkAgencyExists = await this.agencyRepository.findById(agencyId);
+    const agency = await this.agencyRepository.findById(agencyId);
 
-    if (!checkAgencyExists) {
+    if (!agency) {
       throw new AppError('Agency not found');
     }
 
-    return checkAgencyExists;
+    return classToClass(agency);
   }
 }
 

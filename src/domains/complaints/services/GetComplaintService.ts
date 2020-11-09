@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
@@ -21,7 +22,7 @@ class GetComplaintService {
 
     if (!complaint) throw new AppError('Complaint was not found');
 
-    return complaint;
+    return classToClass(complaint);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
@@ -31,7 +32,7 @@ class ListCommentsService {
       complaint_id,
     );
 
-    return listComments;
+    return classToClass(listComments);
   }
 }
 

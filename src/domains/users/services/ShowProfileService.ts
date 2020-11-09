@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import User from '@domains/users/infra/typeorm/entities/User';
+import { classToClass } from 'class-transformer';
 
+import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 
@@ -17,13 +18,13 @@ class ShowProfileService {
   ) {}
 
   async execute({ userId }: IRequest): Promise<User> {
-    const checkUserExists = await this.usersRepository.findById(userId);
+    const user = await this.usersRepository.findById(userId);
 
-    if (!checkUserExists) {
+    if (!user) {
       throw new AppError('User not found');
     }
 
-    return checkUserExists;
+    return classToClass(user);
   }
 }
 
