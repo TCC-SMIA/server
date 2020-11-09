@@ -39,8 +39,9 @@ describe('AuthenticateUserService', () => {
     });
 
     expect(response).toHaveProperty('token');
-    expect(response.user).toEqual(user);
     expect(response.user.id).toBeTruthy();
+    expect(response.user.id).toBe(user.id);
+    expect(response.user.email).toBe(user.email);
     expect(response.user_type).toBe(UserTypes.Reporter);
   });
 
@@ -99,7 +100,8 @@ describe('AuthenticateUserService', () => {
     });
 
     expect(response).toHaveProperty('token');
-    expect(response.user).toEqual(user);
+    expect(response.user.id).toBe(user.id);
+    expect(response.user.email).toBe(user.email);
     expect(response.user_type).toBe(UserTypes.EnvironmentalAgency);
   });
 
