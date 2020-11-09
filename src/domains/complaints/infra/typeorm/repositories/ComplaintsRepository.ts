@@ -64,11 +64,30 @@ class ComplaintsRepository implements IComplaintsRepository {
     skip: number,
     take: number,
     city: string,
+    state: string,
   ): Promise<Complaint[]> {
     const complaints = await this.complaintsRepository.find({
       skip,
       take,
-      where: { city },
+      where: { city, state },
+      order: {
+        created_at: 'DESC',
+      },
+      relations: ['user'],
+    });
+
+    return complaints;
+  }
+
+  public async findByState(
+    skip: number,
+    take: number,
+    state: string,
+  ): Promise<Complaint[]> {
+    const complaints = await this.complaintsRepository.find({
+      skip,
+      take,
+      where: { state },
       order: {
         created_at: 'DESC',
       },

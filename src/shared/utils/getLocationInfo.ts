@@ -28,7 +28,7 @@ export default async function getLocationInfo({
 
     const { results } = response.data;
 
-    const { state } = results[0].components;
+    const { state_code } = results[0].components;
 
     let { town } = results[0].components;
 
@@ -38,7 +38,7 @@ export default async function getLocationInfo({
 
     return {
       city: town,
-      state,
+      state: state_code,
     };
   } catch (err) {
     return {
