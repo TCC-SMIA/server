@@ -22,6 +22,9 @@ class CreateChatService {
   ) {}
 
   public async execute({ user_id, contact_id }: IRequest): Promise<Chat> {
+    if (user_id === contact_id)
+      throw new AppError('You can not create a chat with yourself');
+
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {

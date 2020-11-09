@@ -30,7 +30,7 @@ class Chat {
   @JoinColumn()
   destinatary: User;
 
-  @OneToMany(() => Message, messages => messages)
+  @OneToMany(() => Message, messages => messages.chat, { eager: true })
   messages!: Message[];
 
   @CreateDateColumn()
