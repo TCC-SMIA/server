@@ -1,4 +1,5 @@
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
@@ -96,7 +97,7 @@ class CreateCommentService {
       content: `Novo comentário de ${user.name} na sua publicação.`,
     });
 
-    return comment;
+    return classToClass(comment);
   }
 }
 

@@ -55,7 +55,7 @@ describe('CreateComplaintService', () => {
     expect(complaint.latitude).toBe(-222222);
     expect(complaint.longitude).toBe(222222);
     expect(complaint.anonymous).toBe(false);
-    expect(complaint.date).toBe(date);
+    expect(complaint.date).toEqual(date);
     expect(complaint.image).toBe('image.jpg');
   });
 

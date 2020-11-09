@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
+import { classToClass } from 'class-transformer';
 import IChatsRepository from '../rules/IChatsRepository';
 import Chat from '../infra/typeorm/entities/Chat';
 
@@ -33,7 +34,7 @@ class GetChatsByUserService {
       throw new AppError('Contact does not exists.');
     }
 
-    return chats;
+    return classToClass(chats);
   }
 }
 

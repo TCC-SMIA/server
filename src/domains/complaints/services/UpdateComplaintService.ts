@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
@@ -70,7 +71,7 @@ class UpdateComplaintService {
       delete complaint.user_id;
     }
 
-    return complaint;
+    return classToClass(complaint);
   }
 }
 

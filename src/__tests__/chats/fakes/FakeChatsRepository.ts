@@ -2,9 +2,20 @@ import { v4 } from 'uuid';
 
 import Chat from '@domains/chats/infra/typeorm/entities/Chat';
 import IChatsRepository from '@domains/chats/rules/IChatsRepository';
+import User from '@domains/users/infra/typeorm/entities/User';
 
 class FakeChatsRepository implements IChatsRepository {
   private chats: Chat[] = [];
+
+  public async doesExist(
+    user_id: string,
+    destinatary: User,
+  ): Promise<Chat | undefined> {
+    return this.chats.find(
+      chat =>
+        chat.user_id === user_id && chat.destinatary.id === destinatary.id,
+    );
+  }
 
   public async create(chatData: Partial<Chat>): Promise<Chat> {
     const chat = new Chat();

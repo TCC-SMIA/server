@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 import { sign } from 'jsonwebtoken';
 import Validator from 'validator';
 
@@ -7,7 +9,6 @@ import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProv
 import authConfig from '@config/authConfig';
 import AppError from '@shared/errors/AppError';
 import User from '@domains/users/infra/typeorm/entities/User';
-import { injectable, inject } from 'tsyringe';
 import { UserTypes } from '../enums/UserEnums';
 import IAgencyRepository from '../rules/IAgencyRepository';
 import Agency from '../infra/typeorm/entities/Agency';

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
@@ -27,7 +28,7 @@ class ListComplaintsService {
 
     const complaints = await this.complaintsRepository.findAllByUserId(user.id);
 
-    return complaints;
+    return classToClass(complaints);
   }
 }
 

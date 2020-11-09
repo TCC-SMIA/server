@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
@@ -32,7 +33,7 @@ class ResolveComplaintService {
 
     const savedComplaint = await this.complaintsRepository.save(complaint);
 
-    return savedComplaint;
+    return classToClass(savedComplaint);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
@@ -27,22 +28,22 @@ class CreateChatService {
 
     const user = await this.usersRepository.findById(user_id);
 
-    if (!user) {
-      throw new AppError('User does not exists.');
-    }
+    if (!user) throw new AppError('User does not exists.');
 
     const contact = await this.usersRepository.findById(contact_id);
 
-    if (!contact) {
-      throw new AppError('Contact does not exists.');
-    }
+    if (!contact) throw new AppError('Contact does not exists.');
+
+    const doesExist = await this.chatsRepository.doesExist(user_id, contact);
+
+    if (doesExist) return doesExist;
 
     const chat = await this.chatsRepository.create({
       user_id,
       destinatary: contact,
     });
 
-    return chat;
+    return classToClass(chat);
   }
 }
 

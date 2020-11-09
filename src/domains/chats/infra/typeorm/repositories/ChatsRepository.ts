@@ -1,4 +1,5 @@
 import IChatsRepository from '@domains/chats/rules/IChatsRepository';
+import User from '@domains/users/infra/typeorm/entities/User';
 import { Repository, getRepository } from 'typeorm';
 import Chat from '../entities/Chat';
 
@@ -35,6 +36,15 @@ class ChatsRepository implements IChatsRepository {
 
   public async findById(chat_id: string): Promise<Chat | undefined> {
     return this.chatsRepository.findOne({ where: { id: chat_id } });
+  }
+
+  public async doesExist(
+    user_id: string,
+    destinatary: User,
+  ): Promise<Chat | undefined> {
+    return this.chatsRepository.findOne({
+      where: { user_id, destinatary },
+    });
   }
 }
 
