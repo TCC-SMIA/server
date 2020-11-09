@@ -77,7 +77,7 @@ class AuthenticateUserService {
       expiresIn,
     });
 
-    return { user, token, user_type };
+    return { user: classToClass(user), token, user_type };
   }
 }
 
