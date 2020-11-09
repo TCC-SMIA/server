@@ -8,6 +8,7 @@ import ImageComplaintController from '@domains/complaints/infra/http/controllers
 import ensureAuthenticate from '@domains/users/infra/http/middlewares/ensureAuthenticate';
 import ComplaintStatusController from '../controllers/ComplaintStatusController';
 import resolveComplaintValidator from '../validators/ResolveComplaintValidator';
+import ComplaintsByUserController from '../controllers/ComplaintsByUserController';
 
 const complaintsRoutes = Router();
 const upload = multer(multerConfig.multer);
@@ -25,6 +26,7 @@ complaintsRoutes.patch(
 );
 
 complaintsRoutes.get('/', ComplaintsController.index);
+complaintsRoutes.get('/mycomplaints', ComplaintsByUserController.index);
 
 complaintsRoutes.delete('/delete', ComplaintsController.delete);
 
