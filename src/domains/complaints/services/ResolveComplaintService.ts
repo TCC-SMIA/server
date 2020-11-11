@@ -5,6 +5,7 @@ import { classToClass } from 'class-transformer';
 import AppError from '@shared/errors/AppError';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 import Complaint from '../infra/typeorm/entities/Complaint';
+import { ComplaintStatusEnum } from '../enums/ComplaintStatusEnum';
 
 interface IRequest {
   complaint_id: string;
@@ -29,7 +30,7 @@ class ResolveComplaintService {
     if (complaint.user.id !== user_id)
       throw new AppError('Complaints can only be resolved by its owner');
 
-    complaint.resolved = true;
+    complaint.status = ComplaintStatusEnum.Resolved;
 
     const savedComplaint = await this.complaintsRepository.save(complaint);
 

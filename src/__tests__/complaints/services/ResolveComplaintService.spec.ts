@@ -4,6 +4,7 @@ import ResolveComplaintService from '@domains/complaints/services/ResolveComplai
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import AppError from '@shared/errors/AppError';
 import User from '@domains/users/infra/typeorm/entities/User';
+import { ComplaintStatusEnum } from '@domains/complaints/enums/ComplaintStatusEnum';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintRepository: IComplaintsRepository;
@@ -18,7 +19,7 @@ describe('ResolveComplaintService', () => {
   it('Should be able to resolve a complaint', async () => {
     await fakeComplaintRepository.create({
       id: 'valid_id',
-      resolved: false,
+      status: ComplaintStatusEnum.Resolved,
       user: { id: 'valid_user_id' } as User,
     });
 
@@ -29,13 +30,12 @@ describe('ResolveComplaintService', () => {
 
     expect(resolvedComplaint).toBeTruthy();
     expect(resolvedComplaint.id).toBeTruthy();
-    expect(resolvedComplaint.resolved).toBeTruthy();
+    expect(resolvedComplaint.status).toBeTruthy();
   });
 
   it('Should not be able to update a unexistent complaint', async () => {
     await fakeComplaintRepository.create({
       id: 'valid_id',
-      resolved: false,
       user: { id: 'valid_user_id' } as User,
     });
 
@@ -50,7 +50,6 @@ describe('ResolveComplaintService', () => {
   it('Should not be able to update a the complaint with a invalid user', async () => {
     await fakeComplaintRepository.create({
       id: 'valid_id',
-      resolved: false,
       user: { id: 'valid_user_id' } as User,
     });
 
