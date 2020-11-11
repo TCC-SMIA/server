@@ -15,6 +15,8 @@ import fs from 'promise-fs';
 import multerConfig from '@config/multerConfig';
 import User from '@domains/users/infra/typeorm/entities/User';
 import Comment from '@domains/complaints/infra/typeorm/entities/Comment';
+import { ComplaintStatusEnum } from '@domains/complaints/enums/ComplaintStatusEnum';
+import { ComplaintTypeEnum } from '@domains/complaints/enums/ComplaintTypeEnum';
 
 @Entity('complaints')
 class Complaint {
@@ -34,8 +36,11 @@ class Complaint {
   @Column()
   description!: string;
 
-  @Column({ default: false })
-  resolved!: boolean;
+  @Column({ default: ComplaintStatusEnum.New })
+  status!: string;
+
+  @Column({ default: ComplaintTypeEnum.Others })
+  type!: string;
 
   @Column({ nullable: true })
   image: string;
@@ -58,7 +63,7 @@ class Complaint {
   @Column({ default: false })
   anonymous!: boolean;
 
-  @OneToMany(() => Comment, comments => comments.complaint)
+  @OneToMany(() => Comment, comments => comments.complaint, { eager: true })
   comments!: Comment[];
 
   @CreateDateColumn()

@@ -13,7 +13,10 @@ import notificationsRoutes from '@domains/notifications/infra/http/routes/notifi
 const routes = Router();
 
 routes.get('/', (_: Request, res: Response) => {
-  return res.json({ status: 'Running', message: 'API Running' });
+  return res.json({
+    status: 'Welcome to SMIA API',
+    message: `You can access the documentation on the link: http://${process.env.APP_URL}/api/docs`,
+  });
 });
 
 routes.use('/users', userRoutes);
