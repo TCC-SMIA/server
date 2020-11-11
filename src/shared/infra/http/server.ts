@@ -5,11 +5,13 @@ import '@shared/container';
 import express, { Express } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import { createServer } from 'http';
 
 import * as swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from '@shared/providers/Documentation/implementations/Swagger';
 
 import multerConfig from '@config/multerConfig';
+import { setupWebSocket } from '@shared/websocket/websocket';
 import routes from './routes';
 import globalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
 
@@ -21,11 +23,17 @@ class Server {
   constructor() {
     this.server = express();
 
+    this.setWebSocket();
     this.middlewares();
     this.swaggerSetup();
     this.routes();
     this.errorHandling();
     this.startServer();
+  }
+
+  private setWebSocket(): void {
+    const http_server = createServer(this.server);
+    setupWebSocket(http_server);
   }
 
   private middlewares(): void {
