@@ -45,6 +45,8 @@ class CreateCommentService {
     let user: User | Agency | undefined;
     let user_type = 0;
 
+    if (!content) throw new AppError('You can not create an empty message');
+
     user = await this.usersRepository.findById(user_id);
 
     if (!user) {
