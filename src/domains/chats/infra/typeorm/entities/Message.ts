@@ -26,7 +26,7 @@ class Message {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Chat, chat => chat.messages)
+  @ManyToOne(() => Chat, chat => chat.messages, { onDelete: 'CASCADE' })
   chat: Chat;
 
   @CreateDateColumn()

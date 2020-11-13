@@ -8,6 +8,7 @@ tmp/uploads/*
 !tmp/.gitkeep
 !tmp/.gitkeep
 .pnp.js
+/src/shared/uploads/*
 
 # testing
 /coverage

@@ -22,7 +22,7 @@ let notificationsRepository: INotificationsRepository;
 let createNotificationService: CreateNotificationService;
 
 describe('CreateCommentService', () => {
-  beforeEach(() => {
+  beforeAll(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeAgencysRepository = new FakeAgencyRepository();
     complaintRepository = new FakeComplaintsRepository();
@@ -56,6 +56,8 @@ describe('CreateCommentService', () => {
       longitude: -42.0737652,
       anonymous: false,
       date: new Date(),
+      user,
+      user_id: user.id,
     });
 
     const comment = await createCommentService.execute({

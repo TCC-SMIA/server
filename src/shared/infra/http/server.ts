@@ -5,10 +5,12 @@ import '@shared/container';
 import express, { Express } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import { createServer } from 'http';
 
 import * as swaggerUi from 'swagger-ui-express';
 import { swaggerDocument } from '@shared/providers/Documentation/implementations/Swagger';
 
+import { setupWebSocket } from '@shared/websocket/websocket';
 import multerConfig from '@config/multerConfig';
 import routes from './routes';
 import globalErrorsMiddleware from './middlewares/GlobalErrorsMiddleware';
@@ -48,8 +50,13 @@ class Server {
   }
 
   private startServer(): void {
-    this.server.listen(process.env.PORT || 3333);
+    const http_server = createServer(this.server);
+
+    http_server.listen(3333);
+
     console.log(`Server started on ${process.env.APP_URL}`);
+
+    setupWebSocket(http_server);
   }
 
   private errorHandling(): void {

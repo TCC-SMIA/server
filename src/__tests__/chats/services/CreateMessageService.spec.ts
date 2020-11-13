@@ -4,6 +4,7 @@ import CreateMessageService from '@domains/chats/services/CreateMessageService';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
 import AppError from '@shared/errors/AppError';
 import IMessagesRepository from '@domains/chats/rules/IMessagesRepository';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import FakeChatsRepository from '../fakes/FakeChatsRepository';
 import FakeMessagesRepository from '../fakes/FakeMessagesRepository';
@@ -11,8 +12,8 @@ import FakeMessagesRepository from '../fakes/FakeMessagesRepository';
 let fakeChatsRepository: IChatsRepository;
 let fakeUsersRepository: IUsersRepository;
 let fakeMessagesRepository: IMessagesRepository;
-let fakeNotificationsRepository: FakeNotificationsRepository;
 let createMessageService: CreateMessageService;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 
 describe('CreateMessageService', () => {
   beforeEach(() => {
@@ -25,7 +26,7 @@ describe('CreateMessageService', () => {
       fakeChatsRepository,
       fakeMessagesRepository,
       fakeUsersRepository,
-      fakeNotificationsRepository,
+      new CreateNotificationService(fakeNotificationsRepository),
     );
   });
 
