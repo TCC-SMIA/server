@@ -52,7 +52,7 @@ class Server {
   private startServer(): void {
     const http_server = createServer(this.server);
 
-    http_server.listen(3333);
+    http_server.listen(process.env.PORT || 3333);
 
     console.log(`Server started on ${process.env.APP_URL}`);
 
