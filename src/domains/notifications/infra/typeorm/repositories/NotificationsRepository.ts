@@ -23,7 +23,7 @@ class NotificationsRepository implements INotificationsRepository {
 
   public async findByUser(user_id: string): Promise<Notification[]> {
     return this.ormRepository.find({
-      where: { user_id },
+      where: { user_id, read: false },
       order: { created_at: 'DESC' },
     });
   }

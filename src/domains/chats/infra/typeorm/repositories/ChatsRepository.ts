@@ -25,10 +25,12 @@ class ChatsRepository implements IChatsRepository {
   public async findAllByUser(user_id: string): Promise<Chat[]> {
     const user_chats = await this.chatsRepository.find({
       where: { user_id },
+      order: { created_at: 'DESC' },
     });
 
     const destinatary_chats = await this.chatsRepository.find({
       where: { destinatary: user_id },
+      order: { created_at: 'DESC' },
     });
 
     return [...user_chats, ...destinatary_chats];
