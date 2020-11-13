@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import AppError from '@shared/errors/AppError';
+import * as socket from '@shared/websocket/websocket';
 
 interface IReadNotificationServiceParams {
   user_id: string;
@@ -31,6 +32,13 @@ class ReadNotificationService {
     notification.read = true;
 
     await this.notificationsRepository.update(notification);
+
+    const notifications = await this.notificationsRepository.findByUser(
+      user_id,
+    );
+
+    const sendTo = socket.findConnections(user_id);
+    socket.sendMessage(sendTo, 'new-notification', notifications);
   }
 }
 
