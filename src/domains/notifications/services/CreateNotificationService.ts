@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import * as socket from '@shared/websocket/websocket';
+import SocketChannels from '@shared/websocket/socket-channels';
 
 interface CreateCommentRequest {
   user_id: string;
@@ -29,7 +30,11 @@ class CreateNotificationService {
     );
 
     const sendTo = socket.findConnections(user_id);
-    socket.sendMessage(sendTo, 'new-notification', notifications);
+    socket.sendMessage(
+      sendTo,
+      SocketChannels.NotificationsChannel,
+      notifications,
+    );
   }
 }
 

@@ -25,6 +25,8 @@ const findConnections = (user_id: string): ISocketConnections[] => {
   return connections.filter(connection => connection.user_id === user_id);
 };
 
+const findAllConnections = (): ISocketConnections[] => connections;
+
 const sendMessage = (
   to: ISocketConnections[],
   message: string,
@@ -35,4 +37,4 @@ const sendMessage = (
   });
 };
 
-export { setupWebSocket, findConnections, sendMessage };
+export { setupWebSocket, findConnections, findAllConnections, sendMessage };
