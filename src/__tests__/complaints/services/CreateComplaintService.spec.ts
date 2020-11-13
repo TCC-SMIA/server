@@ -8,6 +8,8 @@ import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
+import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
@@ -15,6 +17,7 @@ let fakeStorageProvider: IStorageProvider;
 let createComplaintService: CreateComplaintService;
 let fakeAgencyRepository: IAgencyRepository;
 let fakeNotificationsRepository: INotificationsRepository;
+let fakeUsersRepository: IUsersRepository;
 let createNotificationService: CreateNotificationService;
 
 describe('CreateComplaintService', () => {
@@ -23,6 +26,7 @@ describe('CreateComplaintService', () => {
     fakeStorageProvider = new FakeStorageProvider();
     fakeAgencyRepository = new FakeAgencyRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
+    fakeUsersRepository = new FakeUsersRepository();
     createNotificationService = new CreateNotificationService(
       fakeNotificationsRepository,
     );
@@ -36,9 +40,17 @@ describe('CreateComplaintService', () => {
   });
 
   it('should be able to create a complaint', async () => {
+    const user = await fakeUsersRepository.create({
+      email: 'valid@mail.com',
+      name: 'valid_name',
+      nickname: 'valid_nickname',
+      password: 'valid_password',
+    });
+
     const date = new Date();
+
     const complaint = await createComplaintService.execute({
-      user_id: 'anyuserid',
+      user_id: user.id,
       title: 'test complaint created',
       description: 'description of complaint created',
       imageFilename: 'image.jpg',
@@ -64,8 +76,15 @@ describe('CreateComplaintService', () => {
 
     const date = new Date();
 
+    const user = await fakeUsersRepository.create({
+      email: 'valid@mail.com',
+      name: 'valid_name',
+      nickname: 'valid_nickname',
+      password: 'valid_password',
+    });
+
     const complaint = await createComplaintService.execute({
-      user_id: 'valid_id',
+      user_id: user.id,
       title: 'New anonynmous Complaint',
       description: 'We found a new planet',
       latitude: -222222,
@@ -82,7 +101,7 @@ describe('CreateComplaintService', () => {
     expect(complaint.longitude).toBe(222222);
     expect(complaint.date).toEqual(date);
     expect(createMock).toHaveBeenCalledWith({
-      user_id: 'valid_id',
+      user_id: user.id,
       title: 'New anonynmous Complaint',
       description: 'We found a new planet',
       image: undefined,

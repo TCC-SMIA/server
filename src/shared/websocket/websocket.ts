@@ -14,7 +14,6 @@ const setupWebSocket = (server: Server): void => {
 
   io.on('connection', (socket: SocketIO.Socket) => {
     const { user_id } = socket.handshake.query;
-
     connections.push({
       id: socket.id,
       user_id,

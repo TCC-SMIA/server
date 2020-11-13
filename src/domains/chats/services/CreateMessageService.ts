@@ -5,6 +5,8 @@ import { classToClass } from 'class-transformer';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
+import { findConnections, sendMessage } from '@shared/websocket/websocket';
+import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import IChatsRepository from '../rules/IChatsRepository';
 import Message from '../infra/typeorm/entities/Message';
 import IMessagesRepository from '../rules/IMessagesRepository';
@@ -27,8 +29,8 @@ class CreateMessageService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('NotificationsRepository')
-    private notificationsRepository: INotificationsRepository,
+    @inject('CreateNotificationService')
+    private createNotificationService: CreateNotificationService,
   ) {}
 
   public async execute({
@@ -55,8 +57,11 @@ class CreateMessageService {
       chat,
     });
 
-    await this.notificationsRepository.create({
-      user_id: chat.destinatary.id,
+    const user_receiving =
+      user_id === chat.user_id ? chat.destinatary.id : chat.user_id;
+
+    await this.createNotificationService.execute({
+      user_id: user_receiving,
       content: `Você tem uma nova mensagem de ${user.name}.`,
     });
 
