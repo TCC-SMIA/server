@@ -22,7 +22,10 @@ class MessagesRepository implements IMessagesRepository {
   }
 
   public async findAllByChat(chat_id: string): Promise<Message[]> {
-    return this.messagesRepository.find({ where: { chat_id } });
+    return this.messagesRepository.find({
+      where: { chat_id },
+      order: { created_at: 'ASC' },
+    });
   }
 }
 

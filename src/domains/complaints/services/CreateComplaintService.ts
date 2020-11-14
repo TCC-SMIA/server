@@ -95,6 +95,7 @@ class CreateComplaintService {
     const complaints = await this.complaintsRepository.findAllComplaints(0, 10);
 
     const sendTo = socket.findAllConnections();
+
     socket.sendMessage(
       sendTo,
       SocketChannels.ComplaintsFeedChannel,

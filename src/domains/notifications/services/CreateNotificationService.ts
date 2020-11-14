@@ -30,6 +30,7 @@ class CreateNotificationService {
     );
 
     const sendTo = socket.findConnections(user_id);
+
     socket.sendMessage(
       sendTo,
       SocketChannels.NotificationsChannel,

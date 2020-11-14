@@ -3,8 +3,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   CreateDateColumn,
-  ManyToMany,
-  JoinTable,
   OneToMany,
   ManyToOne,
   JoinColumn,
@@ -30,7 +28,7 @@ class Chat {
   @JoinColumn()
   destinatary: User;
 
-  @OneToMany(() => Message, messages => messages.chat, { eager: true })
+  @OneToMany(() => Message, messages => messages.chat)
   messages!: Message[];
 
   @CreateDateColumn()
