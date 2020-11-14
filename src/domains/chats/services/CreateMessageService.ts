@@ -2,11 +2,11 @@ import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
+import * as socket from '@shared/websocket/websocket';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
-import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
-import { findConnections, sendMessage } from '@shared/websocket/websocket';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import SocketChannels from '@shared/websocket/socket-channels';
 import IChatsRepository from '../rules/IChatsRepository';
 import Message from '../infra/typeorm/entities/Message';
 import IMessagesRepository from '../rules/IMessagesRepository';
@@ -64,6 +64,12 @@ class CreateMessageService {
       user_id: user_receiving,
       content: `Você tem uma nova mensagem de ${user.name}.`,
     });
+
+    const messages = await this.messagesRepository.findAllByChat(chat.id);
+
+    const sendTo = socket.findConnections(user_receiving);
+
+    socket.sendMessage(sendTo, SocketChannels.ChatChannel, messages);
 
     return classToClass(newMessage);
   }
