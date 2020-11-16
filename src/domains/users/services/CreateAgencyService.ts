@@ -26,8 +26,6 @@ class CreateAgencyService {
     cnpj,
     email,
     password,
-    latitude,
-    longitude,
   }: ICreateAgencyDTO): Promise<Agency> {
     const [checkUserEmailExists, checkAgencyEmailExists] = await Promise.all([
       this.usersRepository.findByEmail(email),
@@ -50,8 +48,6 @@ class CreateAgencyService {
       name,
       cnpj,
       email,
-      latitude,
-      longitude,
       password: hashedPassword,
     });
 

@@ -32,8 +32,6 @@ describe('CreateAgencyService', () => {
       email: 'valid_agency_mail@mail.com',
       cnpj: '58.017.080/0001-78',
       password: 'valid_password',
-      latitude: -222222,
-      longitude: 222222,
     });
 
     expect(agency).toBeTruthy();
@@ -46,8 +44,6 @@ describe('CreateAgencyService', () => {
       email: 'valid_agency_mail@mail.com',
       cnpj: '58.017.080/0001-78',
       password: 'valid_password',
-      latitude: -222222,
-      longitude: 222222,
     });
   });
 
@@ -57,8 +53,6 @@ describe('CreateAgencyService', () => {
       email: 'same_email@mail.com',
       cnpj: '62728791000128',
       password: 'valid_password',
-      latitude: -222222,
-      longitude: 222222,
     });
 
     await expect(
@@ -67,8 +61,6 @@ describe('CreateAgencyService', () => {
         email: 'same_email@mail.com',
         cnpj: '58.017.080/0001-78',
         password: 'valid_password',
-        latitude: -222222,
-        longitude: 222222,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -79,8 +71,6 @@ describe('CreateAgencyService', () => {
       email: 'valid_second_email@mail.com',
       cnpj: '62728791000128',
       password: 'valid_password',
-      latitude: -222222,
-      longitude: 222222,
     });
 
     await expect(
@@ -89,8 +79,6 @@ describe('CreateAgencyService', () => {
         email: 'valid_email@mail.com',
         cnpj: '62728791000128',
         password: 'valid_password',
-        latitude: -222222,
-        longitude: 222222,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

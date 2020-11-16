@@ -130,8 +130,6 @@ describe('CreateComplaintService', () => {
       email: 'same_email@mail.com',
       cnpj: '62728791000128',
       password: 'valid_password',
-      latitude: -222222,
-      longitude: 222222,
     });
 
     await expect(

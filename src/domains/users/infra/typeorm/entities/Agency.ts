@@ -26,12 +26,6 @@ class Agency {
   @Column({ unique: true, transformer: stringTransformer })
   email!: string;
 
-  @Column({ type: 'real' })
-  latitude!: number;
-
-  @Column({ type: 'real' })
-  longitude!: number;
-
   @Column()
   @Exclude()
   password!: string;
