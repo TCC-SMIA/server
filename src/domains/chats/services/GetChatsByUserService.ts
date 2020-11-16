@@ -30,10 +30,6 @@ class GetChatsByUserService {
 
     const chats = await this.chatsRepository.findAllByUser(user_id);
 
-    if (!chats) {
-      throw new AppError('Contact does not exists.');
-    }
-
     return classToClass(chats);
   }
 }

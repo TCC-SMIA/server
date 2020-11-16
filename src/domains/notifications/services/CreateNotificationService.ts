@@ -1,9 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
-import { findConnections, sendMessage } from '@shared/websocket/websocket';
-import AppError from '@shared/errors/AppError';
-import IUsersRepository from '@domains/users/rules/IUsersRepository';
+import * as socket from '@shared/websocket/websocket';
+import SocketChannels from '@shared/websocket/socket-channels';
 
 interface CreateCommentRequest {
   user_id: string;
@@ -30,8 +29,13 @@ class CreateNotificationService {
       user_id,
     );
 
-    const sendTo = findConnections(user_id);
-    sendMessage(sendTo, 'new-notification', notifications);
+    const sendTo = socket.findConnections(user_id);
+
+    socket.sendMessage(
+      sendTo,
+      SocketChannels.NotificationsChannel,
+      notifications,
+    );
   }
 }
 

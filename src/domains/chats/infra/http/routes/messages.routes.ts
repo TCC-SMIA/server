@@ -9,4 +9,6 @@ messagesRouter.use(ensureAuthenticate);
 
 messagesRouter.post('/', MessagesController.create);
 
+messagesRouter.get('/', MessagesController.index);
+
 export default messagesRouter;

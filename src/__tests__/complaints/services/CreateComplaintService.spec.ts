@@ -10,6 +10,8 @@ import INotificationsRepository from '@domains/notifications/rules/INotification
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
+import { ComplaintTypeEnum } from '@domains/complaints/enums/ComplaintTypeEnum';
+import { ComplaintStatusEnum } from '@domains/complaints/enums/ComplaintStatusEnum';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
@@ -57,6 +59,7 @@ describe('CreateComplaintService', () => {
       latitude: -222222,
       longitude: 222222,
       anonymous: false,
+      type: ComplaintTypeEnum.Others,
       date,
     });
 
@@ -66,6 +69,7 @@ describe('CreateComplaintService', () => {
     expect(complaint.description).toBe('description of complaint created');
     expect(complaint.latitude).toBe(-222222);
     expect(complaint.longitude).toBe(222222);
+    expect(complaint.type).toBe(ComplaintTypeEnum.Others);
     expect(complaint.anonymous).toBe(false);
     expect(complaint.date).toEqual(date);
     expect(complaint.image).toBe('image.jpg');
@@ -91,6 +95,7 @@ describe('CreateComplaintService', () => {
       longitude: 222222,
       anonymous: true,
       date,
+      type: ComplaintTypeEnum.Others,
     });
 
     expect(complaint).toBeTruthy();
@@ -99,6 +104,7 @@ describe('CreateComplaintService', () => {
     expect(complaint.description).toBe('We found a new planet');
     expect(complaint.latitude).toBe(-222222);
     expect(complaint.longitude).toBe(222222);
+    expect(complaint.type).toBe(ComplaintTypeEnum.Others);
     expect(complaint.date).toEqual(date);
     expect(createMock).toHaveBeenCalledWith({
       user_id: user.id,
@@ -110,6 +116,8 @@ describe('CreateComplaintService', () => {
       latitude: -222222,
       longitude: 222222,
       anonymous: true,
+      type: ComplaintTypeEnum.Others,
+      status: ComplaintStatusEnum.New,
       date,
     });
   });
@@ -135,6 +143,7 @@ describe('CreateComplaintService', () => {
         longitude: 222222,
         anonymous: true,
         date,
+        type: ComplaintTypeEnum.Others,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

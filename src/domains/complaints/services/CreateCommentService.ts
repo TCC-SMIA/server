@@ -94,10 +94,11 @@ class CreateCommentService {
       });
     }
 
-    await this.createNotificationService.execute({
-      user_id: complaint.user_id,
-      content: `Novo comentário de ${user.name} na sua publicação.`,
-    });
+    if (user_id !== complaint.user_id)
+      await this.createNotificationService.execute({
+        user_id: complaint.user_id,
+        content: `Novo comentário de ${user.name} na sua publicação.`,
+      });
 
     return classToClass(comment);
   }

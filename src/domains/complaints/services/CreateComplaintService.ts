@@ -7,8 +7,12 @@ import getLocationInfo from '@shared/utils/getLocationInfo';
 import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import * as socket from '@shared/websocket/websocket';
+import SocketChannels from '@shared/websocket/socket-channels';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
+import { ComplaintTypeEnum } from '../enums/ComplaintTypeEnum';
+import { ComplaintStatusEnum } from '../enums/ComplaintStatusEnum';
 
 interface IRequest {
   user_id: string;
@@ -18,6 +22,7 @@ interface IRequest {
   longitude: number;
   anonymous: boolean;
   date: Date;
+  type: ComplaintTypeEnum;
   imageFilename?: string | undefined;
 }
 
@@ -45,6 +50,7 @@ class CreateComplaintService {
     longitude,
     anonymous,
     date,
+    type,
     imageFilename,
   }: IRequest): Promise<Complaint> {
     const checkIfIsAgency = await this.agencyRepository.findById(user_id);
@@ -72,6 +78,8 @@ class CreateComplaintService {
       anonymous,
       date,
       image: filename,
+      type,
+      status: ComplaintStatusEnum.New,
     });
 
     await this.createNotificationService.execute({
@@ -83,6 +91,16 @@ class CreateComplaintService {
       delete complaint.user;
       delete complaint.user_id;
     }
+
+    const complaints = await this.complaintsRepository.findAllComplaints(0, 10);
+
+    const sendTo = socket.findAllConnections();
+
+    socket.sendMessage(
+      sendTo,
+      SocketChannels.ComplaintsFeedChannel,
+      complaints,
+    );
 
     return classToClass(complaint);
   }
