@@ -1,3 +1,4 @@
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import ShowProfileService from '@domains/users/services/ShowProfileService';
 import AppError from '@shared/errors/AppError';
@@ -19,6 +20,7 @@ describe('ShowProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const profile = await showProfileService.execute({ userId: user.id });

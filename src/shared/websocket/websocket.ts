@@ -29,11 +29,11 @@ const findAllConnections = (): ISocketConnections[] => connections;
 
 const sendMessage = (
   to: ISocketConnections[],
-  message: string,
+  channel: string,
   data: any,
 ): void => {
   to.forEach(connection => {
-    io.to(connection.id).emit(message, data);
+    io.to(connection.id).emit(channel, data);
   });
 };
 

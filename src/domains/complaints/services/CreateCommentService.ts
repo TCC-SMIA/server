@@ -4,10 +4,9 @@ import { classToClass } from 'class-transformer';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
-import { UserTypes } from '@domains/users/enums/UserEnums';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import User from '@domains/users/infra/typeorm/entities/User';
-import Agency from '@domains/users/infra/typeorm/entities/Agency';
+import SocketChannels from '@shared/websocket/socket-channels';
+import * as socket from '@shared/websocket/websocket';
 import ICommentsRepository from '../rules/ICommentsRepository';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 import Comment from '../infra/typeorm/entities/Comment';
@@ -27,9 +26,6 @@ class CreateCommentService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
-
     @inject('ComplaintsRepository')
     private complaintsRepository: IComplaintsRepository,
 
@@ -42,22 +38,12 @@ class CreateCommentService {
     complaint_id,
     content,
   }: CreateCommentRequest): Promise<Comment> {
-    let user: User | Agency | undefined;
-    let user_type = 0;
-
     if (!content) throw new AppError('You can not create an empty message');
 
-    user = await this.usersRepository.findById(user_id);
+    const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      user = await this.agencyRepository.findById(user_id);
-      if (!user) {
-        throw new AppError('User not found');
-      } else {
-        user_type = UserTypes.EnvironmentalAgency;
-      }
-    } else {
-      user_type = UserTypes.Reporter;
+      throw new AppError('User not found');
     }
 
     const complaint = await this.complaintsRepository.findById(complaint_id);
@@ -68,37 +54,32 @@ class CreateCommentService {
 
     const today = new Date();
 
-    let comment = new Comment();
-
-    if (user_type === UserTypes.Reporter) {
-      comment = await this.commentsRepository.create({
-        user_id: user.id,
-        user: user as User,
-        agency_id: undefined,
-        agency: undefined,
-        complaint,
-        content,
-        date: today,
-      });
-    }
-
-    if (user_type === UserTypes.EnvironmentalAgency) {
-      comment = await this.commentsRepository.create({
-        user_id: undefined,
-        user: undefined,
-        agency_id: user.id,
-        agency: user as Agency,
-        complaint,
-        content,
-        date: today,
-      });
-    }
+    const comment = await this.commentsRepository.create({
+      user_id: user.id,
+      user: user as User,
+      agency_id: undefined,
+      complaint,
+      content,
+      date: today,
+    });
 
     if (user_id !== complaint.user_id)
       await this.createNotificationService.execute({
         user_id: complaint.user_id,
         content: `Novo comentário de ${user.name} na sua publicação.`,
       });
+
+    const comments = await this.commentsRepository.findByComplaintId(
+      complaint.id,
+    );
+
+    const sendTo = socket.findConnections(user.id);
+
+    socket.sendMessage(
+      sendTo,
+      SocketChannels.ComplaintCommentsChannel,
+      comments,
+    );
 
     return classToClass(comment);
   }

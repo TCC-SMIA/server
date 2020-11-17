@@ -3,6 +3,7 @@ import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import CreateChatService from '@domains/chats/services/CreateChatService';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
 import AppError from '@shared/errors/AppError';
+import { reporterMock } from '@tests/__mocks__/User.mock';
 import FakeChatsRepository from '../fakes/FakeChatsRepository';
 
 let fakeChatsRepository: IChatsRepository;
@@ -21,19 +22,9 @@ describe('CreateChatService', () => {
   });
 
   it('should be able to create a new chat', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
-    const contact = await fakeUsersRepository.create({
-      name: 'John Tre',
-      email: 'tre@tre.com',
-      nickname: 'trezins',
-      password: '123123',
-    });
+    const contact = await fakeUsersRepository.create(reporterMock);
 
     const newChat = await createChatService.execute({
       user_id: user.id,
@@ -47,12 +38,7 @@ describe('CreateChatService', () => {
   });
 
   it('should not be able to create a chat with nonexistent user', async () => {
-    const contact = await fakeUsersRepository.create({
-      name: 'John Tre',
-      email: 'tre@tre.com',
-      nickname: 'trezins',
-      password: '123123',
-    });
+    const contact = await fakeUsersRepository.create(reporterMock);
 
     await expect(
       createChatService.execute({
@@ -63,12 +49,7 @@ describe('CreateChatService', () => {
   });
 
   it('should not be able to create a chat with nonexistent contact', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Tre',
-      email: 'tre@tre.com',
-      nickname: 'trezins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     await expect(
       createChatService.execute({

@@ -5,23 +5,19 @@ import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
 import UpdateAvatarService from '@domains/users/services/UpdateAvatarService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
-import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 
 describe('UpdateAvatarService', () => {
   let updateAvatarService: UpdateAvatarService;
   let fakeUsersRepository: IUsersRepository;
-  let fakeAgencysRepository: IAgencyRepository;
   let fakeStorageProvider: IStorageProvider;
 
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    fakeAgencysRepository = new FakeAgencyRepository();
     fakeStorageProvider = new FakeStorageProvider();
 
     updateAvatarService = new UpdateAvatarService(
       fakeUsersRepository,
-      fakeAgencysRepository,
       fakeStorageProvider,
     );
   });
@@ -32,6 +28,7 @@ describe('UpdateAvatarService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     await updateAvatarService.execute({
@@ -43,11 +40,12 @@ describe('UpdateAvatarService', () => {
   });
 
   it('should be able to update agency avatar', async () => {
-    const agency = await fakeAgencysRepository.create({
+    const agency = await fakeUsersRepository.create({
       name: 'Valid Agency Name',
       cnpj: '60603851000150',
       email: 'validemail@email.com',
       password: '123456,',
+      type: UserTypes.EnvironmentalAgency,
     });
 
     await updateAvatarService.execute({
@@ -75,6 +73,7 @@ describe('UpdateAvatarService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     await updateAvatarService.execute({

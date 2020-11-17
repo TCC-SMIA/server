@@ -3,6 +3,7 @@ import SendForgotPasswordEmailService from '@domains/users/services/SendForgotPa
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IMailProvider from '@shared/providers/MailProvider/rules/IMailProvider';
 import IUserTokensRepository from '@domains/users/rules/IUserTokensRepository';
+import { reporterMock } from '@tests/__mocks__/User.mock';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeMailProvider from '../../fakeProviders/FakeMailProvider/FakeMailProvider';
 import FakeUserTokensRepository from '../fakes/FakeUserTokensRepository';
@@ -29,12 +30,7 @@ describe('SendForgotPasswordEmailService', () => {
   it('should be able to recover the password using the email', async () => {
     const sendMailFunction = jest.spyOn(fakeMailProvider, 'sendMail');
 
-    await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    await fakeUsersRepository.create(reporterMock);
 
     await sendForgotPasswordEmailService.execute({
       email: 'doe@doe.com',
@@ -56,12 +52,7 @@ describe('SendForgotPasswordEmailService', () => {
       'generate',
     );
 
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     await sendForgotPasswordEmailService.execute({
       email: 'doe@doe.com',

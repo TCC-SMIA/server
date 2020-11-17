@@ -2,6 +2,7 @@ import { v4 } from 'uuid';
 
 import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 
 class FakeUsersRepository implements IUsersRepository {
   private users: User[] = [];
@@ -28,6 +29,23 @@ class FakeUsersRepository implements IUsersRepository {
 
   public async findById(id: string): Promise<User | undefined> {
     const userExists = this.users.find(user => user.id === id);
+
+    return userExists;
+  }
+
+  public async findByCnpj(cnpj: string): Promise<User | undefined> {
+    const userExists = this.users.find(user => user.cnpj === cnpj);
+
+    return userExists;
+  }
+
+  public async findEnvironmentalAgencyById(
+    user_id: string,
+  ): Promise<User | undefined> {
+    const userExists = this.users.find(
+      user =>
+        user.id === user_id && user.type === UserTypes.EnvironmentalAgency,
+    );
 
     return userExists;
   }

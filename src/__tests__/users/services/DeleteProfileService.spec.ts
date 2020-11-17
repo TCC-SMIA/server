@@ -1,6 +1,7 @@
 import DeleteProfileService from '@domains/users/services/DeleteProfileService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 
 describe('DeleteProfileService', () => {
@@ -19,6 +20,7 @@ describe('DeleteProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const deleteFunction = jest.spyOn(fakeUsersRepository, 'delete');

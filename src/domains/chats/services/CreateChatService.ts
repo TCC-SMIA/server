@@ -4,6 +4,8 @@ import { classToClass } from 'class-transformer';
 
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
+import SocketChannels from '@shared/websocket/socket-channels';
+import * as socket from '@shared/websocket/websocket';
 import IChatsRepository from '../rules/IChatsRepository';
 import Chat from '../infra/typeorm/entities/Chat';
 
@@ -42,6 +44,12 @@ class CreateChatService {
       user_id,
       destinatary: contact,
     });
+
+    const chats = await this.chatsRepository.findAllByUser(contact_id);
+
+    const sendTo = socket.findConnections(contact.id);
+
+    socket.sendMessage(sendTo, SocketChannels.ChatChannel, chats);
 
     return classToClass(chat);
   }

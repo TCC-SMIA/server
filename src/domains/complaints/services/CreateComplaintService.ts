@@ -4,11 +4,11 @@ import { classToClass } from 'class-transformer';
 
 import IStorageProvider from '@shared/providers/StorageProvider/rules/IStorageProvider';
 import getLocationInfo from '@shared/utils/getLocationInfo';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import * as socket from '@shared/websocket/websocket';
 import SocketChannels from '@shared/websocket/socket-channels';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 import { ComplaintTypeEnum } from '../enums/ComplaintTypeEnum';
@@ -35,8 +35,8 @@ class CreateComplaintService {
     @inject('StorageProvider')
     private storageProvider: IStorageProvider,
 
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
     @inject('CreateNotificationService')
     private createNotificationService: CreateNotificationService,
@@ -53,7 +53,9 @@ class CreateComplaintService {
     type,
     imageFilename,
   }: IRequest): Promise<Complaint> {
-    const checkIfIsAgency = await this.agencyRepository.findById(user_id);
+    const checkIfIsAgency = await this.usersRepository.findEnvironmentalAgencyById(
+      user_id,
+    );
 
     if (checkIfIsAgency) {
       throw new AppError('This kind of user can not create a complaint');

@@ -2,26 +2,21 @@ import UpdateProfileService from '@domains/users/services/UpdateProfileService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import User from '@domains/users/infra/typeorm/entities/User';
-import Agency from '@domains/users/infra/typeorm/entities/Agency';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
-import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
 let fakeUsersRepository: IUsersRepository;
 let updateProfileService: UpdateProfileService;
 let fakeHashProvider: IHashProvider;
-let fakeAgencysRepository: IAgencyRepository;
 
 describe('UpdateProfileService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    fakeAgencysRepository = new FakeAgencyRepository();
     fakeHashProvider = new FakeHashProvider();
     updateProfileService = new UpdateProfileService(
       fakeUsersRepository,
-      fakeAgencysRepository,
       fakeHashProvider,
     );
   });
@@ -32,6 +27,7 @@ describe('UpdateProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const { user: updatedUser } = await updateProfileService.execute({
@@ -49,11 +45,12 @@ describe('UpdateProfileService', () => {
   });
 
   it('should be able to update the agency', async () => {
-    const agency = await fakeAgencysRepository.create({
+    const agency = await fakeUsersRepository.create({
       name: 'Valid Agency Name',
       cnpj: '60603851000150',
       email: 'validemail@email.com',
-      password: '123456,',
+      password: '123456',
+      type: UserTypes.EnvironmentalAgency,
     });
 
     const { user: updatedUser } = await updateProfileService.execute({
@@ -66,7 +63,6 @@ describe('UpdateProfileService', () => {
     expect(updatedUser).toBeTruthy();
     expect(updatedUser.id).toBe(agency.id);
     expect(updatedUser.name).toBe('Valid Updated Agency');
-    expect(updatedUser).toBeInstanceOf(Agency);
     expect(updatedUser.email).toBe('validagencyemail@email.com');
   });
 
@@ -76,6 +72,7 @@ describe('UpdateProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const { user: updatedUser } = await updateProfileService.execute({
@@ -110,6 +107,7 @@ describe('UpdateProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const user = await fakeUsersRepository.create({
@@ -117,6 +115,7 @@ describe('UpdateProfileService', () => {
       email: 'youngman@teste.com',
       nickname: 'youngman',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -135,6 +134,7 @@ describe('UpdateProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const user = await fakeUsersRepository.create({
@@ -142,6 +142,7 @@ describe('UpdateProfileService', () => {
       email: 'youngman@teste.com',
       nickname: 'youngman',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -160,6 +161,7 @@ describe('UpdateProfileService', () => {
       email: 'youngman@teste.com',
       nickname: 'youngman',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -180,6 +182,7 @@ describe('UpdateProfileService', () => {
       email: 'youngman@teste.com',
       nickname: 'youngman',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -201,6 +204,7 @@ describe('UpdateProfileService', () => {
       email: 'youngman@teste.com',
       nickname: 'youngman',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -224,6 +228,7 @@ describe('UpdateProfileService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const updatedUser = await updateProfileService.execute({

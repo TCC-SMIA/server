@@ -11,6 +11,7 @@ import { Exclude, Expose } from 'class-transformer';
 
 import multerConfig from '@config/multerConfig';
 import { stringTransformer } from '@shared/utils/transformers';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 
 @Entity('users')
 class User {
@@ -20,11 +21,17 @@ class User {
   @Column()
   name!: string;
 
-  @Column({ unique: true, transformer: stringTransformer })
-  nickname!: string;
+  @Column({ unique: true, transformer: stringTransformer, nullable: true })
+  nickname?: string;
 
   @Column({ unique: true, transformer: stringTransformer })
   email!: string;
+
+  @Column({ unique: true, nullable: true })
+  cnpj?: string;
+
+  @Column({ nullable: false, default: UserTypes.Reporter })
+  type!: string;
 
   @Column()
   @Exclude()

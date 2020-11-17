@@ -1,6 +1,7 @@
+import { Repository, getRepository } from 'typeorm';
+
 import IChatsRepository from '@domains/chats/rules/IChatsRepository';
 import User from '@domains/users/infra/typeorm/entities/User';
-import { Repository, getRepository } from 'typeorm';
 import Chat from '../entities/Chat';
 
 class ChatsRepository implements IChatsRepository {

@@ -5,6 +5,7 @@ import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import { reporterMock } from '@tests/__mocks__/User.mock';
 import FakeUsersRepository from '../../users/fakes/FakeUsersRepository';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
@@ -29,12 +30,7 @@ describe('DeleteComplaintService', () => {
   });
 
   it('should be able to delete the complaint', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 
@@ -59,12 +55,7 @@ describe('DeleteComplaintService', () => {
   });
 
   it('should not be able to delete a non existing complaint', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     await expect(
       deleteComplaintService.execute({
@@ -75,12 +66,7 @@ describe('DeleteComplaintService', () => {
   });
 
   it('should not be able to delete a non complaint that user have not created', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 

@@ -5,7 +5,7 @@ import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-import IAgencyRepository from '../rules/IAgencyRepository';
+import { UserTypes } from '../enums/UserEnums';
 
 interface IRequest {
   name: string;
@@ -20,22 +20,14 @@ class CreateUserService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
-
     @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
 
   async execute({ name, nickname, email, password }: IRequest): Promise<User> {
-    const [checkUserEmailExists, checkAgencyEmailExists] = await Promise.all([
-      this.usersRepository.findByEmail(email),
-      this.agencyRepository.findByEmail(email),
-    ]);
+    const checkUserEmailExists = await this.usersRepository.findByEmail(email);
 
-    if (checkUserEmailExists || checkAgencyEmailExists) {
-      throw new AppError('Email already exists');
-    }
+    if (checkUserEmailExists) throw new AppError('Email already exists');
 
     const checkNicknameExists = await this.usersRepository.findByNickname(
       nickname,
@@ -52,6 +44,7 @@ class CreateUserService {
       nickname,
       email,
       password: hashedPassword,
+      type: UserTypes.Reporter,
     });
 
     return user;

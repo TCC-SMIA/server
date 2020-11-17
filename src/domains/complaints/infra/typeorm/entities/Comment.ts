@@ -8,7 +8,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import User from '@domains/users/infra/typeorm/entities/User';
-import Agency from '@domains/users/infra/typeorm/entities/Agency';
 import Complaint from './Complaint';
 
 @Entity('comments')
@@ -34,10 +33,6 @@ class Comment {
 
   @Column({ nullable: true })
   agency_id!: string;
-
-  @ManyToOne(() => Agency, { onDelete: 'CASCADE', nullable: true })
-  @JoinColumn({ name: 'agency_id' })
-  agency!: Agency;
 
   @Column()
   content!: string;
