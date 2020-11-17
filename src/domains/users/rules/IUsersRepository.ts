@@ -8,4 +8,6 @@ export default interface IUsersRepository {
   findByNickname(nickname: string): Promise<User | undefined>;
   findById(id: string): Promise<User | undefined>;
   delete(user: User): Promise<void>;
+  findByCnpj(cnpj: string): Promise<User | undefined>;
+  findEnvironmentalAgencyById(user_id: string): Promise<User | undefined>;
 }

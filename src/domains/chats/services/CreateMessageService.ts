@@ -69,7 +69,7 @@ class CreateMessageService {
 
     const sendTo = socket.findConnections(user_receiving);
 
-    socket.sendMessage(sendTo, SocketChannels.ChatChannel, messages);
+    socket.sendMessage(sendTo, SocketChannels.MessagesChannel, messages);
 
     return classToClass(newMessage);
   }

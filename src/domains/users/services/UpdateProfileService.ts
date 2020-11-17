@@ -1,14 +1,10 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import IHashProvider from '../providers/HashProvider/rules/IHashProvider';
-import Agency from '../infra/typeorm/entities/Agency';
-import IAgencyRepository from '../rules/IAgencyRepository';
-import { UserTypes } from '../enums/UserEnums';
 
 interface IRequest {
   user_id: string;
@@ -21,7 +17,7 @@ interface IRequest {
 }
 
 interface IResponse {
-  user: Agency | User;
+  user: User;
   user_type: number;
 }
 
@@ -30,9 +26,6 @@ class UpdateProfileService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
@@ -47,23 +40,13 @@ class UpdateProfileService {
     password,
     password_confirmation,
   }: IRequest): Promise<IResponse> {
-    let user: User | Agency | undefined;
-    let user_type = 0;
+    const user_type = 0;
+    const user = await this.usersRepository.findById(user_id);
 
-    user = await this.usersRepository.findById(user_id);
-
-    if (!user) {
-      user = await this.agencyRepository.findById(user_id);
-      if (!user) {
-        throw new AppError('User not found');
-      } else {
-        user_type = UserTypes.EnvironmentalAgency;
-      }
-    } else {
-      user_type = UserTypes.Reporter;
-    }
+    if (!user) throw new AppError('User not found');
 
     let checkNickNameExists: User | undefined;
+
     if (nickname) {
       checkNickNameExists = await this.usersRepository.findByNickname(nickname);
       if (checkNickNameExists && checkNickNameExists.id !== user_id) {
@@ -107,13 +90,7 @@ class UpdateProfileService {
       user.password = await this.hashProvider.generateHash(password);
     }
 
-    if (user_type === UserTypes.Reporter) {
-      await this.usersRepository.update(user as User);
-    }
-
-    if (user_type === UserTypes.EnvironmentalAgency) {
-      await this.agencyRepository.update(user as Agency);
-    }
+    await this.usersRepository.update(user);
 
     return { user, user_type };
   }

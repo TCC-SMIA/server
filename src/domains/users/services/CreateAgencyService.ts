@@ -1,19 +1,16 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 
-import Agency from '@domains/users/infra/typeorm/entities/Agency';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-import { ICreateAgencyDTO } from '../dtos/ICreateAgencyDTO';
 import IUsersRepository from '../rules/IUsersRepository';
+import User from '../infra/typeorm/entities/User';
+import { UserTypes } from '../enums/UserEnums';
+import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 @injectable()
 class CreateAgencyService {
   constructor(
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
-
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
@@ -26,17 +23,12 @@ class CreateAgencyService {
     cnpj,
     email,
     password,
-  }: ICreateAgencyDTO): Promise<Agency> {
-    const [checkUserEmailExists, checkAgencyEmailExists] = await Promise.all([
-      this.usersRepository.findByEmail(email),
-      this.agencyRepository.findByEmail(email),
-    ]);
+  }: ICreateUserDTO): Promise<User> {
+    const checkUserEmailExists = await this.usersRepository.findByEmail(email);
 
-    if (checkUserEmailExists || checkAgencyEmailExists) {
-      throw new AppError('Email already exists');
-    }
+    if (checkUserEmailExists) throw new AppError('Email already exists');
 
-    const checkCnpj = await this.agencyRepository.findByCnpj(cnpj);
+    const checkCnpj = await this.usersRepository.findByCnpj(cnpj as string);
 
     if (checkCnpj) {
       throw new AppError('CNPJ already exists');
@@ -44,14 +36,15 @@ class CreateAgencyService {
 
     const hashedPassword = await this.hashProvider.generateHash(password);
 
-    const agency = await this.agencyRepository.create({
+    const user = await this.usersRepository.create({
       name,
       cnpj,
       email,
       password: hashedPassword,
+      type: UserTypes.EnvironmentalAgency,
     });
 
-    return agency;
+    return user;
   }
 }
 export default CreateAgencyService;

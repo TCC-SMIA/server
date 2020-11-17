@@ -8,14 +8,15 @@ import AppError from '@shared/errors/AppError';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
 import FakeCommentsRepository from '@tests/complaints/fakes/FakeCommentsRepository';
-import FakeAgencyRepository from '@tests/users/fakes/FakeAgencyRepository';
+import {
+  environmentalAgencyMock,
+  reporterMock,
+} from '@tests/__mocks__/User.mock';
 
 let commentRepository: ICommentsRepository;
 let fakeUsersRepository: IUsersRepository;
-let fakeAgencysRepository: IAgencyRepository;
 let complaintRepository: IComplaintsRepository;
 let createCommentService: CreateCommentService;
 let notificationsRepository: INotificationsRepository;
@@ -24,7 +25,6 @@ let createNotificationService: CreateNotificationService;
 describe('CreateCommentService', () => {
   beforeAll(() => {
     fakeUsersRepository = new FakeUsersRepository();
-    fakeAgencysRepository = new FakeAgencyRepository();
     complaintRepository = new FakeComplaintsRepository();
     commentRepository = new FakeCommentsRepository();
     notificationsRepository = new FakeNotificationsRepository();
@@ -34,19 +34,13 @@ describe('CreateCommentService', () => {
     createCommentService = new CreateCommentService(
       commentRepository,
       fakeUsersRepository,
-      fakeAgencysRepository,
       complaintRepository,
       createNotificationService,
     );
   });
 
   it('should be able to create a new comment by user', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'jhon',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const complaint = await complaintRepository.create({
       title: 'Baleia encalhada',
@@ -74,12 +68,7 @@ describe('CreateCommentService', () => {
   });
 
   it('should be able to create a new comment by agency', async () => {
-    const agency = await fakeAgencysRepository.create({
-      name: 'Valid Agency Name',
-      cnpj: '60603851000150',
-      email: 'validemail@email.com',
-      password: '123456,',
-    });
+    const agency = await fakeUsersRepository.create(environmentalAgencyMock);
 
     const complaint = await complaintRepository.create({
       title: 'Baleia encalhada',
@@ -99,7 +88,6 @@ describe('CreateCommentService', () => {
 
     expect(comment).toBeTruthy();
     expect(comment.id).toBeTruthy();
-    expect(comment.agency.id).toBe(agency.id);
     expect(comment.complaint.id).toBe(complaint.id);
     expect(comment.content).toBe('New comment');
   });
@@ -125,12 +113,7 @@ describe('CreateCommentService', () => {
   });
 
   it('should not be able to create a new comment without complaint', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'jhon',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     await expect(
       createCommentService.execute({

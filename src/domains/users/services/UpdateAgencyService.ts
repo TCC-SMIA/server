@@ -2,9 +2,9 @@ import 'reflect-metadata';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import IAgencyRepository from '../rules/IAgencyRepository';
 import IHashProvider from '../providers/HashProvider/rules/IHashProvider';
-import Agency from '../infra/typeorm/entities/Agency';
+import IUsersRepository from '../rules/IUsersRepository';
+import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
   agencyId: string;
@@ -18,8 +18,8 @@ interface IRequest {
 @injectable()
 class UpdateAgencyService {
   constructor(
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
@@ -32,14 +32,14 @@ class UpdateAgencyService {
     oldpassword,
     password,
     password_confirmation,
-  }: IRequest): Promise<Agency> {
-    const agency = await this.agencyRepository.findById(agencyId);
+  }: IRequest): Promise<User> {
+    const agency = await this.usersRepository.findById(agencyId);
 
     if (!agency) {
       throw new AppError('Agency not found');
     }
 
-    const checkEmailExist = await this.agencyRepository.findByEmail(email);
+    const checkEmailExist = await this.usersRepository.findByEmail(email);
 
     if (checkEmailExist && checkEmailExist.id !== agencyId) {
       throw new AppError('Email already use');
@@ -73,7 +73,7 @@ class UpdateAgencyService {
       agency.password = await this.hashProvider.generateHash(password);
     }
 
-    const updateAgency = await this.agencyRepository.update(agency);
+    const updateAgency = await this.usersRepository.update(agency);
 
     return updateAgency;
   }

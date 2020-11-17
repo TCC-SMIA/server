@@ -1,22 +1,24 @@
+import 'reflect-metadata';
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import ListCommentsService from '@domains/complaints/services/ListCommentsService';
 import ICommentsRepository from '@domains/complaints/rules/ICommentsRepository';
 import FakeCommentsRepository from '@tests/complaints/fakes/FakeCommentsRepository';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
-import FakeAgencyRepository from '@tests/users/fakes/FakeAgencyRepository';
 import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@domains/users/rules/IUsersRepository';
+import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
+import { environmentalAgencyMock } from '@tests/__mocks__/User.mock';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 let fakeComplaintsRepository: IComplaintsRepository;
 let fakeCommentsRepository: ICommentsRepository;
-let fakeAgencysRepository: IAgencyRepository;
+let fakeAgencysRepository: IUsersRepository;
 let listCommentsService: ListCommentsService;
 
 describe('ListCommentService', () => {
   beforeEach(() => {
     fakeComplaintsRepository = new FakeComplaintsRepository();
     fakeCommentsRepository = new FakeCommentsRepository();
-    fakeAgencysRepository = new FakeAgencyRepository();
+    fakeAgencysRepository = new FakeUsersRepository();
     listCommentsService = new ListCommentsService(
       fakeComplaintsRepository,
       fakeCommentsRepository,
@@ -24,12 +26,7 @@ describe('ListCommentService', () => {
   });
 
   it('should be able to list the comments created', async () => {
-    const agency = await fakeAgencysRepository.create({
-      name: 'Valid Agency Name',
-      cnpj: '60603851000150',
-      email: 'validemail@email.com',
-      password: '123456,',
-    });
+    const agency = await fakeAgencysRepository.create(environmentalAgencyMock);
 
     const complaint = await fakeComplaintsRepository.create({
       title: 'Baleia encalhada',

@@ -6,6 +6,7 @@ import IComplaintsRepository from '@domains/complaints/rules/IComplaintsReposito
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
 import FakeStorageProvider from '@tests/fakeProviders/FakeStorageProvider/FakeStorageProvider';
 import UpdateImageComplaintService from '@domains/complaints/services/UpdateImageComplaintService';
+import { reporterMock } from '@tests/__mocks__/User.mock';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
 describe('UpdateImageComplaintService', () => {
@@ -27,12 +28,7 @@ describe('UpdateImageComplaintService', () => {
   });
 
   it('should be able to update the complaint image', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 
@@ -56,12 +52,7 @@ describe('UpdateImageComplaintService', () => {
   });
 
   it('should not be able to update image from non existing complaint', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     await expect(
       updateImageComplaintService.execute({
@@ -73,19 +64,9 @@ describe('UpdateImageComplaintService', () => {
   });
 
   it('should not be able to update image from non existing user', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
-    const userSecondary = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const userSecondary = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 
@@ -133,12 +114,7 @@ describe('UpdateImageComplaintService', () => {
   it('should delete old avatar when updating new one', async () => {
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 

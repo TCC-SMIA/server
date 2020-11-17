@@ -2,26 +2,21 @@ import AuthenticateUserService from '@domains/users/services/AuthenticateUserSer
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
 import AppError from '@shared/errors/AppError';
-import IAgencyRepository from '@domains/users/rules/IAgencyRepository';
 import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
-import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
 let fakeUsersRepository: IUsersRepository;
 let authenticateUserService: AuthenticateUserService;
 let fakeHashProvider: IHashProvider;
-let fakeAgencyRepository: IAgencyRepository;
 
 describe('AuthenticateUserService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    fakeAgencyRepository = new FakeAgencyRepository();
     authenticateUserService = new AuthenticateUserService(
       fakeUsersRepository,
       fakeHashProvider,
-      fakeAgencyRepository,
     );
   });
 
@@ -31,6 +26,7 @@ describe('AuthenticateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     const response = await authenticateUserService.execute({
@@ -51,6 +47,7 @@ describe('AuthenticateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -67,6 +64,7 @@ describe('AuthenticateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     await expect(
@@ -87,11 +85,12 @@ describe('AuthenticateUserService', () => {
   });
 
   it('should be able to authenticate an environmental agency', async () => {
-    const user = await fakeAgencyRepository.create({
+    const user = await fakeUsersRepository.create({
       name: 'any_name',
       email: 'mail@mail.com',
       password: '123123',
       cnpj: '12312331231',
+      type: UserTypes.EnvironmentalAgency,
     });
 
     const response = await authenticateUserService.execute({
@@ -123,6 +122,7 @@ describe('AuthenticateUserService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123123',
+      type: UserTypes.Reporter,
     });
 
     await authenticateUserService.execute({
@@ -132,25 +132,20 @@ describe('AuthenticateUserService', () => {
 
     expect(executeMock).toHaveBeenCalledWith({
       login: 'doe@doe.com',
-      password: '123123',
-    });
-    expect(createMock).toHaveBeenCalledWith({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
       password: '123123',
     });
   });
 
   it('should authenticate an Agency with correct values', async () => {
-    const createMock = jest.spyOn(fakeAgencyRepository, 'create');
+    const createMock = jest.spyOn(fakeUsersRepository, 'create');
     const executeMock = jest.spyOn(authenticateUserService, 'execute');
 
-    await fakeAgencyRepository.create({
+    await fakeUsersRepository.create({
       name: 'any_name',
       email: 'mail@mail.com',
       password: '123123',
       cnpj: '12312331231',
+      type: UserTypes.EnvironmentalAgency,
     });
 
     await authenticateUserService.execute({
@@ -161,13 +156,6 @@ describe('AuthenticateUserService', () => {
     expect(executeMock).toHaveBeenCalledWith({
       login: 'mail@mail.com',
       password: '123123',
-    });
-
-    expect(createMock).toHaveBeenCalledWith({
-      name: 'any_name',
-      email: 'mail@mail.com',
-      password: '123123',
-      cnpj: '12312331231',
     });
   });
 });

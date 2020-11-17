@@ -9,9 +9,6 @@ import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProv
 import authConfig from '@config/authConfig';
 import AppError from '@shared/errors/AppError';
 import User from '@domains/users/infra/typeorm/entities/User';
-import { UserTypes } from '../enums/UserEnums';
-import IAgencyRepository from '../rules/IAgencyRepository';
-import Agency from '../infra/typeorm/entities/Agency';
 
 interface IRequest {
   login: string;
@@ -19,9 +16,9 @@ interface IRequest {
 }
 
 interface IResponse {
-  user: User | Agency;
+  user: User;
   token: string;
-  user_type: number;
+  user_type: string;
 }
 
 @injectable()
@@ -32,35 +29,25 @@ class AuthenticateUserService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
-
-    @inject('AgencyRepository')
-    private agencyRepository: IAgencyRepository,
   ) {}
 
   public async execute({ login, password }: IRequest): Promise<IResponse> {
-    let user: User | Agency | undefined;
-    let user_type = 0;
+    let user: User | undefined;
 
     const validEmail = Validator.isEmail(login);
 
     if (!validEmail) {
       user = await this.usersRepository.findByNickname(login);
-      user_type = UserTypes.Reporter;
     }
 
     if (validEmail) {
       user = await this.usersRepository.findByEmail(login);
-      user_type = UserTypes.Reporter;
-    }
-
-    if (!user) {
-      user = await this.agencyRepository.findByEmail(login);
-      user_type = UserTypes.EnvironmentalAgency;
     }
 
     if (!user) {
       throw new AppError('User was not found.');
     }
+
     const passwordMatched = await this.hashProvider.compareHash(
       password,
       user.password,
@@ -77,7 +64,7 @@ class AuthenticateUserService {
       expiresIn,
     });
 
-    return { user: classToClass(user), token, user_type };
+    return { user: classToClass(user), token, user_type: user.type };
   }
 }
 

@@ -3,6 +3,7 @@ import ResetPasswordService from '@domains/users/services/ResetPasswordService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import IUserTokensRepository from '@domains/users/rules/IUserTokensRepository';
 import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProvider';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '../fakes/FakeUserTokensRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
@@ -33,6 +34,7 @@ describe('ResetPasswordService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     const userToken = await fakeUserTokensRepository.generate(user.id);
@@ -81,6 +83,7 @@ describe('ResetPasswordService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     const { token } = await fakeUserTokensRepository.generate(user.id);
@@ -105,6 +108,7 @@ describe('ResetPasswordService', () => {
       email: 'doe@doe.com',
       nickname: 'johnzins',
       password: '123456',
+      type: UserTypes.Reporter,
     });
 
     const userToken = await fakeUserTokensRepository.generate(user.id);

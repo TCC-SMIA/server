@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
 import UpdateComplaintService from '@domains/complaints/services/UpdateComplaintService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
@@ -5,6 +7,7 @@ import AppError from '@shared/errors/AppError';
 import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotificationsRepository';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
+import { reporterMock } from '@tests/__mocks__/User.mock';
 import FakeUsersRepository from '../../users/fakes/FakeUsersRepository';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
@@ -29,12 +32,7 @@ describe('UpdateComplaintService', () => {
   });
 
   it('should be able to update the complaint', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 
@@ -65,12 +63,7 @@ describe('UpdateComplaintService', () => {
   });
 
   it('should not be able to update a non existing complaint', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 
@@ -89,12 +82,7 @@ describe('UpdateComplaintService', () => {
   });
 
   it('should not be able to update a complaint that user have not created', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 
@@ -123,12 +111,7 @@ describe('UpdateComplaintService', () => {
   });
 
   it('should be able to update the complaint and exclude user data if complaint is anonymouys', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const date = new Date();
 

@@ -3,6 +3,7 @@ import GetChatsByUserService from '@domains/chats/services/GetChatsByUserService
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
+import { reporterMock } from '@tests/__mocks__/User.mock';
 import FakeChatsRepository from '../fakes/FakeChatsRepository';
 
 let fakeChatsRepository: IChatsRepository;
@@ -20,12 +21,7 @@ describe('GetChatsByUserService', () => {
   });
 
   it('Should be able to get the user chat', async () => {
-    const user = await fakeUsersRepository.create({
-      name: 'John Doe',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: '123123',
-    });
+    const user = await fakeUsersRepository.create(reporterMock);
 
     const chats = await service.execute({ user_id: user.id });
 

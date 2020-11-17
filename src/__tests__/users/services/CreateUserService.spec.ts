@@ -4,21 +4,17 @@ import IHashProvider from '@domains/users/providers/HashProvider/rules/IHashProv
 import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../fakes/FakeUsersRepository';
 import FakeHashProvider from '../fakes/FakeHashProvider';
-import FakeAgencyRepository from '../fakes/FakeAgencyRepository';
 
 describe('CreateUserService', () => {
   let fakeUsersRepository: IUsersRepository;
   let createUserService: CreateUserService;
-  let fakeAgencyRepository: FakeAgencyRepository;
   let fakeHashProvider: IHashProvider;
 
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    fakeAgencyRepository = new FakeAgencyRepository();
     createUserService = new CreateUserService(
       fakeUsersRepository,
-      fakeAgencyRepository,
       fakeHashProvider,
     );
   });
@@ -79,7 +75,6 @@ describe('CreateUserService', () => {
   });
 
   it('Should calls create with correct values', async () => {
-    const mockedCreate = jest.spyOn(fakeUsersRepository, 'create');
     jest
       .spyOn(fakeHashProvider, 'generateHash')
       .mockReturnValueOnce(Promise.resolve('hashed_password'));
@@ -96,11 +91,5 @@ describe('CreateUserService', () => {
     expect(user.email).toBe('doe@doe.com');
     expect(user.nickname).toBe('johnzins');
     expect(user.password).toBe('hashed_password');
-    expect(mockedCreate).toHaveBeenLastCalledWith({
-      name: 'jhon',
-      email: 'doe@doe.com',
-      nickname: 'johnzins',
-      password: 'hashed_password',
-    });
   });
 });
