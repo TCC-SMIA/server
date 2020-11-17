@@ -3,7 +3,6 @@ import { container } from 'tsyringe';
 
 import CreateAgencyService from '@domains/users/services/CreateAgencyService';
 import { classToClass } from 'class-transformer';
-import UpdateAgencyService from '@domains/users/services/UpdateAgencyService';
 import { UserTypes } from '@domains/users/enums/UserEnums';
 
 class AgencyController {
@@ -21,30 +20,6 @@ class AgencyController {
     });
 
     return response.json(classToClass(newAgency));
-  }
-
-  async update(request: Request, response: Response): Promise<Response> {
-    const agencyId = request.user.id;
-    const {
-      name,
-      email,
-      oldpassword,
-      password,
-      password_confirmation,
-    } = request.body;
-
-    const updateAgencyService = container.resolve(UpdateAgencyService);
-
-    const updatedAgency = await updateAgencyService.execute({
-      agencyId,
-      name,
-      email,
-      oldpassword,
-      password,
-      password_confirmation,
-    });
-
-    return response.json(classToClass(updatedAgency));
   }
 }
 
