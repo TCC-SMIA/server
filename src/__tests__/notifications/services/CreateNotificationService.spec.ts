@@ -3,6 +3,7 @@ import INotificationsRepository from '@domains/notifications/rules/INotification
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
 import FakeUsersRepository from '@tests/users/fakes/FakeUsersRepository';
+import { UserTypes } from '@domains/users/enums/UserEnums';
 import FakeNotificationsRepository from '../fakes/FakeNotificationsRepository';
 
 let createNotificationService: CreateNotificationService;
@@ -26,6 +27,7 @@ describe('CreateComplaintService', () => {
       name: 'valid_name',
       nickname: 'valid_nickname',
       password: 'valid_password',
+      type: UserTypes.Reporter,
     });
 
     await createNotificationService.execute({

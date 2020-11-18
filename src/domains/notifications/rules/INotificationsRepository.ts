@@ -6,4 +6,5 @@ export default interface INotificationsRepository {
   findByUser(user_id: string): Promise<Notification[]>;
   findById(notification_id: string): Promise<Notification | undefined>;
   update(notification: Notification): Promise<Notification>;
+  delete(notification_id: string): Promise<void>;
 }
