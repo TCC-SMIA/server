@@ -30,9 +30,7 @@ class ReadNotificationService {
     if (notification.user.id !== user_id)
       throw new AppError('Only the owner can read the notification');
 
-    notification.read = true;
-
-    await this.notificationsRepository.update(notification);
+    await this.notificationsRepository.delete(notification.id);
 
     const notifications = await this.notificationsRepository.findByUser(
       user_id,

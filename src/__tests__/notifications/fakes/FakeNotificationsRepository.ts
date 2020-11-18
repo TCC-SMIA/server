@@ -42,6 +42,14 @@ class FakeNotificationsRepository implements INotificationsRepository {
 
     return notification;
   }
+
+  public async delete(notification_id: string): Promise<void> {
+    const notificationIndex = this.notifications.findIndex(
+      notification => notification.id === notification_id,
+    );
+
+    this.notifications.splice(notificationIndex, 1);
+  }
 }
 
 export default FakeNotificationsRepository;

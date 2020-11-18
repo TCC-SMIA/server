@@ -41,6 +41,10 @@ class NotificationsRepository implements INotificationsRepository {
 
     return notification;
   }
+
+  public async delete(notification_id: string): Promise<void> {
+    await this.ormRepository.delete({ id: notification_id });
+  }
 }
 
 export default NotificationsRepository;

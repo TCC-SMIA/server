@@ -18,6 +18,7 @@ class ComplaintsController {
       latitude,
       longitude,
       anonymous,
+      type,
     } = request.body;
 
     let filename;
@@ -43,6 +44,7 @@ class ComplaintsController {
       anonymous: anonymous_info,
       date,
       imageFilename: filename,
+      type,
     });
 
     return response.json(classToClass(newComplaint));
