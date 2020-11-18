@@ -57,7 +57,6 @@ class CreateCommentService {
     const comment = await this.commentsRepository.create({
       user_id: user.id,
       user: user as User,
-      agency_id: undefined,
       complaint,
       content,
       date: today,

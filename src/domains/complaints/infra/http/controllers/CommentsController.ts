@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import CreateCommentService from '@domains/complaints/services/CreateCommentService';
 import ListCommentsService from '@domains/complaints/services/ListCommentsService';
@@ -18,7 +17,7 @@ class CommentsController {
       complaint_id,
     });
 
-    return response.json(classToClass(comment));
+    return response.json(comment);
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
@@ -28,7 +27,7 @@ class CommentsController {
 
     const listComments = listCommentsService.execute({ complaint_id });
 
-    return response.json(classToClass(listComments));
+    return response.json(listComments);
   }
 }
 
