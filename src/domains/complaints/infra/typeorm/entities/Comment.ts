@@ -27,12 +27,9 @@ class Comment {
   @Column({ nullable: true })
   user_id!: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE', nullable: true })
+  @ManyToOne(() => User, { onDelete: 'CASCADE', nullable: true, eager: true })
   @JoinColumn({ name: 'user_id' })
   user!: User;
-
-  @Column({ nullable: true })
-  agency_id!: string;
 
   @Column()
   content!: string;

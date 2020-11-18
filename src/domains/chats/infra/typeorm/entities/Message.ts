@@ -14,30 +14,30 @@ import Chat from './Chat';
 @Entity('messages')
 class Message {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  content: string;
+  content!: string;
 
   @Column()
-  user_id: string;
+  user_id!: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user!: User;
 
   @Column()
-  chat_id: string;
+  chat_id!: string;
 
   @ManyToOne(() => Chat, chat => chat.messages, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'chat_id' })
-  chat: Chat;
+  chat!: Chat;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at!: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at!: Date;
 }
 
 export default Message;
