@@ -125,11 +125,14 @@ class ComplaintsController {
 
   public async delete(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { complaint_id } = request.body;
+    const { complaint_id } = request.query;
 
     const deleteComplaintService = container.resolve(DeleteComplaintService);
 
-    await deleteComplaintService.execute({ user_id, complaint_id });
+    await deleteComplaintService.execute({
+      user_id,
+      complaint_id: complaint_id as string,
+    });
 
     return response.status(204).json();
   }
