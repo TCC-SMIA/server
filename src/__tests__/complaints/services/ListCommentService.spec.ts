@@ -26,7 +26,7 @@ describe('ListCommentService', () => {
   });
 
   it('should be able to list the comments created', async () => {
-    const agency = await fakeAgencysRepository.create(environmentalAgencyMock);
+    await fakeAgencysRepository.create(environmentalAgencyMock);
 
     const complaint = await fakeComplaintsRepository.create({
       title: 'Baleia encalhada',
@@ -43,8 +43,6 @@ describe('ListCommentService', () => {
     const comment = await fakeCommentsRepository.create({
       complaint_id: complaint.id,
       content: 'New comment',
-      agency,
-      agency_id: agency.id,
       complaint,
       date,
     });
