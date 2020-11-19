@@ -3,6 +3,8 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
+import SocketChannels from '@shared/websocket/socket-channels';
+import * as socket from '@shared/websocket/websocket';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
 
 interface IRequest {
@@ -39,6 +41,16 @@ class DeleteComplaintService {
       user_id: complaint.user_id,
       content: `Sua denuncia foi deletada com sucesso!`,
     });
+
+    const complaints = await this.complaintsRepository.findAllComplaints(0, 10);
+
+    const sendTo = socket.findAllConnections();
+
+    socket.sendMessage(
+      sendTo,
+      SocketChannels.ComplaintsFeedChannel,
+      complaints,
+    );
   }
 }
 
