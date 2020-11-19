@@ -16,6 +16,9 @@ class GetAvailableComplaintTypeService {
         ComplaintTypeEnum.IrregularDumpingOfGarbage,
         ComplaintTypeEnum.StrandingOfMarineAnimals,
         ComplaintTypeEnum.WildAnimalsOutOfTheirHabitat,
+        ComplaintTypeEnum.Fire,
+        ComplaintTypeEnum.IllegalHunting,
+        ComplaintTypeEnum.MistreatmentOfAnimals,
         ComplaintTypeEnum.Others,
       ],
     };
