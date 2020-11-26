@@ -11,7 +11,7 @@ interface ITokenInfo {
 
 const ensureAuthenticate = (
   request: Request,
-  _response: Response,
+  response: Response,
   next: NextFunction,
 ): void => {
   const authHeader = request.headers.authorization;
@@ -31,7 +31,7 @@ const ensureAuthenticate = (
 
     next();
   } catch (error) {
-    throw new AppError('JWT token is invalid', 401);
+    response.json({ status: '401', message: 'Unauthorized' });
   }
 };
 
