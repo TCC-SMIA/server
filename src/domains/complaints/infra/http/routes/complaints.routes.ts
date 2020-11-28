@@ -35,6 +35,8 @@ complaintsRoutes.delete('/delete', ComplaintsController.delete);
 
 complaintsRoutes.get('/:complaint_id', ComplaintsController.show);
 
+complaintsRoutes.get('/activities/resume', ComplaintsByUserController.show);
+
 complaintsRoutes.patch(
   '/image',
   upload.single('image'),

@@ -13,6 +13,16 @@ class ComplaintsByUserController {
 
     return response.json(complaint);
   }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const { user_id } = request.query;
+
+    const service = container.resolve(GetComplaintsByUserService);
+
+    const complaint = await service.execute({ user_id: user_id as string });
+
+    return response.json(complaint);
+  }
 }
 
 export default new ComplaintsByUserController();

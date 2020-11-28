@@ -6,8 +6,6 @@ import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
-import { ComplaintStatusEnum } from '../enums/ComplaintStatusEnum';
-import { ComplaintTypeEnum } from '../enums/ComplaintTypeEnum';
 
 interface IRequest {
   user_id: string;
