@@ -6,6 +6,8 @@ import AppError from '@shared/errors/AppError';
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import Complaint from '../infra/typeorm/entities/Complaint';
 import IComplaintsRepository from '../rules/IComplaintsRepository';
+import { ComplaintStatusEnum } from '../enums/ComplaintStatusEnum';
+import { ComplaintTypeEnum } from '../enums/ComplaintTypeEnum';
 
 interface IRequest {
   user_id: string;
@@ -16,6 +18,8 @@ interface IRequest {
   longitude: number;
   anonymous: boolean;
   date: Date;
+  status: string;
+  type: string;
 }
 
 @injectable()
@@ -37,6 +41,8 @@ class UpdateComplaintService {
     longitude,
     anonymous,
     date,
+    status,
+    type,
   }: IRequest): Promise<Complaint> {
     const complaint = await this.complaintsRepository.findById(complaint_id);
 
@@ -57,7 +63,9 @@ class UpdateComplaintService {
       longitude,
       anonymous,
       date,
-    });
+      status,
+      type,
+    } as Omit<Partial<Complaint>, 'id'>);
 
     await this.complaintsRepository.save(complaint);
 

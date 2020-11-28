@@ -8,6 +8,8 @@ import FakeNotificationsRepository from '@tests/notifications/fakes/FakeNotifica
 import CreateNotificationService from '@domains/notifications/services/CreateNotificationService';
 import INotificationsRepository from '@domains/notifications/rules/INotificationsRepository';
 import { reporterMock } from '@tests/__mocks__/User.mock';
+import { ComplaintStatusEnum } from '@domains/complaints/enums/ComplaintStatusEnum';
+import { ComplaintTypeEnum } from '@domains/complaints/enums/ComplaintTypeEnum';
 import FakeUsersRepository from '../../users/fakes/FakeUsersRepository';
 import FakeComplaintsRepository from '../fakes/FakeComplaintsRepository';
 
@@ -55,6 +57,8 @@ describe('UpdateComplaintService', () => {
       longitude: 2,
       anonymous: false,
       date,
+      status: ComplaintStatusEnum.InProgress,
+      type: ComplaintTypeEnum.Fire,
     });
 
     expect(updatedComplaint.title).toBe('Updated complaint');
@@ -77,6 +81,8 @@ describe('UpdateComplaintService', () => {
         longitude: 2,
         anonymous: false,
         date,
+        status: ComplaintStatusEnum.InProgress,
+        type: ComplaintTypeEnum.Fire,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -106,6 +112,8 @@ describe('UpdateComplaintService', () => {
         longitude: 2,
         anonymous: false,
         date,
+        status: ComplaintStatusEnum.InProgress,
+        type: ComplaintTypeEnum.Fire,
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -134,6 +142,8 @@ describe('UpdateComplaintService', () => {
       longitude: 2,
       anonymous: true,
       date,
+      status: ComplaintStatusEnum.InProgress,
+      type: ComplaintTypeEnum.Fire,
     });
 
     expect(updatedComplaint.title).toBe('Updated complaint');

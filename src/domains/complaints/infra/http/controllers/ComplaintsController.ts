@@ -105,6 +105,8 @@ class ComplaintsController {
       longitude,
       anonymous,
       date,
+      status,
+      type,
     } = request.body;
 
     const updateComplaintsService = container.resolve(UpdateComplaintService);
@@ -118,6 +120,8 @@ class ComplaintsController {
       longitude,
       anonymous,
       date,
+      status,
+      type,
     });
 
     return response.json(classToClass(updatedComplaint));
