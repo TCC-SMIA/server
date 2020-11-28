@@ -1,5 +1,11 @@
 import Complaint from '../infra/typeorm/entities/Complaint';
 
+export interface IComplaintsFilters {
+  state?: string;
+  city?: string;
+  type?: string;
+  status?: string;
+}
 export default interface IComplaintsRepository {
   create(complaintData: Partial<Complaint>): Promise<Complaint>;
   save(complaint: Complaint): Promise<Complaint>;
@@ -14,4 +20,9 @@ export default interface IComplaintsRepository {
     state: string,
   ): Promise<Complaint[]>;
   findByState(skip: number, take: number, state: string): Promise<Complaint[]>;
+  findByFilters(
+    skip: number,
+    take: number,
+    filters: IComplaintsFilters,
+  ): Promise<Complaint[]>;
 }

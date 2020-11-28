@@ -1,5 +1,5 @@
 export enum ComplaintStatusEnum {
-  New = 'New',
-  InProgress = 'InProgress',
-  Resolved = 'Resolved',
+  New = 'Nova denúncia',
+  InProgress = 'Em progresso',
+  Resolved = 'Resolvida',
 }

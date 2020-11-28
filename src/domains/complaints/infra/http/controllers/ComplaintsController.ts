@@ -51,7 +51,7 @@ class ComplaintsController {
   }
 
   public async index(request: Request, response: Response): Promise<Response> {
-    const { skip, take, city, state } = request.query;
+    const { skip, take, city, state, type, status } = request.query;
 
     let cityParam;
     let stateParam;
@@ -89,6 +89,8 @@ class ComplaintsController {
       take: Number(takeParam),
       city: cityParam,
       state: stateParam,
+      type: type?.toString(),
+      status: status?.toString(),
     });
 
     return response.json(classToClass(complaints));

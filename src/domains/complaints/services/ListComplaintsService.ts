@@ -10,6 +10,8 @@ interface IRequest {
   take: number;
   city?: string;
   state?: string;
+  status?: string;
+  type?: string;
 }
 
 @injectable()
@@ -24,47 +26,20 @@ class ListComplaintsService {
     take,
     city,
     state,
+    status,
+    type,
   }: IRequest): Promise<Complaint[]> {
-    if (city && state) {
-      const complaints = await this.complaintsRepository.findByCity(
-        skip,
-        take,
-        city,
-        state,
-      );
+    const filters = {};
 
-      const filteredComplaints = complaints.map(complaint => {
-        if (complaint.anonymous) {
-          delete complaint.user;
-          delete complaint.user_id;
-        }
-        return complaint;
-      });
+    if (state && state !== '0') Object.assign(filters, { state });
+    if (city && city !== '0') Object.assign(filters, { city });
+    if (type && type !== '0') Object.assign(filters, { type });
+    if (status && status !== '0') Object.assign(filters, { status });
 
-      return filteredComplaints;
-    }
-
-    if (state) {
-      const complaints = await this.complaintsRepository.findByState(
-        skip,
-        take,
-        state,
-      );
-
-      const filteredComplaints = complaints.map(complaint => {
-        if (complaint.anonymous) {
-          delete complaint.user;
-          delete complaint.user_id;
-        }
-        return complaint;
-      });
-
-      return filteredComplaints;
-    }
-
-    const complaints = await this.complaintsRepository.findAllComplaints(
+    const complaints = await this.complaintsRepository.findByFilters(
       skip,
       take,
+      filters,
     );
 
     const filteredComplaints = complaints.map(complaint => {
@@ -72,6 +47,7 @@ class ListComplaintsService {
         delete complaint.user;
         delete complaint.user_id;
       }
+
       return complaint;
     });
 
