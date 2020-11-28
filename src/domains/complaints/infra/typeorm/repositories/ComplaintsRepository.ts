@@ -1,6 +1,8 @@
 import { Repository, getRepository } from 'typeorm';
 
-import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
+import IComplaintsRepository, {
+  IComplaintsFilters,
+} from '@domains/complaints/rules/IComplaintsRepository';
 import Complaint from '../entities/Complaint';
 
 class ComplaintsRepository implements IComplaintsRepository {
@@ -70,6 +72,24 @@ class ComplaintsRepository implements IComplaintsRepository {
       skip,
       take,
       where: { city, state },
+      order: {
+        created_at: 'DESC',
+      },
+      relations: ['user'],
+    });
+
+    return complaints;
+  }
+
+  public async findByFilters(
+    skip: number,
+    take: number,
+    filters: IComplaintsFilters,
+  ): Promise<Complaint[]> {
+    const complaints = await this.complaintsRepository.find({
+      skip,
+      take,
+      where: filters,
       order: {
         created_at: 'DESC',
       },

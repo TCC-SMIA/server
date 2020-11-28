@@ -1,7 +1,9 @@
 import { v4 } from 'uuid';
 
 import Complaint from '@domains/complaints/infra/typeorm/entities/Complaint';
-import IComplaintsRepository from '@domains/complaints/rules/IComplaintsRepository';
+import IComplaintsRepository, {
+  IComplaintsFilters,
+} from '@domains/complaints/rules/IComplaintsRepository';
 
 class FakeComplaintsRepository implements IComplaintsRepository {
   private complaints: Complaint[] = [];
@@ -12,6 +14,37 @@ class FakeComplaintsRepository implements IComplaintsRepository {
     });
 
     return userComplaints;
+  }
+
+  public async findByFilters(
+    skip: number,
+    take: number,
+    filters: IComplaintsFilters,
+  ): Promise<Complaint[]> {
+    let userComplaints = this.complaints;
+
+    if (filters.state)
+      userComplaints = userComplaints.filter(
+        stateFilterComplaint => stateFilterComplaint.state === filters.state,
+      );
+
+    if (filters.city)
+      userComplaints = userComplaints.filter(
+        cityFilterComplaint => cityFilterComplaint.city === filters.city,
+      );
+
+    if (filters.type)
+      userComplaints = userComplaints.filter(
+        typeFilterComplaint => typeFilterComplaint.type === filters.type,
+      );
+
+    if (filters.status)
+      userComplaints = userComplaints.filter(
+        statusFilterComplaint =>
+          statusFilterComplaint.status === filters.status,
+      );
+
+    return userComplaints.slice(skip, take);
   }
 
   public async findById(complaintId: string): Promise<Complaint | undefined> {
