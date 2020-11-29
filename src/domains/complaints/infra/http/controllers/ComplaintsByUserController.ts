@@ -19,9 +19,9 @@ class ComplaintsByUserController {
 
     const service = container.resolve(GetComplaintsByUserService);
 
-    const complaint = await service.execute({ user_id: user_id as string });
+    const complaints = await service.execute({ user_id: user_id as string });
 
-    return response.json(complaint);
+    return response.json(complaints);
   }
 }
 
