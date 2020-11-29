@@ -19,16 +19,6 @@ class CommentsController {
 
     return response.json(comment);
   }
-
-  public async index(request: Request, response: Response): Promise<Response> {
-    const { complaint_id } = request.body;
-
-    const listCommentsService = container.resolve(ListCommentsService);
-
-    const listComments = listCommentsService.execute({ complaint_id });
-
-    return response.json(listComments);
-  }
 }
 
 export default new CommentsController();

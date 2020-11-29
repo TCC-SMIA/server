@@ -37,6 +37,9 @@ class ComplaintsRepository implements IComplaintsRepository {
     const complaints = await this.complaintsRepository.find({
       where: { user_id },
       relations: ['user'],
+      order: {
+        created_at: 'DESC',
+      },
     });
 
     return complaints;
