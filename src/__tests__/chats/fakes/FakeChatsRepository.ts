@@ -44,6 +44,19 @@ class FakeChatsRepository implements IChatsRepository {
 
     return chatExists;
   }
+
+  public async save(chat: Partial<Chat>): Promise<Chat> {
+    const findChat = this.chats.find(searchChat => searchChat.id === chat.id);
+    const findIndex = this.chats.findIndex(
+      searchedChat => searchedChat.id === findChat?.id,
+    );
+
+    const chatToSave = Object.assign(new Chat(), chat);
+
+    this.chats[findIndex] = chatToSave;
+
+    return chatToSave;
+  }
 }
 
 export default FakeChatsRepository;

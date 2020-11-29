@@ -49,6 +49,10 @@ class ChatsRepository implements IChatsRepository {
       where: { user_id, destinatary },
     });
   }
+
+  public async save(chat: Partial<Chat>): Promise<Chat> {
+    return this.chatsRepository.save(chat);
+  }
 }
 
 export default ChatsRepository;

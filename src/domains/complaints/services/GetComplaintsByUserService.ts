@@ -12,7 +12,7 @@ interface IRequest {
 }
 
 @injectable()
-class ListComplaintsService {
+class GetComplaintsByUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -32,4 +32,4 @@ class ListComplaintsService {
   }
 }
 
-export default ListComplaintsService;
+export default GetComplaintsByUserService;
