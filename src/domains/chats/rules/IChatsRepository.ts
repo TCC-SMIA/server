@@ -7,4 +7,5 @@ export default interface IChatsRepository {
   findAllByUser(user_id: string): Promise<Chat[]>;
   findById(chat_id: string): Promise<Chat | undefined>;
   doesExist(user_id: string, destinatary: User): Promise<Chat | undefined>;
+  save(chat: Partial<Chat>): Promise<Chat>;
 }

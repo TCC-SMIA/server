@@ -8,6 +8,7 @@ import SocketChannels from '@shared/websocket/socket-channels';
 import * as socket from '@shared/websocket/websocket';
 import IChatsRepository from '../rules/IChatsRepository';
 import Chat from '../infra/typeorm/entities/Chat';
+import CheckChatAlreadyExistsService from './CheckChatAlreadyExistsService';
 
 interface IRequest {
   user_id: string;
@@ -22,6 +23,9 @@ class CreateChatService {
 
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('CheckChatAlreadyExistsService')
+    private checkChatAlreadyExistsService: CheckChatAlreadyExistsService,
   ) {}
 
   public async execute({ user_id, contact_id }: IRequest): Promise<Chat> {
@@ -36,7 +40,10 @@ class CreateChatService {
 
     if (!contact) throw new AppError('Contact does not exists.');
 
-    const doesExist = await this.chatsRepository.doesExist(user_id, contact);
+    const doesExist = await this.checkChatAlreadyExistsService.execute({
+      contact_id,
+      user_id,
+    });
 
     if (doesExist) return doesExist;
 

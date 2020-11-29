@@ -57,6 +57,9 @@ class CreateMessageService {
       chat,
     });
 
+    chat.updated_at = new Date();
+    await this.chatsRepository.save(chat);
+
     const user_receiving =
       user_id === chat.user_id ? chat.destinatary.id : chat.user_id;
 

@@ -30,7 +30,13 @@ class GetChatsByUserService {
 
     const chats = await this.chatsRepository.findAllByUser(user_id);
 
-    return classToClass(chats);
+    const orderedChats = chats.sort(
+      (chatA: Chat, chatB: Chat) =>
+        new Date(chatB.updated_at).getTime() -
+        new Date(chatA.updated_at).getTime(),
+    );
+
+    return classToClass(orderedChats);
   }
 }
 
