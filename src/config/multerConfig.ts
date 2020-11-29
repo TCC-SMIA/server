@@ -5,7 +5,7 @@ import multer from 'multer';
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
 export default {
-  uploadsFolder: path.resolve(__dirname, '..', 'shared', 'uploads'),
+  uploadsFolder: path.resolve(__dirname, '..', '..', 'tmp', 'uploads'),
 
   tmpFolder,
 

@@ -4,11 +4,11 @@
 /node_modules
 /.pnp
 tmp/uploads/*
+tmp/*
 !tmp/uploads/.gitkeep
 !tmp/.gitkeep
 !tmp/.gitkeep
 .pnp.js
-/src/shared/uploads/*
 
 # testing
 /coverage
