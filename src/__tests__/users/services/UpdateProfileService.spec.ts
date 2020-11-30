@@ -30,7 +30,7 @@ describe('UpdateProfileService', () => {
       type: UserTypes.Reporter,
     });
 
-    const { user: updatedUser } = await updateProfileService.execute({
+    const updatedUser = await updateProfileService.execute({
       user_id: user.id,
       name: 'Young Man',
       email: 'youngman@teste.com',
@@ -53,7 +53,7 @@ describe('UpdateProfileService', () => {
       type: UserTypes.EnvironmentalAgency,
     });
 
-    const { user: updatedUser } = await updateProfileService.execute({
+    const updatedUser = await updateProfileService.execute({
       user_id: agency.id,
       name: 'Valid Updated Agency',
       email: 'validagencyemail@email.com',
@@ -75,7 +75,7 @@ describe('UpdateProfileService', () => {
       type: UserTypes.Reporter,
     });
 
-    const { user: updatedUser } = await updateProfileService.execute({
+    const updatedUser = await updateProfileService.execute({
       user_id: user.id,
       name: 'Young Man',
       email: 'youngman@teste.com',
@@ -245,7 +245,7 @@ describe('UpdateProfileService', () => {
     });
 
     expect(updatedUser).toBeTruthy();
-    expect(updatedUser.user.id).toBe(user.id);
+    expect(updatedUser.id).toBe(user.id);
     expect(updateMock).toHaveBeenCalledWith(user);
   });
 });

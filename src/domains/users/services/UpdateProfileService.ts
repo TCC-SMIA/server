@@ -16,11 +16,6 @@ interface IRequest {
   password_confirmation?: string;
 }
 
-interface IResponse {
-  user: User;
-  user_type: number;
-}
-
 @injectable()
 class UpdateProfileService {
   constructor(
@@ -39,8 +34,7 @@ class UpdateProfileService {
     oldpassword,
     password,
     password_confirmation,
-  }: IRequest): Promise<IResponse> {
-    const user_type = 0;
+  }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) throw new AppError('User not found');
@@ -92,7 +86,7 @@ class UpdateProfileService {
 
     await this.usersRepository.update(user);
 
-    return { user, user_type };
+    return user;
   }
 }
 
