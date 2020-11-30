@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
@@ -14,11 +15,6 @@ interface IRequest {
   oldpassword?: string;
   password?: string;
   password_confirmation?: string;
-}
-
-interface IResponse {
-  user: User;
-  user_type: number;
 }
 
 @injectable()
@@ -39,8 +35,7 @@ class UpdateProfileService {
     oldpassword,
     password,
     password_confirmation,
-  }: IRequest): Promise<IResponse> {
-    const user_type = 0;
+  }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) throw new AppError('User not found');
@@ -92,7 +87,7 @@ class UpdateProfileService {
 
     await this.usersRepository.update(user);
 
-    return { user, user_type };
+    return classToClass(user);
   }
 }
 

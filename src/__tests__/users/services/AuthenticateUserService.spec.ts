@@ -38,7 +38,7 @@ describe('AuthenticateUserService', () => {
     expect(response.user.id).toBeTruthy();
     expect(response.user.id).toBe(user.id);
     expect(response.user.email).toBe(user.email);
-    expect(response.user_type).toBe(UserTypes.Reporter);
+    expect(response.user.type).toBe(UserTypes.Reporter);
   });
 
   it('should not be able authenticate with wrong email/password combination', async () => {
@@ -101,7 +101,7 @@ describe('AuthenticateUserService', () => {
     expect(response).toHaveProperty('token');
     expect(response.user.id).toBe(user.id);
     expect(response.user.email).toBe(user.email);
-    expect(response.user_type).toBe(UserTypes.EnvironmentalAgency);
+    expect(response.user.type).toBe(UserTypes.EnvironmentalAgency);
   });
 
   it('should not be able to authenticate an environmental agency without sending an email', async () => {
@@ -114,7 +114,6 @@ describe('AuthenticateUserService', () => {
   });
 
   it('should authenticate an User with correct values', async () => {
-    const createMock = jest.spyOn(fakeUsersRepository, 'create');
     const executeMock = jest.spyOn(authenticateUserService, 'execute');
 
     await fakeUsersRepository.create({
@@ -137,7 +136,6 @@ describe('AuthenticateUserService', () => {
   });
 
   it('should authenticate an Agency with correct values', async () => {
-    const createMock = jest.spyOn(fakeUsersRepository, 'create');
     const executeMock = jest.spyOn(authenticateUserService, 'execute');
 
     await fakeUsersRepository.create({

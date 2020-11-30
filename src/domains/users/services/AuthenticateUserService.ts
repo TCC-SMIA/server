@@ -18,7 +18,6 @@ interface IRequest {
 interface IResponse {
   user: User;
   token: string;
-  user_type: string;
 }
 
 @injectable()
@@ -64,7 +63,7 @@ class AuthenticateUserService {
       expiresIn,
     });
 
-    return { user: classToClass(user), token, user_type: user.type };
+    return { user: classToClass(user), token };
   }
 }
 
