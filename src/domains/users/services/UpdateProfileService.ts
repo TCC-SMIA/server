@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import User from '@domains/users/infra/typeorm/entities/User';
 import IUsersRepository from '@domains/users/rules/IUsersRepository';
@@ -86,7 +87,7 @@ class UpdateProfileService {
 
     await this.usersRepository.update(user);
 
-    return user;
+    return classToClass(user);
   }
 }
 

@@ -87,7 +87,6 @@ describe('UpdateProfileService', () => {
 
     expect(updatedUser.name).toBe('Young Man');
     expect(updatedUser.email).toBe('youngman@teste.com');
-    expect(updatedUser.password).toBe('123456');
   });
 
   it('should not be able to update a non existing user', async () => {

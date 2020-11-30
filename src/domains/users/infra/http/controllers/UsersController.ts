@@ -37,7 +37,7 @@ class UsersController {
 
     const updateProfileService = container.resolve(UpdateProfileService);
 
-    const { user, user_type } = await updateProfileService.execute({
+    const user = await updateProfileService.execute({
       user_id,
       name,
       nickname,
@@ -47,7 +47,7 @@ class UsersController {
       password_confirmation,
     });
 
-    return response.json({ user: classToClass(user), user_type });
+    return response.json(user);
   }
 
   async show(request: Request, response: Response): Promise<Response> {

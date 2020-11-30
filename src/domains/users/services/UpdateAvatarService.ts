@@ -11,10 +11,6 @@ interface IRequest {
   user_id: string;
   avatarFilename: string;
 }
-interface IResponse {
-  user: User;
-  user_type: number;
-}
 
 @injectable()
 class UpdateUserAvatarService {
@@ -26,12 +22,7 @@ class UpdateUserAvatarService {
     private storageProvider: IStorageProvider,
   ) {}
 
-  public async execute({
-    user_id,
-    avatarFilename,
-  }: IRequest): Promise<IResponse> {
-    const user_type = 0;
-
+  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) throw new AppError('User not found');
@@ -44,7 +35,7 @@ class UpdateUserAvatarService {
 
     await this.usersRepository.update(user);
 
-    return { user: classToClass(user), user_type };
+    return classToClass(user);
   }
 }
 
