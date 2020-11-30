@@ -16,7 +16,7 @@ const createUserValidator = async (
       name: Yup.string()
         .matches(
           /\b[A-Za-z](?!\s)/,
-          'Insert a valid name without especials characters',
+          'Insert a user valid name without especials characters',
         )
         .required('Name is a required field.'),
       nickname: Yup.string()
