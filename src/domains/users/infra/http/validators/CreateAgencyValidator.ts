@@ -14,11 +14,11 @@ const createAgencyValidator = async (
   try {
     const agencySchema = Yup.object().shape({
       name: Yup.string()
+        .required('Name is a required field.')
         .matches(
-          /^[a-zA-Z]{2,}(?: [a-zA-Z]+){0,2}$/,
-          'Insert a valid name without especials characters.',
-        )
-        .required('Name is a required field.'),
+          /\b[A-Za-z](?!\s)/,
+          'Insert a agency valid name without especials characters.',
+        ),
       cnpj: Yup.string().matches(
         /([0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2})$/,
         'Insert a valid CNPJ.',
