@@ -35,7 +35,7 @@
         "socket.io": "^2.4.0",
         "swagger-ui-express": "^4.1.4",
         "tsyringe": "^4.3.0",
-        "typeorm": "0.2.25",
+        "typeorm": "0.3.0",
         "uuid": "^8.3.0",
         "uuidv4": "^6.2.0",
         "validator": "^13.7.0",
